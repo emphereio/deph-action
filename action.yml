@@ -1,0 +1,78 @@
+name: deph
+
+description: AI-assisted vulnerability triage for containers, grounded in reachability, test evidence, and runtime context.
+
+author: Emphere
+
+branding:
+  icon: activity
+  color: blue
+
+inputs:
+  image:
+    description: Container image reference to analyze.
+    required: true
+  test-command:
+    description: Optional command to run during the evidence window. The command is executed by the workflow runner, not inside the image, unless the caller wraps it.
+    required: false
+    default: ""
+  working-directory:
+    description: Directory where test-command should run, relative to the repository workspace unless absolute.
+    required: false
+    default: "."
+  output-directory:
+    description: Directory where deph writes the evidence report, relative to the repository workspace unless absolute.
+    required: false
+    default: deph-evidence
+  fail-on-test-failure:
+    description: Whether a failing test-command should fail the Action.
+    required: false
+    default: "true"
+  upload-artifact:
+    description: Upload the generated evidence report as a GitHub Actions artifact.
+    required: false
+    default: "true"
+  artifact-name:
+    description: Name of the uploaded GitHub Actions artifact.
+    required: false
+    default: deph-evidence
+
+outputs:
+  report-json:
+    description: Path to the generated JSON evidence report.
+    value: ${{ steps.run.outputs.report-json }}
+  summary-markdown:
+    description: Path to the generated Markdown summary.
+    value: ${{ steps.run.outputs.summary-markdown }}
+  test-exit-code:
+    description: Exit code from test-command. Empty when no test-command was provided.
+    value: ${{ steps.run.outputs.test-exit-code }}
+
+runs:
+  using: composite
+  steps:
+    - name: Run deph evidence collection
+      id: run
+      shell: bash
+      env:
+        DEPH_ACTION_PATH: ${{ github.action_path }}
+        DEPH_IMAGE: ${{ inputs.image }}
+        DEPH_TEST_COMMAND: ${{ inputs.test-command }}
+        DEPH_WORKING_DIRECTORY: ${{ inputs.working-directory }}
+        DEPH_OUTPUT_DIRECTORY: ${{ inputs.output-directory }}
+        DEPH_FAIL_ON_TEST_FAILURE: ${{ inputs.fail-on-test-failure }}
+        GITHUB_WORKSPACE: ${{ github.workspace }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        GITHUB_REF: ${{ github.ref }}
+        GITHUB_SHA: ${{ github.sha }}
+        GITHUB_RUN_ID: ${{ github.run_id }}
+        GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+      run: "$DEPH_ACTION_PATH/scripts/run.sh"
+
+    - name: Upload deph evidence artifact
+      if: ${{ inputs.upload-artifact == 'true' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ steps.run.outputs.output-directory }}
+        if-no-files-found: error

@@ -1,0 +1,33 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  shell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate scaffold
+        run: ./scripts/validate.sh
+
+  action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run action from local checkout
+        uses: ./
+        with:
+          image: example/app:latest
+          test-command: "printf 'hello from deph-action\\n'"
+          output-directory: deph-evidence
+          upload-artifact: false
+      - name: Verify outputs
+        run: |
+          test -s deph-evidence/deph-evidence.json
+          test -s deph-evidence/summary.md
