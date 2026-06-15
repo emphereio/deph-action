@@ -6,6 +6,17 @@ GitHub Action scaffolding for deph evidence reports.
 
 The first public contract is deliberately narrow. It does not claim exhaustive reachability and it does not infer production behavior from a test run. It records what was analyzed, what was exercised, and where the evidence came from.
 
+## Why the reachability is trustworthy
+
+deph's reachability is **measured against independent oracles, not asserted** — and the gaps are published alongside the strengths. From the engine's [accuracy report](https://github.com/emphereio/deph/blob/main/docs/accuracy.md) (dated snapshots, full provenance + caveats):
+
+- **Real-image Go precision/recall** measured against the Go team's `govulncheck` call graph (not self-graded).
+- **Runtime-confirmed false-negatives** — e.g. 11 Go stdlib CVEs proven reachable in `traefik:v3.0` by observing the vulnerable function execute under load, each that static scanners (deph included) leave as "installed".
+- A **constructed per-ecosystem corpus** with known-by-construction answers — and an explicit note that its 100%/100% is a correctness check, not a real-world accuracy claim.
+- Known limits stated plainly (e.g. Go stdlib static reachability is a blind spot the dynamic oracle closes).
+
+See the [accuracy report](https://github.com/emphereio/deph/blob/main/docs/accuracy.md) for the numbers, methodology, and reproduce commands.
+
 ## Usage
 
 ```yaml
