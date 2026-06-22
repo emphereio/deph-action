@@ -1,19 +1,16 @@
-<div align="center">
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/deph-logo-light.svg">
-  <img alt="deph" src="assets/deph-logo-dark.svg" width="240">
-</picture>
-
-# deph-action
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/deph-icon-light.svg">
+    <img src="assets/deph-icon-dark.svg" alt="" height="30">
+  </picture>
+  &nbsp;deph-action
+</h1>
 
 **Know which CVEs are actually in your container's execution path — not just which ones are present.**
 
 [![CI](https://github.com/emphereio/deph-action/actions/workflows/ci.yml/badge.svg)](https://github.com/emphereio/deph-action/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![deph engine: PolyForm NC](https://img.shields.io/badge/deph%20engine-PolyForm%20NC-orange.svg)](#license)
-
-</div>
 
 ---
 
