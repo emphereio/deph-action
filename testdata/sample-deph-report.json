@@ -1,0 +1,93 @@
+{
+  "summary": {
+    "os_packages": 12,
+    "app_packages": 4,
+    "total_cves": 5,
+    "reachable_cves": 2
+  },
+  "graph": {
+    "image_ref": "ghcr.io/acme/app:latest",
+    "os_family": "debian",
+    "cve_priority": {
+      "CVE-2025-0001": { "priority": 91.2 },
+      "CVE-2025-0002": { "priority": 64.0 }
+    },
+    "nodes": {
+      "app/flask": {
+        "id": "app/flask",
+        "type": "app-package",
+        "name": "flask",
+        "version": "2.0.1",
+        "cves": [
+          {
+            "id": "CVE-2025-0001",
+            "severity": "CRITICAL",
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "traced",
+            "cvss_score": 9.8,
+            "epss_score": 0.42,
+            "known_exploited": true,
+            "fix_version": "2.0.3",
+            "reachable_from": ["app/flask"],
+            "call_chains": [
+              { "file": "app/main.py", "function": "handle", "line": 42, "package": "flask" }
+            ]
+          },
+          {
+            "id": "CVE-2025-0002",
+            "severity": "HIGH",
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "bytecode-import",
+            "cvss_score": 7.5,
+            "fix_version": "",
+            "reachable_from": ["app/flask"]
+          }
+        ]
+      },
+      "lib/libssl3": {
+        "id": "lib/libssl3",
+        "type": "native-ext",
+        "name": "libssl3",
+        "cves": [
+          {
+            "id": "CVE-2025-0003",
+            "severity": "MEDIUM",
+            "tier": "linked",
+            "reachable": false,
+            "evidence": "binary-link"
+          },
+          {
+            "id": "CVE-2025-0001",
+            "severity": "CRITICAL",
+            "tier": "installed",
+            "reachable": false
+          }
+        ]
+      },
+      "os/zlib1g": {
+        "id": "os/zlib1g",
+        "type": "os-package",
+        "name": "zlib1g",
+        "cves": [
+          {
+            "id": "CVE-2025-0004",
+            "severity": "LOW",
+            "tier": "installed",
+            "reachable": false
+          },
+          {
+            "id": "CVE-2025-0005",
+            "severity": "HIGH",
+            "tier": "installed",
+            "reachable": false,
+            "vex_suppressed": true,
+            "vex_status": "not_affected"
+          }
+        ]
+      }
+    },
+    "edges": []
+  }
+}

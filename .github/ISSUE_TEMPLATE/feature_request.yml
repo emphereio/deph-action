@@ -1,0 +1,25 @@
+name: Feature request
+description: Suggest a capability, input, or output for the action.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do that the action doesn't support today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What new input/output/behavior would solve it? A sketch workflow helps.
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        Note: deph-action is a thin, honest wrapper over the deph engine. Engine-level
+        capabilities (new ecosystems, reachability analysis) belong in the
+        [`emphereio/deph`](https://github.com/emphereio/deph) repo; this repo covers how
+        those capabilities are surfaced in CI.

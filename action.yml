@@ -1,7 +1,8 @@
 name: deph
-
-description: AI-assisted vulnerability triage for containers, grounded in reachability, test evidence, and runtime context.
-
+description: >-
+  Builds a dependency graph of your built container image and maps CVE-affected
+  components to whether they're actually in your execution path — bound to the
+  image digest. Shows what's real versus what's noise.
 author: Emphere
 
 branding:
@@ -10,69 +11,176 @@ branding:
 
 inputs:
   image:
-    description: Container image reference to analyze.
+    description: >-
+      Image to analyze. A local image name already built on the runner
+      (auto-saved to a tarball and scanned), or a registry reference deph pulls
+      directly. Run this after the image is built.
     required: true
-  test-command:
-    description: Optional command to run during the evidence window. The command is executed by the workflow runner, not inside the image, unless the caller wraps it.
+  image-digest:
+    description: >-
+      Content digest to bind the verdict to (e.g. ${{ steps.build.outputs.digest }}
+      from docker/build-push-action). If empty, the action resolves the best
+      available digest and records how strong that binding is (digest_kind).
     required: false
     default: ""
-  working-directory:
-    description: Directory where test-command should run, relative to the repository workspace unless absolute.
+  deph-version:
+    description: deph release tag to download (from emphereio/deph releases).
     required: false
-    default: "."
+    default: v0.1.0
+  deph-token:
+    description: >-
+      Token used to download the deph release binary. Leave empty to use the
+      workflow's github.token. Set a PAT only if the deph repo is private.
+    required: false
+    default: ""
+  severity:
+    description: "Optional severity filter passed to deph (e.g. critical,high)."
+    required: false
+    default: ""
+  vex:
+    description: "Optional VEX document path(s) passed to deph for suppression."
+    required: false
+    default: ""
+  fail-on:
+    description: >-
+      Gate the job on in-path findings: none | any-reachable | reachable-high |
+      reachable-critical. Always fails LAST, after artifacts are uploaded.
+    required: false
+    default: none
+  upload-sarif:
+    description: >-
+      Upload a reachable-only SARIF to the code-scanning tab. Opt-in; runs a
+      second scan pass. SARIF is not the canonical report (verdict.json is).
+    required: false
+    default: "false"
+  upload-sbom:
+    description: >-
+      Emit a CycloneDX SBOM (with deph reachability/VEX enrichment). Opt-in;
+      runs a second scan pass since deph formats are mutually exclusive.
+    required: false
+    default: "false"
+  comment-on-pr:
+    description: "Sticky PR comment: auto (comment on pull_request events) | always | off."
+    required: false
+    default: auto
   output-directory:
-    description: Directory where deph writes the evidence report, relative to the repository workspace unless absolute.
+    description: Directory where the report artifacts are written.
     required: false
-    default: deph-evidence
-  fail-on-test-failure:
-    description: Whether a failing test-command should fail the Action.
-    required: false
-    default: "true"
+    default: deph-report
   upload-artifact:
-    description: Upload the generated evidence report as a GitHub Actions artifact.
+    description: Upload the report directory as a workflow artifact.
     required: false
     default: "true"
   artifact-name:
-    description: Name of the uploaded GitHub Actions artifact.
+    description: Name of the uploaded artifact.
     required: false
-    default: deph-evidence
+    default: deph-report
 
 outputs:
   report-json:
-    description: Path to the generated JSON evidence report.
+    description: Path to the deph JSON report (source of truth).
     value: ${{ steps.run.outputs.report-json }}
+  verdict-json:
+    description: Path to the digest-bound deph-action verdict.
+    value: ${{ steps.run.outputs.verdict-json }}
   summary-markdown:
-    description: Path to the generated Markdown summary.
+    description: Path to the Markdown summary.
     value: ${{ steps.run.outputs.summary-markdown }}
-  test-exit-code:
-    description: Exit code from test-command. Empty when no test-command was provided.
-    value: ${{ steps.run.outputs.test-exit-code }}
+  report-html:
+    description: Path to the self-contained HTML report.
+    value: ${{ steps.run.outputs.report-html }}
+  sarif:
+    description: Path to the SARIF file, when upload-sarif is enabled.
+    value: ${{ steps.run.outputs.sarif }}
+  sbom-cyclonedx:
+    description: Path to the CycloneDX SBOM, when upload-sbom is enabled.
+    value: ${{ steps.run.outputs.sbom-cyclonedx }}
+  image-digest:
+    description: The digest the verdict is bound to.
+    value: ${{ steps.run.outputs.image-digest }}
+  total-cves:
+    description: Distinct known CVEs found (deduped by CVE ID).
+    value: ${{ steps.run.outputs.total-cves }}
+  in-path-cves:
+    description: CVEs deph found in the execution path.
+    value: ${{ steps.run.outputs.in-path-cves }}
+  linked-cves:
+    description: CVEs linked/present but not fully traced.
+    value: ${{ steps.run.outputs.linked-cves }}
+  not-found-in-path-cves:
+    description: CVEs present but with no execution path found by deph.
+    value: ${{ steps.run.outputs.not-found-in-path-cves }}
+  gate-tripped:
+    description: "true when fail-on policy matched (the job is failed in a later step)."
+    value: ${{ steps.run.outputs.gate-tripped }}
+  deph-exit-code:
+    description: "deph scan exit code (0 clean, 1 findings, 2 error)."
+    value: ${{ steps.run.outputs.deph-exit-code }}
 
 runs:
   using: composite
   steps:
-    - name: Run deph evidence collection
+    # Rolling cache: a unique key per run always saves a fresh DB at job end,
+    # while restore-keys restores the most recent prior DB at job start — so the
+    # ~50MB grype DB is reused but still refreshes as deph updates it.
+    - name: Cache deph vulnerability database
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      with:
+        path: ~/.cache/deph/grype
+        key: deph-grype-db-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+        restore-keys: |
+          deph-grype-db-${{ runner.os }}-
+
+    - name: Run deph
       id: run
       shell: bash
       env:
         DEPH_ACTION_PATH: ${{ github.action_path }}
+        DEPH_VERSION: ${{ inputs.deph-version }}
+        # Metadata defaults must be static strings, so resolve the token fallback here.
+        GH_TOKEN: ${{ inputs.deph-token != '' && inputs.deph-token || github.token }}
         DEPH_IMAGE: ${{ inputs.image }}
-        DEPH_TEST_COMMAND: ${{ inputs.test-command }}
-        DEPH_WORKING_DIRECTORY: ${{ inputs.working-directory }}
+        DEPH_IMAGE_DIGEST: ${{ inputs.image-digest }}
+        DEPH_SEVERITY: ${{ inputs.severity }}
+        DEPH_VEX: ${{ inputs.vex }}
+        DEPH_FAIL_ON: ${{ inputs.fail-on }}
+        DEPH_UPLOAD_SARIF: ${{ inputs.upload-sarif }}
+        DEPH_UPLOAD_SBOM: ${{ inputs.upload-sbom }}
+        DEPH_COMMENT_ON_PR: ${{ inputs.comment-on-pr }}
         DEPH_OUTPUT_DIRECTORY: ${{ inputs.output-directory }}
-        DEPH_FAIL_ON_TEST_FAILURE: ${{ inputs.fail-on-test-failure }}
         GITHUB_WORKSPACE: ${{ github.workspace }}
         GITHUB_REPOSITORY: ${{ github.repository }}
         GITHUB_REF: ${{ github.ref }}
         GITHUB_SHA: ${{ github.sha }}
         GITHUB_RUN_ID: ${{ github.run_id }}
         GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+        GITHUB_EVENT_NAME: ${{ github.event_name }}
+        GITHUB_WORKFLOW: ${{ github.workflow }}
       run: "$DEPH_ACTION_PATH/scripts/run.sh"
 
-    - name: Upload deph evidence artifact
+    # Capture artifacts BEFORE the SARIF upload and the gate, so a missing
+    # security-events permission or a tripped gate never costs you the report.
+    - name: Upload report artifact
       if: ${{ inputs.upload-artifact == 'true' }}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       with:
         name: ${{ inputs.artifact-name }}
         path: ${{ steps.run.outputs.output-directory }}
         if-no-files-found: error
+
+    - name: Upload SARIF to code scanning
+      if: ${{ inputs.upload-sarif == 'true' && steps.run.outputs.sarif != '' }}
+      uses: github/codeql-action/upload-sarif@dd903d2e4f5405488e5ef1422510ee31c8b32357 # v3
+      with:
+        sarif_file: ${{ steps.run.outputs.sarif }}
+        category: deph
+
+    - name: Gate
+      if: ${{ steps.run.outputs.gate-tripped == 'true' }}
+      shell: bash
+      env:
+        DEPH_GATE_POLICY: ${{ inputs.fail-on }}
+        DEPH_GATE_REASON: ${{ steps.run.outputs.gate-reason }}
+      run: |
+        echo "deph-action: gate '${DEPH_GATE_POLICY}' tripped — ${DEPH_GATE_REASON}" >&2
+        exit 1

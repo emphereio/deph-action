@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://emphere.com/schemas/deph-verdict.schema.json",
+  "title": "deph-action verdict",
+  "description": "Digest-bound path verdict produced by deph-action over a deph scan. Reports what deph found in the execution path, what is linked/present, and what it found no path to — never a claim of proof of non-exploitability.",
+  "type": "object",
+  "required": ["schema_version", "producer", "image", "source", "summary", "in_path_cves", "gate", "artifacts"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": { "type": "string" },
+    "producer": {
+      "type": "object",
+      "required": ["name", "version", "deph_version"],
+      "additionalProperties": true,
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "deph_version": { "type": "string" }
+      }
+    },
+    "image": {
+      "type": "object",
+      "required": ["ref", "digest", "digest_kind", "source_mode"],
+      "additionalProperties": true,
+      "properties": {
+        "ref": { "type": "string" },
+        "digest": { "type": "string" },
+        "digest_kind": {
+          "type": "string",
+          "description": "Strength of the digest binding, strongest first.",
+          "enum": ["provided", "repo-digest", "tar-sha256", "config-id", ""]
+        },
+        "source_mode": {
+          "type": "string",
+          "enum": ["local-daemon", "registry", "tarball", ""]
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": ["repository", "ref", "sha", "run_id", "run_attempt"],
+      "additionalProperties": true,
+      "properties": {
+        "repository": { "type": "string" },
+        "ref": { "type": "string" },
+        "sha": { "type": "string" },
+        "run_id": { "type": "string" },
+        "run_attempt": { "type": "string" },
+        "workflow": { "type": "string" },
+        "event": { "type": "string" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["total", "in_path", "linked", "not_found_in_path"],
+      "additionalProperties": true,
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "in_path": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "CVEs deph found path evidence for (tier reachable)."
+        },
+        "linked": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "CVEs on components linked/present but not fully traced (tier linked)."
+        },
+        "not_found_in_path": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "CVEs present but with no execution path found by deph (tier installed). Not a proof of unreachability."
+        },
+        "in_path_by_severity": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        },
+        "kev_in_path": { "type": "integer", "minimum": 0 },
+        "fixable_in_path": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "in_path_cves": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity"],
+        "additionalProperties": true,
+        "properties": {
+          "id": { "type": "string" },
+          "severity": { "type": "string" },
+          "cvss": { "type": ["number", "null"] },
+          "epss": { "type": ["number", "null"] },
+          "kev": { "type": "boolean" },
+          "fix_version": { "type": "string" },
+          "evidence": { "type": "string" },
+          "reachable_from": { "type": "array", "items": { "type": "string" } },
+          "top_call": { "type": "string" },
+          "priority": { "type": "number" }
+        }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "required": ["policy", "tripped"],
+      "additionalProperties": true,
+      "properties": {
+        "policy": { "type": "string" },
+        "tripped": { "type": "boolean" },
+        "reason": { "type": "string" }
+      }
+    },
+    "deph_exit": { "type": "integer" },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "report_json": { "type": "string" },
+        "report_html": { "type": "string" },
+        "sarif": { "type": "string" },
+        "sbom_cyclonedx": { "type": "string" },
+        "summary_md": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+name: Bug report
+description: Something in the action behaves incorrectly.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Please do **not** include private repository or image
+        data, secrets, or full vulnerability reports — redact before pasting.
+        For security vulnerabilities, follow [SECURITY.md](https://github.com/emphereio/deph-action/blob/main/SECURITY.md) instead.
+  - type: input
+    id: action-version
+    attributes:
+      label: deph-action version
+      description: The ref you used, e.g. `emphereio/deph-action@v0` or a commit SHA.
+      placeholder: "v0"
+    validations:
+      required: true
+  - type: input
+    id: deph-version
+    attributes:
+      label: deph-version input
+      description: The `deph-version` you passed (or the default).
+      placeholder: "v0.1.0"
+    validations:
+      required: false
+  - type: dropdown
+    id: runner
+    attributes:
+      label: Runner
+      options:
+        - ubuntu-latest (GitHub-hosted)
+        - other GitHub-hosted
+        - self-hosted Linux
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Minimal workflow snippet
+      description: The relevant step(s) from your workflow. Redact private values.
+      render: yaml
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Action logs around the failure. Redact anything sensitive.
+      render: shell
+    validations:
+      required: false

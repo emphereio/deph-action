@@ -9,25 +9,75 @@ permissions:
   contents: read
 
 jobs:
-  shell:
+  # Always-on, fully offline: shell syntax + the verdict transform against a
+  # checked-in deph report fixture + schema validation. No deph download.
+  validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Validate scaffold
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - name: ShellCheck
+        run: shellcheck scripts/*.sh testdata/*.sh
+      - name: Install jsonschema
+        run: pip install --quiet jsonschema
+      - name: Self-test
         run: ./scripts/validate.sh
 
-  action:
+  # Live end-to-end: downloads a released deph binary and runs the action.
+  # Gated on the repo variable DEPH_RELEASE_READY so PR CI stays green until the
+  # first emphereio/deph release exists. Flip the variable to "true" (and set
+  # DEPH_VERSION) once a release is published.
+  integration:
+    if: ${{ vars.DEPH_RELEASE_READY == 'true' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - name: Run action from local checkout
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Scan a public image (registry path)
+        id: scan
         uses: ./
         with:
-          image: example/app:latest
-          test-command: "printf 'hello from deph-action\\n'"
-          output-directory: deph-evidence
-          upload-artifact: false
-      - name: Verify outputs
+          image: python:3.12-slim
+          deph-version: ${{ vars.DEPH_VERSION }}
+          comment-on-pr: off
+          artifact-name: deph-report-registry
+
+      - name: Assert verdict shape
         run: |
-          test -s deph-evidence/deph-evidence.json
-          test -s deph-evidence/summary.md
+          test -s "${{ steps.scan.outputs.verdict-json }}"
+          python3 - "${{ steps.scan.outputs.verdict-json }}" <<'PY'
+          import json, sys
+          v = json.load(open(sys.argv[1]))
+          for k in ("total", "in_path", "linked", "not_found_in_path"):
+              assert isinstance(v["summary"][k], int), k
+          assert v["image"]["ref"] == "python:3.12-slim"
+          print("verdict OK:", v["summary"])
+          PY
+          echo "total=${{ steps.scan.outputs.total-cves }} in-path=${{ steps.scan.outputs.in-path-cves }}"
+
+      - name: Gate fails on in-path findings (expected failure)
+        id: gate
+        continue-on-error: true
+        uses: ./
+        with:
+          image: python:3.12-slim
+          deph-version: ${{ vars.DEPH_VERSION }}
+          fail-on: any-reachable
+          comment-on-pr: off
+          upload-artifact: false
+
+      - name: Assert gate behaved (both directions)
+        env:
+          TRIPPED: ${{ steps.gate.outputs.gate-tripped }}
+          OUTCOME: ${{ steps.gate.outcome }}
+        run: |
+          # The gate step must fail iff it tripped. (Deterministic gate logic is
+          # covered offline by scripts/validate.sh; this checks the wiring.)
+          echo "gate tripped=$TRIPPED outcome=$OUTCOME"
+          if [ "$TRIPPED" = "true" ] && [ "$OUTCOME" != "failure" ]; then
+            echo "gate tripped but job did not fail" >&2; exit 1
+          fi
+          if [ "$TRIPPED" = "false" ] && [ "$OUTCOME" != "success" ]; then
+            echo "gate did not trip but job failed" >&2; exit 1
+          fi

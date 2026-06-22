@@ -1,109 +1,183 @@
 # deph-action
 
-GitHub Action scaffolding for deph evidence reports.
+[![CI](https://github.com/emphereio/deph-action/actions/workflows/ci.yml/badge.svg)](https://github.com/emphereio/deph-action/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-`deph-action` is the public workflow surface for Emphere's vulnerability triage work. It is designed to collect a bounded evidence packet for a container image: the image under review, the commit that produced it, the optional test window the customer chose to run, and the report files that downstream reachability and AI triage layers can consume.
+**Builds a dependency graph of your built container image and maps CVE-affected components to whether they're actually in your execution path — bound to the image digest. Shows what's real versus what's noise.**
 
-The first public contract is deliberately narrow. It does not claim exhaustive reachability and it does not infer production behavior from a test run. It records what was analyzed, what was exercised, and where the evidence came from.
+Most scanners hand you a list of every CVE present in an image. deph builds the full dependency graph — application packages → native extensions (`.so`) → OS packages → compiled symbols — and tells you, for each CVE-affected component, whether deph **found a path to it from your application** or not. You run it **after the image is built**, the one point where that whole graph exists.
 
-## Why the reachability is trustworthy
+The verdict is bound to the image **digest**: compute it once at build time, then consume it anywhere — a PR comment, a job summary, the code-scanning tab, or a release gate.
 
-deph's reachability is **measured against independent oracles, not asserted** — and the gaps are published alongside the strengths. From the engine's [accuracy report](https://github.com/emphereio/deph/blob/main/docs/accuracy.md) (dated snapshots, full provenance + caveats):
+## What you get
 
-- **Real-image Go precision/recall** measured against the Go team's `govulncheck` call graph (not self-graded).
-- **Runtime-confirmed false-negatives** — e.g. 11 Go stdlib CVEs proven reachable in `traefik:v3.0` by observing the vulnerable function execute under load, each that static scanners (deph included) leave as "installed".
-- A **constructed per-ecosystem corpus** with known-by-construction answers — and an explicit note that its 100%/100% is a correctness check, not a real-world accuracy claim.
-- Known limits stated plainly (e.g. Go stdlib static reachability is a blind spot the dynamic oracle closes).
+Every run produces a digest-bound verdict that splits the known CVEs three ways (counts are deduped by CVE ID, keeping the strongest tier):
 
-See the [accuracy report](https://github.com/emphereio/deph/blob/main/docs/accuracy.md) for the numbers, methodology, and reproduce commands.
+- **in your execution path** — deph found path evidence reaching the affected code.
+- **linked / present** — the component is linked or present, but not fully traced.
+- **no path found** — present in the image, but deph found no execution path to it. (This is "no path found," **not** a proof of safety — dynamic dispatch in Python/JVM/framework code means absence of a found path is not a guarantee.)
+
+The action surfaces that verdict as a **job summary** (always), a **sticky PR comment** (on pull requests), a machine-readable **`verdict.json`** and **JSON report**, a self-contained **HTML report**, and — opt-in — **SARIF** to the Security tab, a **CycloneDX SBOM**, and a **`fail-on` gate** that fails the job on in-path findings.
+
+## Measured accuracy
+
+deph's path-finding is **measured against independent oracles, not asserted** — strengths and gaps are both published. Headline results (point-in-time; full methodology, provenance, caveats, and reproduce commands in the engine's [accuracy report](https://github.com/emphereio/deph/blob/main/docs/accuracy.md)):
+
+| measurement | result | basis & caveat |
+|---|---|---|
+| Constructed corpus — precision / recall, 5 ecosystems (Go, Python, npm, Java, PHP) | **100% / 100%** (FP=0, FN=0) | ground-truth-**by-construction** — a correctness check, **not** a real-world rate |
+| Go real-image precision vs `govulncheck` | **83.4%** | 30 real images **incl. stdlib**, same pinned DB; adjudicated vs the Go team's call-graph tool; point-in-time |
+| Go real-image recall vs `govulncheck` | **83.8%** | same run (agree 647 / FP 129 / FN 125) |
+| Java path recall vs real exploits | **16 / 16** | exploitation-confirmed (a sampled lower bound) |
+| Runtime-confirmed path — Go, `traefik:v3.0`, eBPF symbol uprobes | **11 stdlib CVEs** moved from "installed" to proven-in-path | each observed executing under an HTTP stimulus |
+| Runtime-confirmed path — PHP, `twig` CVE-2022-39261, Zend Observer oracle | **confirmed in-path** — `FilesystemLoader::findTemplate` observed executing | in-process assurance oracle (eBPF `execute_ex` is boundary-only under the Zend HYBRID VM); per-ecosystem PHP precision/recall: **adjudication pending** |
+| Runtime-confirmed path — Node.js, `lodash` CVE-2021-23337, V8 precise-coverage oracle | **confirmed in-path** — `_.template` observed executing (static `installed` → proven reachable) | in-process assurance oracle (V8's bytecode interpreter has no function-level eBPF path, so coverage is the only signal); per-ecosystem npm precision/recall: **adjudication pending** |
+
+Read these as evidence, not marketing: the constructed 100%/100% is correctness on known-answer cases (real-world dead-code and reflection/DI remain documented frontiers, not solved), the 83%/83% is the honest real-world Go picture, and the recall figures are lower bounds. Real-image **precision/recall is Go-only so far** — there's no `govulncheck`-equivalent reference for the other ecosystems yet. Runtime path-confirmation uses a per-runtime oracle — Go/native: eBPF symbol uprobes; Python: in-process `sys.monitoring`; PHP: in-process Zend Observer; Node.js: in-process V8 precise-coverage — with eBPF the common kernel layer (where one exists) and absence-of-observation never read as "not reachable." See the [accuracy report](https://github.com/emphereio/deph/blob/main/docs/accuracy.md) for the numbers, methodology, and reproduce commands.
 
 ## Usage
+
+Run it **after the image is built**. Build → (test) → **deph-action**.
 
 ```yaml
 name: deph
 
 on:
   pull_request:
-  workflow_dispatch:
+  push:
+    branches: [main]
 
 jobs:
   triage:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-
+      pull-requests: write   # sticky PR comment
     steps:
       - uses: actions/checkout@v4
 
+      - name: Build image
+        run: docker build -t app:${{ github.sha }} .
+
+      - uses: emphereio/deph-action@v0
+        with:
+          image: app:${{ github.sha }}
+```
+
+The image was built on the runner and lives only in the local Docker daemon, so the action `docker save`s it to a tarball and scans that — deph does not read the daemon directly.
+
+### Bind to a registry digest (recommended for release pipelines)
+
+When you push the image, pass the digest from `docker/build-push-action` so the verdict binds to the strong OCI content digest:
+
+```yaml
+      - id: build
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ghcr.io/acme/app:${{ github.sha }}
+
+      - uses: emphereio/deph-action@v0
+        with:
+          image: ghcr.io/acme/app@${{ steps.build.outputs.digest }}
+          image-digest: ${{ steps.build.outputs.digest }}
+```
+
+### Gate a release + publish to the Security tab
+
+```yaml
       - uses: emphereio/deph-action@v0
         with:
           image: ghcr.io/acme/app:${{ github.sha }}
-          test-command: npm test
+          fail-on: reachable-critical   # fail only on in-path CRITICAL CVEs
+          upload-sarif: true            # reachable-only SARIF -> Security tab
+        # requires: permissions: { security-events: write }
 ```
-
-The Action writes:
-
-- `deph-evidence/deph-evidence.json`
-- `deph-evidence/summary.md`
-- `deph-evidence/test.log` when `test-command` is provided
-
-It also appends the Markdown summary to the GitHub Actions job summary.
 
 ## Inputs
 
 | input | required | default | description |
 | --- | --- | --- | --- |
-| `image` | yes | | Container image reference to analyze. |
-| `test-command` | no | | Command to run during the evidence window. |
-| `working-directory` | no | `.` | Directory where `test-command` should run. |
-| `output-directory` | no | `deph-evidence` | Directory for generated report files. |
-| `fail-on-test-failure` | no | `true` | Fail the Action if `test-command` fails. |
-| `upload-artifact` | no | `true` | Upload the evidence directory as a workflow artifact. |
-| `artifact-name` | no | `deph-evidence` | Name of the uploaded artifact. |
+| `image` | yes | | Local image name (auto-saved & scanned) or a registry reference deph pulls. |
+| `image-digest` | no | | Digest to bind the verdict to, e.g. `${{ steps.build.outputs.digest }}`. |
+| `deph-version` | no | `v0.1.0` | deph release tag to download (from `emphereio/deph`). |
+| `deph-token` | no | | Token to download the deph release; falls back to `github.token`. Set a PAT only if the deph repo is private. |
+| `severity` | no | | Severity filter passed to deph (e.g. `critical,high`). |
+| `vex` | no | | VEX document path(s) for suppression. |
+| `fail-on` | no | `none` | Gate: `none` \| `any-reachable` \| `reachable-high` \| `reachable-critical`. |
+| `upload-sarif` | no | `false` | Upload reachable-only SARIF to code scanning (second scan pass). |
+| `upload-sbom` | no | `false` | Emit a CycloneDX SBOM (second scan pass). |
+| `comment-on-pr` | no | `auto` | `auto` (comment on PR events) \| `always` \| `off`. |
+| `output-directory` | no | `deph-report` | Directory for generated report files. |
+| `upload-artifact` | no | `true` | Upload the report directory as a workflow artifact. |
+| `artifact-name` | no | `deph-report` | Name of the uploaded artifact. |
 
 ## Outputs
 
 | output | description |
 | --- | --- |
-| `report-json` | Path to the JSON evidence report. |
+| `report-json` | Path to the deph JSON report (source of truth). |
+| `verdict-json` | Path to the digest-bound verdict. |
 | `summary-markdown` | Path to the Markdown summary. |
-| `test-exit-code` | Exit code from `test-command`, or empty when no command was provided. |
+| `report-html` | Path to the self-contained HTML report. |
+| `sarif` | Path to the SARIF file (when `upload-sarif` is enabled). |
+| `sbom-cyclonedx` | Path to the CycloneDX SBOM (when `upload-sbom` is enabled). |
+| `image-digest` | The digest the verdict is bound to. |
+| `total-cves` | Distinct known CVEs found (deduped by CVE ID). |
+| `in-path-cves` | CVEs deph found in the execution path. |
+| `linked-cves` | CVEs linked/present but not fully traced. |
+| `not-found-in-path-cves` | CVEs present but with no execution path found by deph. |
+| `gate-tripped` | `true` when the `fail-on` policy matched. |
+| `deph-exit-code` | deph scan exit code (0 clean, 1 findings, 2 error). |
 
-## Evidence Model
+## The verdict
 
-The report separates facts from interpretation:
+`verdict.json` is the canonical, digest-bound product (schema in [`schema/deph-verdict.schema.json`](schema/deph-verdict.schema.json)). It records the image ref + resolved digest and **how strong that binding is** (`digest_kind`, strongest first):
 
-- **image**: the container image the workflow asked deph to analyze.
-- **source**: repository, ref, commit SHA, run id, and run attempt.
-- **test_window**: the optional command executed by the caller, its exit code, and duration.
-- **artifacts**: local paths to generated evidence files.
+- `provided` — a digest you passed in via `image-digest`.
+- `repo-digest` — a registry content digest (from a `@sha256:` ref or `RepoDigests`).
+- `tar-sha256` — sha256 of the exact saved tarball that was scanned (for local-only builds).
+- `config-id` — the local image config ID (weakest).
 
-Future reachability, runtime observation, coverage, and AI triage layers should extend this schema without changing the basic Action interface.
+Alongside the digest it carries the three-way `summary`, the in-path CVE list (severity, CVSS, EPSS, KEV, fix, evidence, call chain, priority), the `gate` result, and paths to every artifact. SARIF is opt-in and reachable-only by design — container CVE locations render awkwardly in code scanning, so `verdict.json` is the source of truth, not the SARIF.
+
+## How the image reaches deph
+
+deph does not read the local Docker daemon. The action handles both cases automatically:
+
+- **Local image** (built on the runner, not pushed) → `docker save` to a tarball → scan the tarball. The digest binds via `tar-sha256` (or `config-id`) unless you pass `image-digest`.
+- **Registry reference** → deph pulls it directly (no daemon needed), honoring `~/.docker/config.json` / credential helpers. For a plain tag, the action resolves the registry content digest (`repo-digest`) via `docker buildx imagetools inspect`, `crane`, or `skopeo` — whichever is present. Pass a `@sha256:` ref or `image-digest` to guarantee the binding without a resolver.
+
+The deph binary is downloaded from `emphereio/deph` releases and **verified against the published `checksums.txt`** before running. The Grype vulnerability DB (~50 MB) is cached between runs.
+
+## Permissions
+
+| feature | permission |
+| --- | --- |
+| base scan + artifact | `contents: read` |
+| sticky PR comment | `pull-requests: write` |
+| `upload-sarif: true` | `security-events: write` |
 
 ## Development
 
-Run the shell checks:
-
 ```bash
-bash -n scripts/*.sh
-./scripts/run.sh --self-test
+./scripts/validate.sh        # offline self-test: shell syntax + verdict transform + schema
 ```
 
-Run the Action locally by invoking `scripts/run.sh` with the same environment variables GitHub provides:
+`scripts/validate.sh` runs the verdict transform against [`testdata/sample-deph-report.json`](testdata/sample-deph-report.json) and validates the emitted `verdict.json` against the schema — no deph download or scan required.
 
-```bash
-DEPH_IMAGE=example/app:latest \
-DEPH_TEST_COMMAND='echo ok' \
-DEPH_OUTPUT_DIRECTORY=/tmp/deph-evidence \
-DEPH_FAIL_ON_TEST_FAILURE=true \
-GITHUB_REPOSITORY=emphereio/example \
-GITHUB_REF=refs/heads/main \
-GITHUB_SHA=0000000000000000000000000000000000000000 \
-GITHUB_RUN_ID=1 \
-GITHUB_RUN_ATTEMPT=1 \
-./scripts/run.sh
-```
+## Roadmap
+
+- **AI triage (bring your own key)** — explain and recommend action over the *in-path* set only.
+- **Attestation / signing** — `cosign attest` the verdict + SBOM to the image digest, so release gates and admission controllers consume it without rescanning.
+- **Single-pass multi-format** — emit JSON + SARIF + SBOM + HTML from one deph scan.
+
+## License
+
+deph-action (this repository — the wrapper scripts and action definition) is licensed under [MIT](LICENSE).
+
+The **deph engine binary** that the action downloads is a separate, **source-available** product licensed under the **PolyForm Noncommercial License 1.0.0**: free for personal, research, educational, and other noncommercial use; **commercial use requires a commercial license** from Emphere (licensing@emphere.com). See the binary's bundled `LICENSE`. Using this action in a commercial CI pipeline is commercial use of deph.
 
 ## Security
 
-Do not put secrets in `test-command`. The command and its exit status are recorded in the evidence report. Test output is written to `test.log` and uploaded when artifact upload is enabled.
+Generated artifacts may contain private repository or image data. See [SECURITY.md](SECURITY.md).
