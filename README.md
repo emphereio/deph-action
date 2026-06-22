@@ -182,12 +182,6 @@ The deph binary is downloaded from `emphereio/deph` releases and **verified agai
 - **Attestation / signing** — `cosign attest` the verdict + SBOM to the image digest, so release gates and admission controllers consume it without rescanning.
 - **Single-pass multi-format** — emit JSON + SARIF + SBOM + HTML from one deph scan.
 
-## Contributors
-
-- **[Ankit](https://github.com/ak-emphere)** — creator & maintainer
-- **Claude** (Anthropic) — AI pair programmer
-- **Codex** (OpenAI) — AI pair programmer
-
 ## License
 
 deph-action (this repository — the wrapper scripts and action definition) is licensed under [MIT](LICENSE).
