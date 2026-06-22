@@ -1,0 +1,9 @@
+<svg viewBox="0 0 220 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Chevron icon -->
+  <path d="M6 8 L26 24 L46 8" stroke="#b0c4de" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+  <path d="M10 14 L26 28 L42 14" stroke="#6a9fd8" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+  <path d="M14 20 L26 32 L38 20" stroke="#2d6aab" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+  <circle cx="26" cy="38" r="3.5" fill="#2d6aab"/>
+  <!-- deph text -->
+  <text x="62" y="38" font-family="'Outfit', 'Helvetica Neue', Arial, sans-serif" font-size="46" font-weight="800" fill="#0d0d14" letter-spacing="-2">deph</text>
+</svg>

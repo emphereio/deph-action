@@ -1,13 +1,23 @@
+<div align="center">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/deph-logo-light.svg">
+  <img alt="deph" src="assets/deph-logo-dark.svg" width="240">
+</picture>
+
 # deph-action
+
+**Know which CVEs are actually in your container's execution path — not just which ones are present.**
 
 [![CI](https://github.com/emphereio/deph-action/actions/workflows/ci.yml/badge.svg)](https://github.com/emphereio/deph-action/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![deph engine: PolyForm NC](https://img.shields.io/badge/deph%20engine-PolyForm%20NC-orange.svg)](#license)
 
-**Builds a dependency graph of your built container image and maps CVE-affected components to whether they're actually in your execution path — bound to the image digest. Shows what's real versus what's noise.**
+</div>
 
-Most scanners hand you a list of every CVE present in an image. deph builds the full dependency graph — application packages → native extensions (`.so`) → OS packages → compiled symbols — and tells you, for each CVE-affected component, whether deph **found a path to it from your application** or not. You run it **after the image is built**, the one point where that whole graph exists.
+---
 
-The verdict is bound to the image **digest**: compute it once at build time, then consume it anywhere — a PR comment, a job summary, the code-scanning tab, or a release gate.
+Most scanners hand you a list of every CVE present in an image. **deph builds the full dependency graph** — application packages → native extensions (`.so`) → OS packages → compiled symbols — and tells you, for each CVE-affected component, whether deph **found a path to it from your application** or not. Run it **after the image is built**, the one point where that whole graph exists. The verdict is bound to the image **digest** — compute it once, consume it anywhere: a PR comment, a job summary, the code-scanning tab, or a release gate.
 
 ## What you get
 
@@ -171,6 +181,12 @@ The deph binary is downloaded from `emphereio/deph` releases and **verified agai
 - **AI triage (bring your own key)** — explain and recommend action over the *in-path* set only.
 - **Attestation / signing** — `cosign attest` the verdict + SBOM to the image digest, so release gates and admission controllers consume it without rescanning.
 - **Single-pass multi-format** — emit JSON + SARIF + SBOM + HTML from one deph scan.
+
+## Contributors
+
+- **[Ankit](https://github.com/ak-emphere)** — creator & maintainer
+- **Claude** (Anthropic) — AI pair programmer
+- **Codex** (OpenAI) — AI pair programmer
 
 ## License
 
