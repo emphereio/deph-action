@@ -10,7 +10,7 @@
 
 [![CI](https://github.com/emphereio/deph-action/actions/workflows/ci.yml/badge.svg)](https://github.com/emphereio/deph-action/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![deph engine: PolyForm NC](https://img.shields.io/badge/deph%20engine-PolyForm%20NC-orange.svg)](#license)
+[![deph engine: FSL-1.1](https://img.shields.io/badge/deph%20engine-FSL--1.1-blue.svg)](#license)
 
 ---
 
@@ -209,7 +209,7 @@ You stay in control of where, how, retention, and which branch publishes — the
 
 deph-action (this repository — the wrapper scripts and action definition) is licensed under [MIT](LICENSE).
 
-The **deph engine binary** that the action downloads is a separate, **source-available** product licensed under the **PolyForm Noncommercial License 1.0.0**: free for personal, research, educational, and other noncommercial use; **commercial use requires a commercial license** from Emphere (licensing@emphere.com). See the binary's bundled `LICENSE`. Using this action in a commercial CI pipeline is commercial use of deph.
+The **deph engine binary** that the action downloads is a separate, **source-available** product licensed under the **Functional Source License 1.1 (FSL-1.1-ALv2)**: **free to use for any purpose — including commercial and enterprise CI/CD, internal use, and production.** The only restriction is you may not use it to build a **competing** product or service. Each release automatically becomes **Apache 2.0** two years after it ships. See the binary's bundled `LICENSE`.
 
 ## Security
 

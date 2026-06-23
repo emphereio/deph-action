@@ -5,6 +5,16 @@ All notable changes to deph-action are documented here. The format is based on
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Consumers pin to the moving
 major tag (`emphereio/deph-action@v0`).
 
+## [0.1.2]
+
+### Changed
+
+- The deph engine binary is now licensed under **FSL-1.1-ALv2** (was PolyForm
+  Noncommercial): **free to use for any purpose, including commercial and enterprise
+  CI/CD** — the only restriction is you may not build a competing product from it, and each
+  release becomes Apache 2.0 after two years. README/badge updated to match. (The action
+  wrapper remains MIT.)
+
 ## [0.1.1]
 
 ### Changed
