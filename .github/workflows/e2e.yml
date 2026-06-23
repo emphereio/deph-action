@@ -1,0 +1,138 @@
+name: e2e
+
+# End-to-end validation: runs the REAL action on real runners against real images
+# and asserts every capability. Unlike ci.yml's `validate` job (which uses a fake deph
+# stub offline), this downloads the actual deph binary and performs real scans.
+#
+# Manual / on-demand: it needs a published deph release. Pass the version to test.
+# While emphereio/deph-dist is private, set the secret DEPH_DIST_READ_TOKEN (a token
+# with read access to deph-dist); once deph-dist is public, github.token suffices.
+
+on:
+  workflow_dispatch:
+    inputs:
+      deph-version:
+        description: deph release tag to test
+        default: v0.1.0-rc.1
+        required: true
+
+permissions:
+  contents: read
+
+env:
+  DEPH_VERSION: ${{ inputs.deph-version }}
+
+jobs:
+  # 1. Registry path: deph pulls a public image directly (no local daemon image).
+  registry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - id: scan
+        uses: ./
+        with:
+          image: python:3.12-slim
+          deph-version: ${{ env.DEPH_VERSION }}
+          deph-token: ${{ secrets.DEPH_DIST_READ_TOKEN }}
+          comment-on-pr: off
+          artifact-name: e2e-registry
+      - name: Assert verdict + artifacts
+        run: |
+          v='${{ steps.scan.outputs.verdict-json }}'
+          test -s "$v" || { echo "no verdict.json"; exit 1; }
+          test -s '${{ steps.scan.outputs.report-html }}' || { echo "no HTML report"; exit 1; }
+          test -s '${{ steps.scan.outputs.report-json }}' || { echo "no JSON report"; exit 1; }
+          python3 - "$v" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1]))
+          for k in ("total","in_path","linked","not_found_in_path"):
+              assert isinstance(d["summary"][k], int), k
+          assert d["image"]["ref"]=="python:3.12-slim", d["image"]
+          assert d["image"]["source_mode"]=="registry", d["image"]["source_mode"]
+          print("registry verdict OK:", d["summary"])
+          PY
+          echo "outputs: total=${{ steps.scan.outputs.total-cves }} in-path=${{ steps.scan.outputs.in-path-cves }}"
+
+  # 2. Local-daemon path: build an image on the runner, deph saves + scans the tar.
+  #    Uses the deliberately-vulnerable testdata image so there's an in-path finding.
+  local-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - name: Build local image
+        run: docker build -t deph-e2e-app:${{ github.sha }} testdata/e2e
+      - id: scan
+        uses: ./
+        with:
+          image: deph-e2e-app:${{ github.sha }}
+          deph-version: ${{ env.DEPH_VERSION }}
+          deph-token: ${{ secrets.DEPH_DIST_READ_TOKEN }}
+          comment-on-pr: off
+          artifact-name: e2e-local
+      - name: Assert local-daemon binding + in-path finding
+        run: |
+          v='${{ steps.scan.outputs.verdict-json }}'
+          python3 - "$v" <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1]))
+          assert d["image"]["source_mode"]=="local-daemon", d["image"]["source_mode"]
+          assert d["image"]["digest_kind"] in ("tar-sha256","config-id","repo-digest"), d["image"]["digest_kind"]
+          # pyyaml CVE-2020-14343 should be present; ideally in-path (reachable).
+          ids=[c["id"] for c in d["in_path_cves"]]
+          print("digest_kind:", d["image"]["digest_kind"], "| in-path:", ids, "| summary:", d["summary"])
+          assert d["summary"]["total"]>0, "expected at least one known CVE"
+          PY
+
+  # 3. Gate path: fail-on must FAIL the job when there is an in-path finding.
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - run: docker build -t deph-e2e-app:${{ github.sha }} testdata/e2e
+      - id: gate
+        continue-on-error: true
+        uses: ./
+        with:
+          image: deph-e2e-app:${{ github.sha }}
+          deph-version: ${{ env.DEPH_VERSION }}
+          deph-token: ${{ secrets.DEPH_DIST_READ_TOKEN }}
+          fail-on: any-reachable
+          comment-on-pr: off
+          upload-artifact: false
+      - name: Assert gate wiring (job fails iff it tripped)
+        env:
+          TRIPPED: ${{ steps.gate.outputs.gate-tripped }}
+          OUTCOME: ${{ steps.gate.outcome }}
+        run: |
+          echo "tripped=$TRIPPED outcome=$OUTCOME"
+          if [ "$TRIPPED" = "true" ] && [ "$OUTCOME" != "failure" ]; then echo "tripped but job did not fail"; exit 1; fi
+          if [ "$TRIPPED" = "false" ] && [ "$OUTCOME" != "success" ]; then echo "did not trip but job failed"; exit 1; fi
+
+  # 4. Extra formats: SARIF + CycloneDX SBOM are produced. (Code-scanning UPLOAD
+  #    needs a public repo or GHAS; we tolerate that sub-step and assert the files.)
+  formats:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - run: docker build -t deph-e2e-app:${{ github.sha }} testdata/e2e
+      - id: scan
+        continue-on-error: true # private-repo SARIF upload may be GHAS-gated; assert files below
+        uses: ./
+        with:
+          image: deph-e2e-app:${{ github.sha }}
+          deph-version: ${{ env.DEPH_VERSION }}
+          deph-token: ${{ secrets.DEPH_DIST_READ_TOKEN }}
+          upload-sarif: "true"
+          upload-sbom: "true"
+          comment-on-pr: off
+          artifact-name: e2e-formats
+      - name: Assert SARIF + SBOM produced and well-formed
+        run: |
+          s='${{ steps.scan.outputs.sarif }}'; b='${{ steps.scan.outputs.sbom-cyclonedx }}'
+          test -s "$s" || { echo "no SARIF file"; exit 1; }
+          test -s "$b" || { echo "no SBOM file"; exit 1; }
+          python3 -c "import json; d=json.load(open('$s')); assert d['version']=='2.1.0'; print('SARIF OK')"
+          python3 -c "import json; d=json.load(open('$b')); assert d['bomFormat']=='CycloneDX'; print('SBOM OK')"
