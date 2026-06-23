@@ -1,7 +1,7 @@
 # Contributing to deph-action
 
 Thanks for your interest in improving deph-action. This repo is the public GitHub
-Action that wraps the deph container CVE-reachability scanner. It is intentionally small: a composite action plus a few
+Action that wraps deph, which unpacks a built container image into a dependency graph and maps CVEs to the components your application actually reaches. It is intentionally small: a composite action plus a few
 shell/Python scripts that download a released deph binary, run one scan, and turn the
 result into a digest-bound verdict.
 

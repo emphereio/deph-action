@@ -6,7 +6,7 @@
   &nbsp;deph-action
 </h1>
 
-**Know which CVEs are actually in your container's execution path — not just which ones are present.**
+**Unpacks your built container image into a dependency graph and maps CVE-affected components to whether they're actually in your execution path. Shows what's real versus what's noise.**
 
 [![CI](https://github.com/emphereio/deph-action/actions/workflows/ci.yml/badge.svg)](https://github.com/emphereio/deph-action/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -22,7 +22,11 @@
   <sub><a href="https://emphereio.github.io/deph-action/report.html">▶ open the live interactive report</a></sub>
 </p>
 
-Most scanners hand you a list of every CVE present in an image. **deph builds the full dependency graph** — application packages → native extensions (`.so`) → OS packages → compiled symbols — and tells you, for each CVE-affected component, whether deph **found a path to it from your application** or not. Run it **after the image is built**, the one point where that whole graph exists. The verdict is bound to the image **digest** — compute it once, consume it anywhere: a PR comment, a job summary, the code-scanning tab, or a release gate.
+A container image scan lists every CVE present in the image. Most of those affected components are never reached by your application. deph unpacks the built image into a dependency graph (application packages, native extensions, OS packages, and compiled symbols) and, for each CVE-affected component, tells you whether your application can reach it.
+
+deph is not a scanner and does not replace one. It uses Grype's CVE data and adds the dependency graph on top: keep your existing scanning, and get a clear answer on which findings are actually in your execution path.
+
+Run it after the image is built. The verdict is bound to the image digest, so you compute it once and use it anywhere: a PR comment, a job summary, the code-scanning tab, or a release gate.
 
 ## What you get
 

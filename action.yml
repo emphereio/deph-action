@@ -1,8 +1,8 @@
 name: deph
 description: >-
-  Builds a dependency graph of your built container image and maps CVE-affected
-  components to whether they're actually in your execution path — bound to the
-  image digest. Shows what's real versus what's noise.
+  Unpacks your built container image into a dependency graph and maps CVE-affected
+  components to whether they're actually in your execution path. Bound to the image
+  digest. Shows what's real versus what's noise.
 author: Emphere
 
 branding:
