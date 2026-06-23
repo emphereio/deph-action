@@ -12,7 +12,6 @@ Unpack your built container image into a dependency graph and see which CVE-affe
 
 [![CI](https://github.com/emphereio/deph-action/actions/workflows/ci.yml/badge.svg)](https://github.com/emphereio/deph-action/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![deph engine: FSL-1.1](https://img.shields.io/badge/deph%20engine-FSL--1.1-blue.svg)](#license)
 
 ---
 
