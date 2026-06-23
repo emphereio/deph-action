@@ -1,15 +1,14 @@
 # Contributing to deph-action
 
 Thanks for your interest in improving deph-action. This repo is the public GitHub
-Action that wraps the [deph](https://github.com/emphereio/deph) container
-CVE-reachability scanner. It is intentionally small: a composite action plus a few
+Action that wraps the deph container CVE-reachability scanner. It is intentionally small: a composite action plus a few
 shell/Python scripts that download a released deph binary, run one scan, and turn the
 result into a digest-bound verdict.
 
 **No engine source lives here.** deph-action never builds deph from source — it
-downloads a checksum-verified release binary at runtime. Changes to scanning, ecosystems,
-or reachability analysis belong in the [`emphereio/deph`](https://github.com/emphereio/deph)
-repository.
+downloads a checksum- and provenance-verified release binary at runtime. Changes to
+scanning, ecosystems, or reachability analysis live in the closed-source deph engine,
+maintained by Emphere — file engine feedback as an issue here and we'll route it.
 
 ## Repository layout
 
@@ -46,7 +45,7 @@ self-test continues to assert the right thing.
 ### Testing against a real scan
 
 `scripts/validate.sh` is fully offline using a fake deph. To exercise the real binary,
-run the action against a public image once an `emphereio/deph` release exists; CI's
+run the action against a public image once an `emphereio/deph-dist` release exists; CI's
 `integration` job does this automatically when the repo variable `DEPH_RELEASE_READY`
 is `true` (see below).
 
@@ -70,8 +69,8 @@ moving major tag, e.g. `uses: emphereio/deph-action@v0`.
 
 Third-party actions are **pinned to commit SHAs** (with a version comment) in
 `action.yml` and the workflows; Dependabot proposes updates for review. The deph binary
-is pinned by the `deph-version` input (default points at the current `emphereio/deph`
-release) and verified against its published `checksums.txt`.
+is pinned by the `deph-version` input (default points at the current `emphereio/deph-dist`
+release) and verified against its published `checksums.txt` and Sigstore build provenance.
 
 ## Reporting security issues
 

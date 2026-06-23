@@ -28,7 +28,7 @@ The action surfaces that verdict as a **job summary** (always), a **sticky PR co
 
 ## Measured accuracy
 
-deph's path-finding is **measured against independent oracles, not asserted** — strengths and gaps are both published. Headline results (point-in-time; full methodology, provenance, caveats, and reproduce commands in the engine's [accuracy report](https://github.com/emphereio/deph/blob/main/docs/accuracy.md)):
+deph's path-finding is **measured against independent oracles, not asserted** — strengths and gaps are both published. Headline results (point-in-time; full methodology, provenance, caveats, and reproduce commands are maintained with the deph engine):
 
 | measurement | result | basis & caveat |
 |---|---|---|
@@ -40,7 +40,7 @@ deph's path-finding is **measured against independent oracles, not asserted** �
 | Runtime-confirmed path — PHP, `twig` CVE-2022-39261, Zend Observer oracle | **confirmed in-path** — `FilesystemLoader::findTemplate` observed executing | in-process assurance oracle (eBPF `execute_ex` is boundary-only under the Zend HYBRID VM); per-ecosystem PHP precision/recall: **adjudication pending** |
 | Runtime-confirmed path — Node.js, `lodash` CVE-2021-23337, V8 precise-coverage oracle | **confirmed in-path** — `_.template` observed executing (static `installed` → proven reachable) | in-process assurance oracle (V8's bytecode interpreter has no function-level eBPF path, so coverage is the only signal); per-ecosystem npm precision/recall: **adjudication pending** |
 
-Read these as evidence, not marketing: the constructed 100%/100% is correctness on known-answer cases (real-world dead-code and reflection/DI remain documented frontiers, not solved), the 83%/83% is the honest real-world Go picture, and the recall figures are lower bounds. Real-image **precision/recall is Go-only so far** — there's no `govulncheck`-equivalent reference for the other ecosystems yet. Runtime path-confirmation uses a per-runtime oracle — Go/native: eBPF symbol uprobes; Python: in-process `sys.monitoring`; PHP: in-process Zend Observer; Node.js: in-process V8 precise-coverage — with eBPF the common kernel layer (where one exists) and absence-of-observation never read as "not reachable." See the [accuracy report](https://github.com/emphereio/deph/blob/main/docs/accuracy.md) for the numbers, methodology, and reproduce commands.
+Read these as evidence, not marketing: the constructed 100%/100% is correctness on known-answer cases (real-world dead-code and reflection/DI remain documented frontiers, not solved), the 83%/83% is the honest real-world Go picture, and the recall figures are lower bounds. Real-image **precision/recall is Go-only so far** — there's no `govulncheck`-equivalent reference for the other ecosystems yet. Runtime path-confirmation uses a per-runtime oracle — Go/native: eBPF symbol uprobes; Python: in-process `sys.monitoring`; PHP: in-process Zend Observer; Node.js: in-process V8 precise-coverage — with eBPF the common kernel layer (where one exists) and absence-of-observation never read as "not reachable." The full methodology and reproduce commands are maintained with the deph engine.
 
 ## Usage
 
@@ -107,7 +107,7 @@ When you push the image, pass the digest from `docker/build-push-action` so the 
 | --- | --- | --- | --- |
 | `image` | yes | | Local image name (auto-saved & scanned) or a registry reference deph pulls. |
 | `image-digest` | no | | Digest to bind the verdict to, e.g. `${{ steps.build.outputs.digest }}`. |
-| `deph-version` | no | `v0.1.0` | deph release tag to download (from `emphereio/deph`). |
+| `deph-version` | no | `v0.1.0` | deph release tag to download (from `emphereio/deph-dist`). |
 | `deph-token` | no | | Token to download the deph release; falls back to `github.token`. Set a PAT only if the deph repo is private. |
 | `severity` | no | | Severity filter passed to deph (e.g. `critical,high`). |
 | `vex` | no | | VEX document path(s) for suppression. |
@@ -155,7 +155,7 @@ deph does not read the local Docker daemon. The action handles both cases automa
 - **Local image** (built on the runner, not pushed) → `docker save` to a tarball → scan the tarball. The digest binds via `tar-sha256` (or `config-id`) unless you pass `image-digest`.
 - **Registry reference** → deph pulls it directly (no daemon needed), honoring `~/.docker/config.json` / credential helpers. For a plain tag, the action resolves the registry content digest (`repo-digest`) via `docker buildx imagetools inspect`, `crane`, or `skopeo` — whichever is present. Pass a `@sha256:` ref or `image-digest` to guarantee the binding without a resolver.
 
-The deph binary is downloaded from `emphereio/deph` releases and **verified against the published `checksums.txt`** before running. The Grype vulnerability DB (~50 MB) is cached between runs.
+The deph binary is downloaded from the public `emphereio/deph-dist` releases and **verified against the published `checksums.txt` and Sigstore build provenance** before running. The Grype vulnerability DB (~50 MB) is cached between runs.
 
 ## Permissions
 

@@ -3,6 +3,3 @@ contact_links:
   - name: Security vulnerability
     url: https://github.com/emphereio/deph-action/security/policy
     about: Please report security issues privately — see SECURITY.md. Do not open a public issue.
-  - name: deph engine (scanner) issues
-    url: https://github.com/emphereio/deph/issues
-    about: For scan accuracy, ecosystems, or reachability analysis, file against the deph engine.

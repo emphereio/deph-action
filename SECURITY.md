@@ -23,10 +23,12 @@ itself) to a specific tag or commit SHA for reproducible runs.
 
 ## Supply-chain posture
 
-- **The deph binary is verified.** The action downloads deph from
-  [`emphereio/deph`](https://github.com/emphereio/deph) releases and checks it against
-  the published `checksums.txt` before running. A cached binary is re-verified before
-  reuse. The action never builds deph from source and vendors no engine code.
+- **The deph binary is verified.** The action downloads deph from the public
+  [`emphereio/deph-dist`](https://github.com/emphereio/deph-dist) releases and verifies it
+  against the published `checksums.txt` **and Sigstore build provenance** (`gh attestation
+  verify`) before running — provenance is checked against the engine's release workflow, so
+  even a compromised distribution repo cannot supply a binary that passes. A cached binary is
+  re-verified before reuse. The action never builds deph from source and vendors no engine code.
 - **Third-party actions are pinned to commit SHAs** (with a version comment) in
   `action.yml` and the workflows. Dependabot proposes updates for review.
 - **Least privilege.** The base scan needs only `contents: read`. `pull-requests: write`

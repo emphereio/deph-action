@@ -20,6 +20,6 @@ body:
     attributes:
       value: |
         Note: deph-action is a thin, honest wrapper over the deph engine. Engine-level
-        capabilities (new ecosystems, reachability analysis) belong in the
-        [`emphereio/deph`](https://github.com/emphereio/deph) repo; this repo covers how
-        those capabilities are surfaced in CI.
+        capabilities (new ecosystems, reachability analysis) live in the closed-source deph
+        engine maintained by Emphere; this repo covers how those capabilities are surfaced in
+        CI. File engine feedback here and we'll route it.

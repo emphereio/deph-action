@@ -24,7 +24,7 @@ jobs:
 
   # Live end-to-end: downloads a released deph binary and runs the action.
   # Gated on the repo variable DEPH_RELEASE_READY so PR CI stays green until the
-  # first emphereio/deph release exists. Flip the variable to "true" (and set
+  # first emphereio/deph-dist release exists. Flip the variable to "true" (and set
   # DEPH_VERSION) once a release is published.
   integration:
     if: ${{ vars.DEPH_RELEASE_READY == 'true' }}
