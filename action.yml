@@ -18,9 +18,9 @@ inputs:
     required: true
   image-digest:
     description: >-
-      Content digest to bind the verdict to (e.g. ${{ steps.build.outputs.digest }}
-      from docker/build-push-action). If empty, the action resolves the best
-      available digest and records how strong that binding is (digest_kind).
+      Content digest to bind the verdict to — e.g. the digest output of
+      docker/build-push-action (its steps.<id>.outputs.digest). If empty, the action
+      resolves the best available digest and records how strong that binding is (digest_kind).
     required: false
     default: ""
   deph-version:

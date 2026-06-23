@@ -105,6 +105,7 @@ jobs:
           OUTCOME: ${{ steps.gate.outcome }}
         run: |
           echo "tripped=$TRIPPED outcome=$OUTCOME"
+          case "$TRIPPED" in true|false) ;; *) echo "gate-tripped not set ('$TRIPPED') — action failed to load/run"; exit 1 ;; esac
           if [ "$TRIPPED" = "true" ] && [ "$OUTCOME" != "failure" ]; then echo "tripped but job did not fail"; exit 1; fi
           if [ "$TRIPPED" = "false" ] && [ "$OUTCOME" != "success" ]; then echo "did not trip but job failed"; exit 1; fi
 
