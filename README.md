@@ -39,7 +39,7 @@ Every run produces a digest-bound verdict that splits the known CVEs three ways 
 
 The action surfaces that verdict as a **job summary** (always), a **sticky PR comment** (on pull requests), a machine-readable **`verdict.json`** and **JSON report**, a self-contained **HTML report**, and — opt-in — **SARIF** to the Security tab, a **CycloneDX SBOM**, and a **`fail-on` gate** that fails the job on in-path findings.
 
-📂 **See a real example:** [`examples/`](examples/) has the verdict, summary, and report — or view the **[interactive dependency graph live](https://emphereio.github.io/deph-action/report.html)**.
+📂 **See real reports:** browse the **[gallery](https://emphereio.github.io/deph-action/gallery/)** — interactive deph scans of `grafana`, `prometheus`, and a demo app you can click through. Raw artifacts are in [`examples/`](examples/).
 
 ## Measured accuracy
 

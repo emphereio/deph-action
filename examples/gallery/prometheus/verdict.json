@@ -1,0 +1,164 @@
+{
+  "schema_version": "1.0.0",
+  "producer": {
+    "name": "deph-action",
+    "version": "1.0.0",
+    "deph_version": "v0.1.1"
+  },
+  "image": {
+    "ref": "prom/prometheus:latest",
+    "digest": "",
+    "digest_kind": "repo-digest",
+    "source_mode": "registry"
+  },
+  "source": {
+    "repository": "",
+    "ref": "",
+    "sha": "",
+    "run_id": "",
+    "run_attempt": "",
+    "workflow": "",
+    "event": ""
+  },
+  "summary": {
+    "total": 23,
+    "in_path": 8,
+    "linked": 0,
+    "not_found_in_path": 15,
+    "in_path_by_severity": {
+      "critical": 0,
+      "high": 3,
+      "medium": 4,
+      "low": 0
+    },
+    "kev_in_path": 0,
+    "fixable_in_path": 3
+  },
+  "in_path_cves": [
+    {
+      "id": "CVE-2026-34040",
+      "severity": "HIGH",
+      "cvss": 7.8,
+      "epss": 0.08123,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "binary-symbol",
+      "reachable_from": [
+        "github.com/docker/docker"
+      ],
+      "top_call": "",
+      "priority": 56
+    },
+    {
+      "id": "GO-2025-3900",
+      "severity": "UNKNOWN",
+      "cvss": null,
+      "epss": null,
+      "kev": false,
+      "fix_version": "2.4.0",
+      "evidence": "binary-buildinfo",
+      "reachable_from": [
+        "github.com/go-viper/mapstructure/v2"
+      ],
+      "top_call": "",
+      "priority": 52
+    },
+    {
+      "id": "CVE-2025-11065",
+      "severity": "MEDIUM",
+      "cvss": 5.3,
+      "epss": 0.00357,
+      "kev": false,
+      "fix_version": "2.4.0",
+      "evidence": "binary-buildinfo",
+      "reachable_from": [
+        "github.com/go-viper/mapstructure/v2"
+      ],
+      "top_call": "",
+      "priority": 51
+    },
+    {
+      "id": "CVE-2026-2303",
+      "severity": "MEDIUM",
+      "cvss": 6.9,
+      "epss": 0.00223,
+      "kev": false,
+      "fix_version": "1.17.7",
+      "evidence": "binary-buildinfo",
+      "reachable_from": [
+        "go.mongodb.org/mongo-driver"
+      ],
+      "top_call": "",
+      "priority": 51
+    },
+    {
+      "id": "CVE-2026-42306",
+      "severity": "HIGH",
+      "cvss": 7.2,
+      "epss": 0.00104,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "binary-symbol",
+      "reachable_from": [
+        "github.com/docker/docker"
+      ],
+      "top_call": "",
+      "priority": 47
+    },
+    {
+      "id": "CVE-2026-41567",
+      "severity": "HIGH",
+      "cvss": 7.2,
+      "epss": 0.00137,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "binary-symbol",
+      "reachable_from": [
+        "github.com/docker/docker"
+      ],
+      "top_call": "",
+      "priority": 47
+    },
+    {
+      "id": "CVE-2026-41568",
+      "severity": "MEDIUM",
+      "cvss": 6.1,
+      "epss": 0.001,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "binary-symbol",
+      "reachable_from": [
+        "github.com/docker/docker"
+      ],
+      "top_call": "",
+      "priority": 47
+    },
+    {
+      "id": "CVE-2026-33997",
+      "severity": "MEDIUM",
+      "cvss": 6.8,
+      "epss": 0.00315,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "binary-symbol",
+      "reachable_from": [
+        "github.com/docker/docker"
+      ],
+      "top_call": "",
+      "priority": 47
+    }
+  ],
+  "gate": {
+    "policy": "none",
+    "tripped": false,
+    "reason": ""
+  },
+  "deph_exit": 1,
+  "artifacts": {
+    "report_json": "/tmp/gallery/prometheus.json",
+    "report_html": "",
+    "sarif": "",
+    "sbom_cyclonedx": "",
+    "summary_md": "examples/gallery/prometheus/summary.md"
+  }
+}
