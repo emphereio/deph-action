@@ -27,10 +27,12 @@ That separation — real vs. noise — is the point.
 
 ## View the graph in your browser
 
-`report.html` is self-contained: download it and open it, or — once this repo is public —
-view it rendered via:
+Rendered live via GitHub Pages (GitHub does not render raw `.html` from the file view):
 
-<https://htmlpreview.github.io/?https://raw.githubusercontent.com/emphereio/deph-action/main/examples/report.html>
+**<https://emphereio.github.io/deph-action/report.html>**
+
+Or browse all example artifacts at <https://emphereio.github.io/deph-action/>.
+(`report.html` is also self-contained — download it and open it locally.)
 
 ## Regenerate
 

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>deph-action — example output</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+           max-width: 46rem; margin: 3rem auto; padding: 0 1.25rem; }
+    h1 { font-size: 1.6rem; margin-bottom: .25rem; }
+    .sub { color: #6a737d; margin-top: 0; }
+    code { background: rgba(127,127,127,.15); padding: .1em .35em; border-radius: 4px; }
+    ul { padding-left: 1.1rem; }
+    li { margin: .4rem 0; }
+    a { color: #2d6090; }
+    .cta { display:inline-block; margin:.6rem 0 1.2rem; padding:.55rem .9rem; border-radius:8px;
+           background:#2d6090; color:#fff; text-decoration:none; font-weight:600; }
+    table { border-collapse: collapse; margin: .5rem 0 1.5rem; }
+    th, td { border: 1px solid rgba(127,127,127,.3); padding: .35rem .6rem; text-align: left; }
+  </style>
+</head>
+<body>
+  <h1>deph-action — example output</h1>
+  <p class="sub">Real output from scanning a small image with a deliberately-reachable vulnerable dependency
+    (<code>pyyaml==5.3.1</code>, CVE-2020-14343, called via <code>yaml.load</code>).</p>
+
+  <a class="cta" href="report.html">▶ Open the interactive dependency graph</a>
+
+  <p><strong>59</strong> known CVEs · <strong>1</strong> in the execution path · 33 linked/present · 25 no path found</p>
+  <table>
+    <tr><th>in-path CVE</th><th>severity</th><th>fix</th><th>evidence</th></tr>
+    <tr><td>CVE-2020-14343</td><td>CRITICAL</td><td>5.4</td><td>traced: pyyaml</td></tr>
+  </table>
+
+  <p>Raw artifacts:</p>
+  <ul>
+    <li><a href="report.html">report.html</a> — self-contained interactive graph</li>
+    <li><a href="verdict.json">verdict.json</a> — the digest-bound verdict (source of truth)</li>
+    <li><a href="summary.md">summary.md</a> — the PR comment / job summary</li>
+    <li><a href="deph-report.json">deph-report.json</a> — the full deph report</li>
+  </ul>
+
+  <p><a href="https://github.com/emphereio/deph-action">← emphereio/deph-action</a></p>
+</body>
+</html>
