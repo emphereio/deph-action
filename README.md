@@ -14,6 +14,14 @@
 
 ---
 
+<p align="center">
+  <a href="https://emphereio.github.io/deph-action/report.html">
+    <img src="examples/report-preview.png" alt="deph reachability report — 42 of 132 CVEs in the execution path, with call chains" width="900">
+  </a>
+  <br>
+  <sub><a href="https://emphereio.github.io/deph-action/report.html">▶ open the live interactive report</a></sub>
+</p>
+
 Most scanners hand you a list of every CVE present in an image. **deph builds the full dependency graph** — application packages → native extensions (`.so`) → OS packages → compiled symbols — and tells you, for each CVE-affected component, whether deph **found a path to it from your application** or not. Run it **after the image is built**, the one point where that whole graph exists. The verdict is bound to the image **digest** — compute it once, consume it anywhere: a PR comment, a job summary, the code-scanning tab, or a release gate.
 
 ## What you get

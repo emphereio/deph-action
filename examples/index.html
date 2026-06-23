@@ -22,16 +22,22 @@
 </head>
 <body>
   <h1>deph-action — example output</h1>
-  <p class="sub">Real output from scanning a small image with a deliberately-reachable vulnerable dependency
-    (<code>pyyaml==5.3.1</code>, CVE-2020-14343, called via <code>yaml.load</code>).</p>
+  <p class="sub">Real output from scanning a small Flask service that imports and calls several
+    pinned-vulnerable dependencies (<code>flask</code>, <code>jinja2</code>, <code>requests</code>,
+    <code>pyyaml</code>), so deph traces multiple CVEs as reachable.</p>
 
   <a class="cta" href="report.html">▶ Open the interactive dependency graph</a>
 
-  <p><strong>59</strong> known CVEs · <strong>1</strong> in the execution path · 33 linked/present · 25 no path found</p>
+  <p><strong>132</strong> known CVEs · <strong>42</strong> in the execution path · 58 linked/present · 32 no path found
+     <br><small>(42 reachable: 2 critical · 14 high · 17 medium · 2 low)</small></p>
   <table>
-    <tr><th>in-path CVE</th><th>severity</th><th>fix</th><th>evidence</th></tr>
-    <tr><td>CVE-2020-14343</td><td>CRITICAL</td><td>5.4</td><td>traced: pyyaml</td></tr>
+    <tr><th>in-path CVE</th><th>severity</th><th>reached via</th></tr>
+    <tr><td>CVE-2020-14343</td><td>CRITICAL</td><td>pyyaml (yaml.load)</td></tr>
+    <tr><td>CVE-2023-30861</td><td>HIGH</td><td>flask</td></tr>
+    <tr><td>CVE-2023-32681</td><td>MEDIUM</td><td>requests</td></tr>
+    <tr><td>CVE-2024-22195</td><td>MEDIUM</td><td>jinja2</td></tr>
   </table>
+  <p><small>…and 38 more in the execution path — see the full report.</small></p>
 
   <p>Raw artifacts:</p>
   <ul>
