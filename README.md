@@ -26,6 +26,8 @@ Every run produces a digest-bound verdict that splits the known CVEs three ways 
 
 The action surfaces that verdict as a **job summary** (always), a **sticky PR comment** (on pull requests), a machine-readable **`verdict.json`** and **JSON report**, a self-contained **HTML report**, and — opt-in — **SARIF** to the Security tab, a **CycloneDX SBOM**, and a **`fail-on` gate** that fails the job on in-path findings.
 
+📂 **See a real example:** [`examples/`](examples/) has the verdict, summary, and the interactive HTML dependency graph from an actual scan.
+
 ## Measured accuracy
 
 deph's path-finding is **measured against independent oracles, not asserted** — strengths and gaps are both published. Headline results (point-in-time; full methodology, provenance, caveats, and reproduce commands are maintained with the deph engine):

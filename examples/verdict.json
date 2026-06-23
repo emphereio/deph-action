@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0.0",
+  "producer": {
+    "name": "deph-action",
+    "version": "1.0.0",
+    "deph_version": "v0.1.0-rc.1"
+  },
+  "image": {
+    "ref": "deph-e2e-app:example",
+    "digest": "sha256:example",
+    "digest_kind": "tar-sha256",
+    "source_mode": "local-daemon"
+  },
+  "source": {
+    "repository": "",
+    "ref": "",
+    "sha": "",
+    "run_id": "",
+    "run_attempt": "",
+    "workflow": "",
+    "event": ""
+  },
+  "summary": {
+    "total": 59,
+    "in_path": 1,
+    "linked": 33,
+    "not_found_in_path": 25,
+    "in_path_by_severity": {
+      "critical": 1,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    },
+    "kev_in_path": 0,
+    "fixable_in_path": 1
+  },
+  "in_path_cves": [
+    {
+      "id": "CVE-2020-14343",
+      "severity": "CRITICAL",
+      "cvss": 9.8,
+      "epss": 0.05984,
+      "kev": false,
+      "fix_version": "5.4",
+      "evidence": "traced",
+      "reachable_from": [
+        "pyyaml"
+      ],
+      "top_call": "",
+      "priority": 51
+    }
+  ],
+  "gate": {
+    "policy": "none",
+    "tripped": false,
+    "reason": ""
+  },
+  "deph_exit": 1,
+  "artifacts": {
+    "report_json": "examples/deph-report.json",
+    "report_html": "",
+    "sarif": "",
+    "sbom_cyclonedx": "",
+    "summary_md": "examples/summary.md"
+  }
+}
