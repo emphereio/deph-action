@@ -130,10 +130,15 @@ jobs:
           upload-sbom: "true"
           comment-on-pr: off
           artifact-name: e2e-formats
+      # Read the files from the output dir, not the action outputs: on a PRIVATE repo
+      # the code-scanning (SARIF) upload is GHAS-gated and fails, which drops the
+      # composite action's outputs — but run.sh still wrote the files. (On a public
+      # repo the upload succeeds and the outputs are present.)
       - name: Assert SARIF + SBOM produced and well-formed
         run: |
-          s='${{ steps.scan.outputs.sarif }}'; b='${{ steps.scan.outputs.sbom-cyclonedx }}'
-          test -s "$s" || { echo "no SARIF file"; exit 1; }
-          test -s "$b" || { echo "no SBOM file"; exit 1; }
-          python3 -c "import json; d=json.load(open('$s')); assert d['version']=='2.1.0'; print('SARIF OK')"
-          python3 -c "import json; d=json.load(open('$b')); assert d['bomFormat']=='CycloneDX'; print('SBOM OK')"
+          d="${{ github.workspace }}/deph-report"
+          ls -la "$d" || true
+          test -s "$d/deph.sarif" || { echo "no SARIF file in $d"; exit 1; }
+          test -s "$d/deph.cdx.json" || { echo "no SBOM file in $d"; exit 1; }
+          python3 -c "import json; assert json.load(open('$d/deph.sarif'))['version']=='2.1.0'; print('SARIF OK')"
+          python3 -c "import json; assert json.load(open('$d/deph.cdx.json'))['bomFormat']=='CycloneDX'; print('SBOM OK')"
