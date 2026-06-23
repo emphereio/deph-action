@@ -24,9 +24,9 @@ inputs:
     required: false
     default: ""
   deph-version:
-    description: deph release tag to download (from emphereio/deph releases).
+    description: deph release tag to download (from emphereio/deph-dist releases).
     required: false
-    default: v0.1.0
+    default: v0.1.1
   deph-token:
     description: >-
       Token used to download the deph release binary. Leave empty to use the
@@ -75,6 +75,12 @@ inputs:
     description: Name of the uploaded artifact.
     required: false
     default: deph-report
+  retention-days:
+    description: >-
+      Days to retain the uploaded report artifact (GitHub artifact retention / TTL).
+      "0" uses the repository default; otherwise 1–90.
+    required: false
+    default: "0"
 
 outputs:
   report-json:
@@ -167,6 +173,7 @@ runs:
         name: ${{ inputs.artifact-name }}
         path: ${{ steps.run.outputs.output-directory }}
         if-no-files-found: error
+        retention-days: ${{ inputs.retention-days }}
 
     - name: Upload SARIF to code scanning
       if: ${{ inputs.upload-sarif == 'true' && steps.run.outputs.sarif != '' }}

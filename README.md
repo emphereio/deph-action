@@ -109,7 +109,7 @@ When you push the image, pass the digest from `docker/build-push-action` so the 
 | --- | --- | --- | --- |
 | `image` | yes | | Local image name (auto-saved & scanned) or a registry reference deph pulls. |
 | `image-digest` | no | | Digest to bind the verdict to, e.g. `${{ steps.build.outputs.digest }}`. |
-| `deph-version` | no | `v0.1.0` | deph release tag to download (from `emphereio/deph-dist`). |
+| `deph-version` | no | `v0.1.1` | deph release tag to download (from `emphereio/deph-dist`). |
 | `deph-token` | no | | Token to download the deph release; falls back to `github.token`. Set a PAT only if the deph repo is private. |
 | `severity` | no | | Severity filter passed to deph (e.g. `critical,high`). |
 | `vex` | no | | VEX document path(s) for suppression. |
@@ -120,6 +120,7 @@ When you push the image, pass the digest from `docker/build-push-action` so the 
 | `output-directory` | no | `deph-report` | Directory for generated report files. |
 | `upload-artifact` | no | `true` | Upload the report directory as a workflow artifact. |
 | `artifact-name` | no | `deph-report` | Name of the uploaded artifact. |
+| `retention-days` | no | `0` | Days to retain the report artifact (TTL). `0` = repo default; otherwise 1–90. |
 
 ## Outputs
 
@@ -158,6 +159,29 @@ deph does not read the local Docker daemon. The action handles both cases automa
 - **Registry reference** → deph pulls it directly (no daemon needed), honoring `~/.docker/config.json` / credential helpers. For a plain tag, the action resolves the registry content digest (`repo-digest`) via `docker buildx imagetools inspect`, `crane`, or `skopeo` — whichever is present. Pass a `@sha256:` ref or `image-digest` to guarantee the binding without a resolver.
 
 The deph binary is downloaded from the public `emphereio/deph-dist` releases and **verified against the published `checksums.txt` and Sigstore build provenance** before running. The Grype vulnerability DB (~50 MB) is cached between runs.
+
+## Host the report on your own GitHub Pages
+
+The `report.html` is a **fully self-contained, single-file** interactive graph (no external/CDN loads, with a strict Content-Security-Policy), so it's safe to host as-is. The action exposes it as the `report-html` output — wire that into your own Pages deploy on `main`:
+
+```yaml
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+steps:
+  - run: docker build -t app:${{ github.sha }} .
+  - id: deph
+    uses: emphereio/deph-action@v0
+    with:
+      image: app:${{ github.sha }}
+  - run: mkdir -p site && cp "${{ steps.deph.outputs.report-html }}" site/index.html
+  - uses: actions/upload-pages-artifact@v3
+    with: { path: site }
+  - uses: actions/deploy-pages@v4
+```
+
+You stay in control of where, how, retention, and which branch publishes — the action never deploys to your Pages on its own. For the workflow **artifact** (not Pages), set `retention-days` to control its TTL.
 
 ## Permissions
 

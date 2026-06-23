@@ -5,12 +5,25 @@ All notable changes to deph-action are documented here. The format is based on
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Consumers pin to the moving
 major tag (`emphereio/deph-action@v0`).
 
-## [Unreleased]
+## [0.1.1]
+
+### Changed
+
+- Default `deph-version` is now `v0.1.1`, whose HTML report is **fully self-contained**:
+  the graph libraries are bundled inline (no external CDN loads) and the report carries
+  a strict Content-Security-Policy. Safe to host on GitHub Pages or anywhere.
+
+### Added
+
+- `retention-days` input to control the report artifact's retention (TTL).
+- README recipe for publishing the report to your own GitHub Pages.
+
+## [0.1.0]
 
 ### Added
 
 - Initial public release of deph-action — a composite GitHub Action that runs the
-  [deph](https://github.com/emphereio/deph) container CVE-reachability scanner and
+  deph container CVE-reachability scanner and
   produces a **digest-bound verdict** splitting known CVEs into *in the execution path*,
   *linked/present*, and *no path found*.
 - Downloads a **checksum-verified** deph release binary (`deph-version` input); never
