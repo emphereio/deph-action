@@ -12,7 +12,7 @@ on:
     inputs:
       deph-version:
         description: deph release tag to test
-        default: v0.1.0-rc.1
+        default: v0.1.1
         required: true
   pull_request:
 
@@ -20,7 +20,7 @@ permissions:
   contents: read
 
 env:
-  DEPH_VERSION: ${{ inputs.deph-version || 'v0.1.0-rc.1' }}
+  DEPH_VERSION: ${{ inputs.deph-version || 'v0.1.1' }}
 
 jobs:
   # 1. Registry path: deph pulls a public image directly (no local daemon image).
@@ -53,6 +53,14 @@ jobs:
           print("registry verdict OK:", d["summary"])
           PY
           echo "outputs: total=${{ steps.scan.outputs.total-cves }} in-path=${{ steps.scan.outputs.in-path-cves }}"
+      - name: Assert report.html is self-contained (no external loads, has CSP)
+        run: |
+          h='${{ steps.scan.outputs.report-html }}'
+          test -s "$h" || { echo "no report.html"; exit 1; }
+          n=$(grep -oc 'src="https://\|href="https://' "$h" | head -1)
+          [ "$n" = "0" ] || { echo "report.html loads $n external resource(s) — not self-contained"; exit 1; }
+          grep -q 'Content-Security-Policy' "$h" || { echo "report.html missing CSP"; exit 1; }
+          echo "report.html: self-contained (0 external) + CSP present"
 
   # 2. Local-daemon path: build an image on the runner, deph saves + scans the tar.
   #    Uses the deliberately-vulnerable testdata image so there's an in-path finding.
