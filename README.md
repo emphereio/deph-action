@@ -45,19 +45,32 @@ The action surfaces that verdict as a **job summary** (always), a **sticky PR co
 
 ## Measured accuracy
 
-deph's path-finding is **measured against independent oracles, not asserted** — strengths and gaps are both published. Headline results (point-in-time; full methodology, provenance, caveats, and reproduce commands are maintained with the deph engine):
+deph's path-finding is **measured against independent oracles, not asserted** — strengths and gaps are both published. Full methodology, provenance, and reproduce commands are maintained with the deph engine.
+
+**Constructed corpus — per-runtime precision / recall.** 36 ground-truth-**by-construction** fixtures (each pinned to a real CVE, built in reachable / dead-import / unused-dep / patched / safe-method variants). Known-answer and synthetic — **not** a real-world rate, but the only place precision *and* recall are both decidable with certainty:
+
+| runtime | precision | recall | reachability resolution |
+|---|---|---|---|
+| Go | **100%** | **100%** | symbol-level |
+| Java | **100%** | **100%** | method-level refinement |
+| PHP | **100%** | **100%** | package-level (no safe-method probe yet) |
+| Python | **75%** | **100%** | package-level — 1 `safe-method` over-claim |
+| npm | **80%** | **100%** | package-level — 1 `safe-method` over-claim |
+| **all** | **89.5%** | **100%** | FP=2, FN=0 |
+
+**Recall is 100% across every runtime — no reachable CVE is missed.** The two false positives are the known package-level over-claim: deph flags a package when *any* of its API is called, so a safe call (lodash `_.chunk`, pyyaml `yaml.dump`) over-claims the vulnerable `_.template` / `yaml.load`. Java's method-level refinement dismisses these correctly; npm/Python stay package-level recall-first today (the same fix was measured and rejected for PHP — it introduced false negatives).
+
+**Real images & runtime confirmation:**
 
 | measurement | result | basis & caveat |
 |---|---|---|
-| Constructed corpus — precision / recall, 5 ecosystems (Go, Python, npm, Java, PHP) | **100% / 100%** (FP=0, FN=0) | ground-truth-**by-construction** — a correctness check, **not** a real-world rate |
 | Go real-image precision vs `govulncheck` | **83.4%** | 30 real images **incl. stdlib**, same pinned DB; adjudicated vs the Go team's call-graph tool; point-in-time |
 | Go real-image recall vs `govulncheck` | **83.8%** | same run (agree 647 / FP 129 / FN 125) |
-| Java path recall vs real exploits | **16 / 16** | exploitation-confirmed (a sampled lower bound) |
-| Runtime-confirmed path — Go, `traefik:v3.0`, eBPF symbol uprobes | **11 stdlib CVEs** moved from "installed" to proven-in-path | each observed executing under an HTTP stimulus |
-| Runtime-confirmed path — PHP, `twig` CVE-2022-39261, Zend Observer oracle | **confirmed in-path** — `FilesystemLoader::findTemplate` observed executing | in-process assurance oracle (eBPF `execute_ex` is boundary-only under the Zend HYBRID VM); per-ecosystem PHP precision/recall: **adjudication pending** |
-| Runtime-confirmed path — Node.js, `lodash` CVE-2021-23337, V8 precise-coverage oracle | **confirmed in-path** — `_.template` observed executing (static `installed` → proven reachable) | in-process assurance oracle (V8's bytecode interpreter has no function-level eBPF path, so coverage is the only signal); per-ecosystem npm precision/recall: **adjudication pending** |
+| Exploitation campaign — vulhub (152 families / 484 scenarios) | **178 confirmed exploitations** / 3,430 attempts | real-world reachability confirmed at breadth; a recall & exploitability floor, not a precision figure |
+| Runtime-confirmed — Go, `traefik:v3.0`, eBPF symbol uprobes | **11 stdlib CVEs** moved "installed"→proven-in-path | each observed executing under an HTTP stimulus |
+| Runtime-confirmed — PHP `twig` & Node.js `lodash`, in-process oracles | **confirmed in-path** (`FilesystemLoader::findTemplate`, `_.template` observed executing) | Zend Observer / V8 precise-coverage; per-ecosystem precision/recall **adjudication pending** |
 
-Read these as evidence, not marketing: the constructed 100%/100% is correctness on known-answer cases (real-world dead-code and reflection/DI remain documented frontiers, not solved), the 83%/83% is the honest real-world Go picture, and the recall figures are lower bounds. Real-image **precision/recall is Go-only so far** — there's no `govulncheck`-equivalent reference for the other ecosystems yet. Runtime path-confirmation uses a per-runtime oracle — Go/native: eBPF symbol uprobes; Python: in-process `sys.monitoring`; PHP: in-process Zend Observer; Node.js: in-process V8 precise-coverage — with eBPF the common kernel layer (where one exists) and absence-of-observation never read as "not reachable." The full methodology and reproduce commands are maintained with the deph engine.
+Read these as evidence, not marketing: the constructed numbers are correctness on known-answer cases (real-world dead-code and reflection/DI remain documented frontiers, not solved); the per-runtime table is the current cross-ecosystem picture; the ~83/83 is the honest real-world Go picture; recall figures are lower bounds. Real-image **precision/recall is Go-only so far** — there's no `govulncheck`-equivalent reference for the other ecosystems yet. Runtime path-confirmation uses a per-runtime oracle — Go/native: eBPF symbol uprobes; Python: in-process `sys.monitoring`; PHP: in-process Zend Observer; Node.js: in-process V8 precise-coverage — with eBPF the common kernel layer (where one exists) and absence-of-observation never read as "not reachable." The full methodology and reproduce commands are maintained with the deph engine.
 
 ## Usage
 
