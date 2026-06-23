@@ -1,8 +1,7 @@
-name: deph
+name: deph CVE reachability
 description: >-
-  Unpacks your built container image into a dependency graph and maps CVE-affected
-  components to whether they're actually in your execution path. Bound to the image
-  digest. Shows what's real versus what's noise.
+  Which container CVEs are in your execution path vs just noise. A
+  dependency-graph layer that complements your scanner.
 author: Emphere
 
 branding:
