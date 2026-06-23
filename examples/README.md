@@ -40,7 +40,7 @@ Rendered live via GitHub Pages (GitHub does not render raw `.html` from the file
 
 **<https://emphereio.github.io/deph-action/report.html>**
 
-Or browse all example artifacts at <https://emphereio.github.io/deph-action/>.
+More real-image reports: [grafana](https://emphereio.github.io/deph-action/gallery/grafana/report.html) · [prometheus](https://emphereio.github.io/deph-action/gallery/prometheus/report.html).
 (`report.html` is also self-contained — download it and open it locally.)
 
 ## Regenerate

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>deph — example reports</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+           max-width: 46rem; margin: 3rem auto; padding: 0 1.25rem; }
+    h1 { font-size: 1.5rem; margin-bottom: .25rem; }
+    .sub { color: #6a737d; margin-top: 0; }
+    ul { list-style: none; padding: 0; }
+    li { margin: .9rem 0; padding-bottom: .9rem; border-bottom: 1px solid rgba(127,127,127,.2); }
+    a.title { font-size: 1.1rem; font-weight: 600; color: #2d6090; text-decoration: none; }
+    .stat { color: #6a737d; }
+    .reach { color: #c9512b; font-weight: 600; }
+    .note { color: #6a737d; font-size: .85rem; }
+  </style>
+</head>
+<body>
+  <h1>deph — example reports</h1>
+  <p class="sub">Real deph scans you can click through. For each, deph maps every CVE-affected
+  component to whether the application actually reaches it. Scanned 2026-06-23 (point-in-time).</p>
+
+  <ul>
+    <li>
+      <a class="title" href="gallery/grafana/report.html">grafana/grafana:latest →</a>
+      <div class="stat">37 known CVEs · <span class="reach">26 in the execution path</span> · 11 no path found</div>
+    </li>
+    <li>
+      <a class="title" href="gallery/prometheus/report.html">prom/prometheus:latest →</a>
+      <div class="stat">23 known CVEs · <span class="reach">8 in the execution path</span> · 15 no path found</div>
+    </li>
+    <li>
+      <a class="title" href="report.html">demo app (Flask) →</a>
+      <div class="stat">132 known CVEs · <span class="reach">42 in the execution path</span> · 58 linked · 32 no path found</div>
+      <div class="note">A small service that deliberately calls several vulnerable dependencies — a denser graph.</div>
+    </li>
+  </ul>
+
+  <p class="note">Reachability is shown for the ecosystems deph has measured (Go especially);
+  "no path found" means no execution path was traced, not a proof of safety.
+  <a href="https://github.com/emphereio/deph-action">deph-action</a></p>
+</body>
+</html>
