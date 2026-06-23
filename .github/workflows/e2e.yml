@@ -4,9 +4,8 @@ name: e2e
 # and asserts every capability. Unlike ci.yml's `validate` job (which uses a fake deph
 # stub offline), this downloads the actual deph binary and performs real scans.
 #
-# Manual / on-demand: it needs a published deph release. Pass the version to test.
-# While emphereio/deph-dist is private, set the secret DEPH_DIST_READ_TOKEN (a token
-# with read access to deph-dist); once deph-dist is public, github.token suffices.
+# - workflow_dispatch: the full capability matrix (registry / local-build / gate / formats).
+# - pull_request: the sticky-PR-comment path, which needs a real PR context.
 
 on:
   workflow_dispatch:
@@ -15,16 +14,18 @@ on:
         description: deph release tag to test
         default: v0.1.0-rc.1
         required: true
+  pull_request:
 
 permissions:
   contents: read
 
 env:
-  DEPH_VERSION: ${{ inputs.deph-version }}
+  DEPH_VERSION: ${{ inputs.deph-version || 'v0.1.0-rc.1' }}
 
 jobs:
   # 1. Registry path: deph pulls a public image directly (no local daemon image).
   registry:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -56,6 +57,7 @@ jobs:
   # 2. Local-daemon path: build an image on the runner, deph saves + scans the tar.
   #    Uses the deliberately-vulnerable testdata image so there's an in-path finding.
   local-build:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -77,7 +79,6 @@ jobs:
           d=json.load(open(sys.argv[1]))
           assert d["image"]["source_mode"]=="local-daemon", d["image"]["source_mode"]
           assert d["image"]["digest_kind"] in ("tar-sha256","config-id","repo-digest"), d["image"]["digest_kind"]
-          # pyyaml CVE-2020-14343 should be present; ideally in-path (reachable).
           ids=[c["id"] for c in d["in_path_cves"]]
           print("digest_kind:", d["image"]["digest_kind"], "| in-path:", ids, "| summary:", d["summary"])
           assert d["summary"]["total"]>0, "expected at least one known CVE"
@@ -85,6 +86,7 @@ jobs:
 
   # 3. Gate path: fail-on must FAIL the job when there is an in-path finding.
   gate:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -109,9 +111,9 @@ jobs:
           if [ "$TRIPPED" = "true" ] && [ "$OUTCOME" != "failure" ]; then echo "tripped but job did not fail"; exit 1; fi
           if [ "$TRIPPED" = "false" ] && [ "$OUTCOME" != "success" ]; then echo "did not trip but job failed"; exit 1; fi
 
-  # 4. Extra formats: SARIF + CycloneDX SBOM are produced. (Code-scanning UPLOAD
-  #    needs a public repo or GHAS; we tolerate that sub-step and assert the files.)
+  # 4. Extra formats: SARIF + CycloneDX SBOM are produced.
   formats:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -120,7 +122,7 @@ jobs:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - run: docker build -t deph-e2e-app:${{ github.sha }} testdata/e2e
       - id: scan
-        continue-on-error: true # private-repo SARIF upload may be GHAS-gated; assert files below
+        continue-on-error: true # private-repo SARIF upload is GHAS-gated; assert files below
         uses: ./
         with:
           image: deph-e2e-app:${{ github.sha }}
@@ -142,3 +144,28 @@ jobs:
           test -s "$d/deph.cdx.json" || { echo "no SBOM file in $d"; exit 1; }
           python3 -c "import json; assert json.load(open('$d/deph.sarif'))['version']=='2.1.0'; print('SARIF OK')"
           python3 -c "import json; assert json.load(open('$d/deph.cdx.json'))['bomFormat']=='CycloneDX'; print('SBOM OK')"
+
+  # 5. PR-comment path: needs a real pull_request context. Runs the action with
+  #    comment-on-pr=always and asserts the sticky comment landed on the PR.
+  pr-comment:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: ./
+        with:
+          image: python:3.12-slim
+          deph-version: ${{ env.DEPH_VERSION }}
+          comment-on-pr: always
+          upload-artifact: false
+      - name: Assert sticky comment posted
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          gh api "repos/${{ github.repository }}/issues/${PR}/comments" --jq '.[].body' \
+            | grep -q '<!-- deph-action -->' && echo "sticky PR comment posted OK" \
+            || { echo "no deph-action sticky comment found on PR #${PR}"; exit 1; }
