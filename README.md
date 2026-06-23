@@ -23,7 +23,9 @@ Unpack your built container image into a dependency graph and see which CVE-affe
   <sub><a href="https://emphereio.github.io/deph-action/report.html">▶ open the live interactive report</a></sub>
 </p>
 
-A container image scan lists every CVE present in the image. Most of those affected components are never reached by your application. deph unpacks the built image into a dependency graph (application packages, native extensions, OS packages, and compiled symbols) and, for each CVE-affected component, tells you whether your application can reach it.
+A container image scan lists every CVE present in the image. Most of those affected components are never reached by your application. deph unpacks the built image into a **cross-layer dependency graph** — **application packages → native extensions (`.so`) → OS packages → compiled symbols** — and maps each CVE-affected component to where it sits: reachable from your code, linked by a binary, or just present.
+
+Because it reads the built artifact, deph sees the whole stack, not just your package manifest. A CVE in a native library like `openssl` is tied to the binary that actually links it — not reported as an anonymous OS finding. (App-dependency reachability is one layer of that graph; the native/OS layers are shown as what your binaries link, which most tools don't trace at all.)
 
 deph is not a scanner and does not replace one. It uses Grype's CVE data and adds the dependency graph on top: keep your existing scanning, and get a clear answer on which findings are actually in your execution path.
 
