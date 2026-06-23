@@ -6,9 +6,9 @@
   &nbsp;deph-action
 </h1>
 
-**A vulnerability is a property of your system, not a component.**
+### A vulnerability is a property of your system, not a component.
 
-Unpacks your built container image into a dependency graph and maps CVE-affected components to whether they're actually in your execution path. Shows what's real versus what's noise.
+Unpack your built container image into a dependency graph and see which CVE-affected components are actually in your execution path. What's real versus what's noise.
 
 [![CI](https://github.com/emphereio/deph-action/actions/workflows/ci.yml/badge.svg)](https://github.com/emphereio/deph-action/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
