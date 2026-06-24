@@ -170,7 +170,7 @@
             "cvss_score": 5.6,
             "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:N/A:N",
             "epss_score": 0.00348,
-            "epss_percentile": 0.26421,
+            "epss_percentile": 0.26502,
             "data_source": "https://github.com/google/security-research/security/advisories/GHSA-f5pg-7wfw-84q9",
             "urls": [
               "https://github.com/aws/aws-sdk-go/commit/1e84382fa1c0086362b5a4b68e068d4f8518d40e",
@@ -191,7 +191,7 @@
             "cvss_score": 2.5,
             "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:L/I:N/A:N",
             "epss_score": 0.00231,
-            "epss_percentile": 0.13693,
+            "epss_percentile": 0.13724,
             "data_source": "https://github.com/google/security-research/security/advisories/GHSA-7f33-f4f5-xwgw",
             "urls": [
               "https://github.com/aws/aws-sdk-go/commit/1e84382fa1c0086362b5a4b68e068d4f8518d40e",
@@ -430,18 +430,66 @@
         },
         "cves": [
           {
+            "id": "CVE-2026-33997",
+            "severity": "HIGH",
+            "summary": "Moby has an Off-by-one error in its plugin privilege validation in github.com/docker/docker",
+            "cvss_score": 8.1,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N",
+            "epss_score": 0.00315,
+            "epss_percentile": 0.23089,
+            "data_source": "https://github.com/moby/moby/security/advisories/GHSA-pxq6-2prw-chj9",
+            "urls": [
+              "https://github.com/moby/moby/commit/f4d6f25bf0c3fa12d4968320a45685947756a22a",
+              "https://docs.docker.com/engine/extend/legacy_plugins",
+              "https://github.com/moby/moby/releases/tag/docker-v29.3.1"
+            ],
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "binary-symbol",
+            "reachable_from": [
+              "github.com/docker/docker"
+            ],
+            "reachability_class": "request",
+            "controllability": "external-input",
+            "class_source": "handler-pattern:net/http"
+          },
+          {
             "id": "CVE-2026-34040",
             "severity": "HIGH",
             "summary": "Moby has AuthZ plugin bypass when provided oversized request bodies in github.com/docker/docker",
             "cvss_score": 7.8,
             "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
             "epss_score": 0.08123,
-            "epss_percentile": 0.94105,
+            "epss_percentile": 0.94097,
             "data_source": "https://github.com/moby/moby/security/advisories/GHSA-x744-4wpc-v9h2",
             "urls": [
               "https://github.com/moby/moby/commit/e89edb19ad7de0407a5d31e3111cb01aa10b5a38",
               "https://docs.docker.com/engine/extend/plugins_authorization",
               "https://github.com/moby/moby/security/advisories/GHSA-v23v-6jw2-98fq"
+            ],
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "binary-symbol",
+            "reachable_from": [
+              "github.com/docker/docker"
+            ],
+            "reachability_class": "request",
+            "controllability": "external-input",
+            "class_source": "handler-pattern:net/http"
+          },
+          {
+            "id": "CVE-2026-41568",
+            "severity": "MEDIUM",
+            "summary": "Docker: Race condition in docker cp allows creation of arbitrary empty files on the host via symlink swap",
+            "fix_state": "not-fixed",
+            "cvss_score": 6.1,
+            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:C/C:N/I:L/A:H",
+            "epss_score": 0.00108,
+            "epss_percentile": 0.01449,
+            "data_source": "https://github.com/advisories/GHSA-vp62-88p7-qqf5",
+            "urls": [
+              "https://github.com/moby/moby/security/advisories/GHSA-vp62-88p7-qqf5",
+              "https://nvd.nist.gov/vuln/detail/CVE-2026-41568"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -461,35 +509,11 @@
             "cvss_score": 7.2,
             "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:C/C:N/I:H/A:H",
             "epss_score": 0.00104,
-            "epss_percentile": 0.01263,
+            "epss_percentile": 0.01259,
             "data_source": "https://github.com/advisories/GHSA-rg2x-37c3-w2rh",
             "urls": [
               "https://github.com/moby/moby/security/advisories/GHSA-rg2x-37c3-w2rh",
               "https://nvd.nist.gov/vuln/detail/CVE-2026-42306"
-            ],
-            "tier": "reachable",
-            "reachable": true,
-            "evidence": "binary-symbol",
-            "reachable_from": [
-              "github.com/docker/docker"
-            ],
-            "reachability_class": "request",
-            "controllability": "external-input",
-            "class_source": "handler-pattern:net/http"
-          },
-          {
-            "id": "CVE-2026-41568",
-            "severity": "MEDIUM",
-            "summary": "Docker: Race condition in docker cp allows creation of arbitrary empty files on the host via symlink swap",
-            "fix_state": "not-fixed",
-            "cvss_score": 6.1,
-            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:C/C:N/I:L/A:H",
-            "epss_score": 0.001,
-            "epss_percentile": 0.01068,
-            "data_source": "https://github.com/advisories/GHSA-vp62-88p7-qqf5",
-            "urls": [
-              "https://github.com/moby/moby/security/advisories/GHSA-vp62-88p7-qqf5",
-              "https://nvd.nist.gov/vuln/detail/CVE-2026-41568"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -509,38 +533,11 @@
             "cvss_score": 7.2,
             "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:C/C:H/I:H/A:N",
             "epss_score": 0.00137,
-            "epss_percentile": 0.03426,
+            "epss_percentile": 0.03447,
             "data_source": "https://github.com/advisories/GHSA-x86f-5xw2-fm2r",
             "urls": [
               "https://github.com/moby/moby/security/advisories/GHSA-x86f-5xw2-fm2r",
               "https://nvd.nist.gov/vuln/detail/CVE-2026-41567"
-            ],
-            "tier": "reachable",
-            "reachable": true,
-            "evidence": "binary-symbol",
-            "reachable_from": [
-              "github.com/docker/docker"
-            ],
-            "reachability_class": "request",
-            "controllability": "external-input",
-            "class_source": "handler-pattern:net/http"
-          },
-          {
-            "id": "CVE-2026-33997",
-            "severity": "MEDIUM",
-            "summary": "Moby has an Off-by-one error in its plugin privilege validation",
-            "fix_state": "not-fixed",
-            "cvss_score": 6.8,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:N",
-            "epss_score": 0.00315,
-            "epss_percentile": 0.23015,
-            "data_source": "https://github.com/advisories/GHSA-pxq6-2prw-chj9",
-            "urls": [
-              "https://github.com/moby/moby/security/advisories/GHSA-pxq6-2prw-chj9",
-              "https://github.com/moby/moby/commit/f4d6f25bf0c3fa12d4968320a45685947756a22a",
-              "https://docs.docker.com/engine/extend/legacy_plugins",
-              "https://github.com/moby/moby/releases/tag/docker-v29.3.1",
-              "https://nvd.nist.gov/vuln/detail/CVE-2026-33997"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -768,14 +765,23 @@
         "version": "v2.3.0",
         "cves": [
           {
-            "id": "GO-2025-3900",
-            "severity": "UNKNOWN",
-            "summary": "Go-viper's mapstructure May Leak Sensitive Information in Logs in github.com/go-viper/mapstructure",
+            "id": "CVE-2025-11065",
+            "severity": "MEDIUM",
+            "summary": "go-viper's mapstructure May Leak Sensitive Information in Logs When Processing Malformed Data",
             "fix_version": "2.4.0",
             "fix_state": "fixed",
-            "data_source": "https://github.com/go-viper/mapstructure/security/advisories/GHSA-2464-8j7c-4cjm",
+            "cvss_score": 5.3,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:N/A:N",
+            "epss_score": 0.00357,
+            "epss_percentile": 0.27447,
+            "data_source": "https://github.com/advisories/GHSA-2464-8j7c-4cjm",
             "urls": [
-              "https://github.com/go-viper/mapstructure/commit/742921c9ba2854d27baa64272487fc5075d2c39c"
+              "https://github.com/go-viper/mapstructure/security/advisories/GHSA-2464-8j7c-4cjm",
+              "https://github.com/go-viper/mapstructure/commit/742921c9ba2854d27baa64272487fc5075d2c39c",
+              "https://pkg.go.dev/vuln/GO-2025-3900",
+              "https://nvd.nist.gov/vuln/detail/CVE-2025-11065",
+              "https://access.redhat.com/security/cve/CVE-2025-11065",
+              "https://bugzilla.redhat.com/show_bug.cgi?id=2391829"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -788,23 +794,14 @@
             "class_source": "handler-pattern:net/http"
           },
           {
-            "id": "CVE-2025-11065",
-            "severity": "MEDIUM",
-            "summary": "go-viper's mapstructure May Leak Sensitive Information in Logs When Processing Malformed Data",
+            "id": "GO-2025-3900",
+            "severity": "UNKNOWN",
+            "summary": "Go-viper's mapstructure May Leak Sensitive Information in Logs in github.com/go-viper/mapstructure",
             "fix_version": "2.4.0",
             "fix_state": "fixed",
-            "cvss_score": 5.3,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:N/A:N",
-            "epss_score": 0.00357,
-            "epss_percentile": 0.2737,
-            "data_source": "https://github.com/advisories/GHSA-2464-8j7c-4cjm",
+            "data_source": "https://github.com/go-viper/mapstructure/security/advisories/GHSA-2464-8j7c-4cjm",
             "urls": [
-              "https://github.com/go-viper/mapstructure/security/advisories/GHSA-2464-8j7c-4cjm",
-              "https://github.com/go-viper/mapstructure/commit/742921c9ba2854d27baa64272487fc5075d2c39c",
-              "https://pkg.go.dev/vuln/GO-2025-3900",
-              "https://nvd.nist.gov/vuln/detail/CVE-2025-11065",
-              "https://access.redhat.com/security/cve/CVE-2025-11065",
-              "https://bugzilla.redhat.com/show_bug.cgi?id=2391829"
+              "https://github.com/go-viper/mapstructure/commit/742921c9ba2854d27baa64272487fc5075d2c39c"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -1628,7 +1625,7 @@
             "cvss_score": 6.9,
             "cvss_vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:P/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N",
             "epss_score": 0.00223,
-            "epss_percentile": 0.12646,
+            "epss_percentile": 0.1267,
             "data_source": "https://github.com/advisories/GHSA-cp6g-7hqx-qxhp",
             "urls": [
               "https://nvd.nist.gov/vuln/detail/CVE-2026-2303",
@@ -1824,44 +1821,6 @@
         },
         "cves": [
           {
-            "id": "CVE-2026-39828",
-            "severity": "MEDIUM",
-            "summary": "When an SSH server authentication callback returned PartialSuccessError with non-nil Permissions, those permissions were silently discarded, potentially dropping certificate restrictions such as force-command after a second factor succeeded. Returning non-nil Permissions with PartialSuccessError now results in a connection error.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 6.3,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L",
-            "epss_score": 0.00173,
-            "epss_percentile": 0.06868,
-            "data_source": "https://go.dev/issue/79562",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
-              "https://go.dev/cl/781621"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-39827",
-            "severity": "MEDIUM",
-            "summary": "An authenticated SSH client that repeatedly opened channels which were rejected by the server caused unbounded memory growth, eventually crashing the server process and affecting all connected users. Rejected channels are now properly removed from the connection's internal state and released for garbage collection.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 6.5,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.00204,
-            "epss_percentile": 0.10281,
-            "data_source": "https://go.dev/issue/35127",
-            "urls": [
-              "https://go.dev/cl/781320",
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
             "id": "CVE-2026-46595",
             "severity": "CRITICAL",
             "summary": "Previously, CVE-2024-45337 fixed an authorization bypass for misused ssh server configurations; if any other type of callback is passed other than public key, then the source-address validation would be skipped.",
@@ -1869,108 +1828,12 @@
             "fix_state": "fixed",
             "cvss_score": 10,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:L",
-            "epss_score": 0.00319,
-            "epss_percentile": 0.23421,
+            "epss_score": 0.00385,
+            "epss_percentile": 0.30163,
             "data_source": "https://go.dev/issue/79570",
             "urls": [
               "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
               "https://go.dev/cl/781642"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-39835",
-            "severity": "MEDIUM",
-            "summary": "SSH servers which use CertChecker as a public key callback without setting IsUserAuthority or IsHostAuthority could be caused to panic by a client presenting a certificate. CertChecker now returns an error instead of panicking when these callbacks are nil.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 5.3,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-            "epss_score": 0.00208,
-            "epss_percentile": 0.1079,
-            "data_source": "https://go.dev/issue/79563",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
-              "https://go.dev/cl/781660"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-39831",
-            "severity": "CRITICAL",
-            "summary": "The Verify() method for FIDO/U2F security key types (sk-ecdsa-sha2-nistp256@openssh.com, sk-ssh-ed25519@openssh.com) did not check the User Presence flag. Signatures generated without physical touch were accepted, allowing unattended use of a hardware security key. To restore the previous behavior, return a \"no-touch-required\" extension in Permissions.Extensions from PublicKeyCallback.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 9.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
-            "epss_score": 0.00309,
-            "epss_percentile": 0.22383,
-            "data_source": "https://go.dev/issue/79566",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
-              "https://go.dev/cl/781662"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-42508",
-            "severity": "CRITICAL",
-            "summary": "Previously, a revoked 'SignatureKey' belonging to a CA was not correctly checked for revocation. Now, both the 'key' and 'key.SignatureKey' are checked for @revoked.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 9.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
-            "epss_score": 0.00305,
-            "epss_percentile": 0.21918,
-            "data_source": "https://go.dev/issue/79568",
-            "urls": [
-              "https://go.dev/cl/781220",
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-46598",
-            "severity": "MEDIUM",
-            "summary": "For certain crafted inputs, a 'ed25519.PrivateKey' was created by casting malformed wire bytes, leading to a panic when used.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 5.3,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-            "epss_score": 0.00325,
-            "epss_percentile": 0.24075,
-            "data_source": "https://go.dev/issue/79596",
-            "urls": [
-              "https://go.dev/cl/781360",
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-39830",
-            "severity": "CRITICAL",
-            "summary": "A malicious SSH peer could send unsolicited global request responses to fill an internal buffer, blocking the connection's read loop. The blocked goroutine could not be released by calling Close(), resulting in a resource leak per connection. Unsolicited global responses are now discarded.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 9.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H",
-            "epss_score": 0.00313,
-            "epss_percentile": 0.22826,
-            "data_source": "https://go.dev/issue/79564",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
-              "https://go.dev/cl/781640",
-              "https://go.dev/cl/781664"
             ],
             "tier": "installed",
             "reachable": false,
@@ -1984,51 +1847,11 @@
             "fix_state": "fixed",
             "cvss_score": 9.1,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
-            "epss_score": 0.0033,
-            "epss_percentile": 0.24499,
+            "epss_score": 0.00397,
+            "epss_percentile": 0.31428,
             "data_source": "https://go.dev/issue/79435",
             "urls": [
               "https://go.dev/cl/778642",
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-39829",
-            "severity": "HIGH",
-            "summary": "The RSA and DSA public key parsers did not enforce size limits on key parameters. A crafted public key with an excessively large modulus or DSA parameter could cause several minutes of CPU consumption during signature verification. This could be triggered by unauthenticated clients during public key authentication. RSA moduli are now limited to 8192 bits, and DSA parameters are validated per FIPS 186-2.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 7.5,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.00276,
-            "epss_percentile": 0.19123,
-            "data_source": "https://go.dev/issue/79565",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
-              "https://go.dev/cl/781641",
-              "https://go.dev/cl/781661"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-39833",
-            "severity": "CRITICAL",
-            "summary": "The in-memory keyring returned by NewKeyring() silently accepted keys with the ConfirmBeforeUse constraint but never enforced it. The key would sign without any confirmation prompt, with no indication to the caller that the constraint was not in effect. NewKeyring() now returns an error when unsupported constraints are requested.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 9.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
-            "epss_score": 0.00299,
-            "epss_percentile": 0.21298,
-            "data_source": "https://go.dev/issue/79436",
-            "urls": [
-              "https://go.dev/cl/778640",
-              "https://go.dev/cl/778641",
               "https://groups.google.com/g/golang-announce/c/a082jnz-LvI"
             ],
             "tier": "installed",
@@ -2043,8 +1866,8 @@
             "fix_state": "fixed",
             "cvss_score": 9.1,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H",
-            "epss_score": 0.00392,
-            "epss_percentile": 0.30753,
+            "epss_score": 0.00466,
+            "epss_percentile": 0.36763,
             "data_source": "https://go.dev/issue/79567",
             "urls": [
               "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
@@ -2062,12 +1885,186 @@
             "fix_state": "fixed",
             "cvss_score": 7.5,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.00378,
-            "epss_percentile": 0.29427,
+            "epss_score": 0.00359,
+            "epss_percentile": 0.27656,
             "data_source": "https://go.dev/issue/79561",
             "urls": [
               "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
               "https://go.dev/cl/781620"
+            ],
+            "tier": "installed",
+            "reachable": false,
+            "class_source": "vulnsym:symbol-eliminated"
+          },
+          {
+            "id": "CVE-2026-39830",
+            "severity": "CRITICAL",
+            "summary": "A malicious SSH peer could send unsolicited global request responses to fill an internal buffer, blocking the connection's read loop. The blocked goroutine could not be released by calling Close(), resulting in a resource leak per connection. Unsolicited global responses are now discarded.",
+            "fix_version": "0.52.0",
+            "fix_state": "fixed",
+            "cvss_score": 9.1,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H",
+            "epss_score": 0.00392,
+            "epss_percentile": 0.30821,
+            "data_source": "https://go.dev/issue/79564",
+            "urls": [
+              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
+              "https://go.dev/cl/781640",
+              "https://go.dev/cl/781664"
+            ],
+            "tier": "installed",
+            "reachable": false,
+            "class_source": "vulnsym:symbol-eliminated"
+          },
+          {
+            "id": "CVE-2026-39827",
+            "severity": "MEDIUM",
+            "summary": "An authenticated SSH client that repeatedly opened channels which were rejected by the server caused unbounded memory growth, eventually crashing the server process and affecting all connected users. Rejected channels are now properly removed from the connection's internal state and released for garbage collection.",
+            "fix_version": "0.52.0",
+            "fix_state": "fixed",
+            "cvss_score": 6.5,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+            "epss_score": 0.00196,
+            "epss_percentile": 0.09415,
+            "data_source": "https://go.dev/issue/35127",
+            "urls": [
+              "https://go.dev/cl/781320",
+              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI"
+            ],
+            "tier": "installed",
+            "reachable": false,
+            "class_source": "vulnsym:symbol-eliminated"
+          },
+          {
+            "id": "CVE-2026-42508",
+            "severity": "CRITICAL",
+            "summary": "Previously, a revoked 'SignatureKey' belonging to a CA was not correctly checked for revocation. Now, both the 'key' and 'key.SignatureKey' are checked for @revoked.",
+            "fix_version": "0.52.0",
+            "fix_state": "fixed",
+            "cvss_score": 9.1,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+            "epss_score": 0.00368,
+            "epss_percentile": 0.28474,
+            "data_source": "https://go.dev/issue/79568",
+            "urls": [
+              "https://go.dev/cl/781220",
+              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI"
+            ],
+            "tier": "installed",
+            "reachable": false,
+            "class_source": "vulnsym:symbol-eliminated"
+          },
+          {
+            "id": "CVE-2026-39831",
+            "severity": "CRITICAL",
+            "summary": "The Verify() method for FIDO/U2F security key types (sk-ecdsa-sha2-nistp256@openssh.com, sk-ssh-ed25519@openssh.com) did not check the User Presence flag. Signatures generated without physical touch were accepted, allowing unattended use of a hardware security key. To restore the previous behavior, return a \"no-touch-required\" extension in Permissions.Extensions from PublicKeyCallback.",
+            "fix_version": "0.52.0",
+            "fix_state": "fixed",
+            "cvss_score": 9.1,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+            "epss_score": 0.00373,
+            "epss_percentile": 0.29008,
+            "data_source": "https://go.dev/issue/79566",
+            "urls": [
+              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
+              "https://go.dev/cl/781662"
+            ],
+            "tier": "installed",
+            "reachable": false,
+            "class_source": "vulnsym:symbol-eliminated"
+          },
+          {
+            "id": "CVE-2026-39828",
+            "severity": "MEDIUM",
+            "summary": "When an SSH server authentication callback returned PartialSuccessError with non-nil Permissions, those permissions were silently discarded, potentially dropping certificate restrictions such as force-command after a second factor succeeded. Returning non-nil Permissions with PartialSuccessError now results in a connection error.",
+            "fix_version": "0.52.0",
+            "fix_state": "fixed",
+            "cvss_score": 6.3,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L",
+            "epss_score": 0.00175,
+            "epss_percentile": 0.07062,
+            "data_source": "https://go.dev/issue/79562",
+            "urls": [
+              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
+              "https://go.dev/cl/781621"
+            ],
+            "tier": "installed",
+            "reachable": false,
+            "class_source": "vulnsym:symbol-eliminated"
+          },
+          {
+            "id": "CVE-2026-39835",
+            "severity": "MEDIUM",
+            "summary": "SSH servers which use CertChecker as a public key callback without setting IsUserAuthority or IsHostAuthority could be caused to panic by a client presenting a certificate. CertChecker now returns an error instead of panicking when these callbacks are nil.",
+            "fix_version": "0.52.0",
+            "fix_state": "fixed",
+            "cvss_score": 5.3,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+            "epss_score": 0.0021,
+            "epss_percentile": 0.11111,
+            "data_source": "https://go.dev/issue/79563",
+            "urls": [
+              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
+              "https://go.dev/cl/781660"
+            ],
+            "tier": "installed",
+            "reachable": false,
+            "class_source": "vulnsym:symbol-eliminated"
+          },
+          {
+            "id": "CVE-2026-39833",
+            "severity": "CRITICAL",
+            "summary": "The in-memory keyring returned by NewKeyring() silently accepted keys with the ConfirmBeforeUse constraint but never enforced it. The key would sign without any confirmation prompt, with no indication to the caller that the constraint was not in effect. NewKeyring() now returns an error when unsupported constraints are requested.",
+            "fix_version": "0.52.0",
+            "fix_state": "fixed",
+            "cvss_score": 9.1,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+            "epss_score": 0.0036,
+            "epss_percentile": 0.27767,
+            "data_source": "https://go.dev/issue/79436",
+            "urls": [
+              "https://go.dev/cl/778640",
+              "https://go.dev/cl/778641",
+              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI"
+            ],
+            "tier": "installed",
+            "reachable": false,
+            "class_source": "vulnsym:symbol-eliminated"
+          },
+          {
+            "id": "CVE-2026-46598",
+            "severity": "MEDIUM",
+            "summary": "For certain crafted inputs, a 'ed25519.PrivateKey' was created by casting malformed wire bytes, leading to a panic when used.",
+            "fix_version": "0.52.0",
+            "fix_state": "fixed",
+            "cvss_score": 5.3,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+            "epss_score": 0.00313,
+            "epss_percentile": 0.22906,
+            "data_source": "https://go.dev/issue/79596",
+            "urls": [
+              "https://go.dev/cl/781360",
+              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI"
+            ],
+            "tier": "installed",
+            "reachable": false,
+            "class_source": "vulnsym:symbol-eliminated"
+          },
+          {
+            "id": "CVE-2026-39829",
+            "severity": "HIGH",
+            "summary": "The RSA and DSA public key parsers did not enforce size limits on key parameters. A crafted public key with an excessively large modulus or DSA parameter could cause several minutes of CPU consumption during signature verification. This could be triggered by unauthenticated clients during public key authentication. RSA moduli are now limited to 8192 bits, and DSA parameters are validated per FIPS 186-2.",
+            "fix_version": "0.52.0",
+            "fix_state": "fixed",
+            "cvss_score": 7.5,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+            "epss_score": 0.00304,
+            "epss_percentile": 0.21873,
+            "data_source": "https://go.dev/issue/79565",
+            "urls": [
+              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
+              "https://go.dev/cl/781641",
+              "https://go.dev/cl/781661"
             ],
             "tier": "installed",
             "reachable": false,
@@ -5753,7 +5750,7 @@
         ]
       },
       "CVE-2026-33997": {
-        "priority": 47,
+        "priority": 48,
         "factors": [
           {
             "dimension": "exploitation",
@@ -5781,9 +5778,9 @@
           },
           {
             "dimension": "fixability",
-            "score": 3,
+            "score": 4,
             "max_score": 10,
-            "reason": "not yet fixed"
+            "reason": "fix status unknown"
           }
         ]
       },

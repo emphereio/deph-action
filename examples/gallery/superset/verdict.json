@@ -1,0 +1,1106 @@
+{
+  "schema_version": "1.0.0",
+  "producer": {
+    "name": "deph-action",
+    "version": "1.0.0",
+    "deph_version": "v0.1.1"
+  },
+  "image": {
+    "ref": "apache/superset:latest",
+    "digest": "sha256:fb3464528ec7076f91195f0ff7835755aa023e281f1bb78a84782ce7a36b3705",
+    "digest_kind": "repo-digest",
+    "source_mode": "registry"
+  },
+  "source": {
+    "repository": "",
+    "ref": "",
+    "sha": "",
+    "run_id": "",
+    "run_attempt": "",
+    "workflow": "",
+    "event": ""
+  },
+  "summary": {
+    "total": 1332,
+    "in_path": 53,
+    "linked": 33,
+    "not_found_in_path": 1246,
+    "in_path_by_severity": {
+      "critical": 1,
+      "high": 21,
+      "medium": 17,
+      "low": 6
+    },
+    "kev_in_path": 0,
+    "fixable_in_path": 41
+  },
+  "in_path_cves": [
+    {
+      "id": "CVE-2026-24049",
+      "severity": "HIGH",
+      "cvss": 7.1,
+      "epss": 0.00278,
+      "kev": false,
+      "fix_version": "0.46.2",
+      "evidence": "traced",
+      "reachable_from": [
+        "click-plugins",
+        "dnspython",
+        "xlrd",
+        "celery",
+        "deprecated",
+        "babel",
+        "email-validator",
+        "email_validator",
+        "pandas",
+        "apache-superset",
+        "limits",
+        "jinja2",
+        "flask-babel",
+        "sqlalchemy-utils",
+        "mako",
+        "flask-appbuilder",
+        "pydantic",
+        "wtforms",
+        "flask-wtf",
+        "shillelagh",
+        "sqlglot",
+        "pygeohash",
+        "apache_superset",
+        "flask-limiter",
+        "flask",
+        "pyparsing",
+        "apache-superset-core",
+        "alembic",
+        "wtforms-json",
+        "flask-login",
+        "flask-sqlalchemy",
+        "flask-jwt-extended",
+        "flask-cors",
+        "flask-caching",
+        "flask-migrate",
+        "flask-compress",
+        "google-auth",
+        "flask-session"
+      ],
+      "top_call": "/app/superset/advanced_data_type/api.py:AdvancedDataTypeRestApi.get:55",
+      "priority": 49
+    },
+    {
+      "id": "CVE-2026-25990",
+      "severity": "HIGH",
+      "cvss": 8.6,
+      "epss": 0.0037,
+      "kev": false,
+      "fix_version": "12.1.1",
+      "evidence": "traced",
+      "reachable_from": [
+        "pillow"
+      ],
+      "top_call": "",
+      "priority": 43
+    },
+    {
+      "id": "CVE-2026-42311",
+      "severity": "HIGH",
+      "cvss": 8.6,
+      "epss": 0.0015,
+      "kev": false,
+      "fix_version": "12.2.0",
+      "evidence": "traced",
+      "reachable_from": [
+        "pillow"
+      ],
+      "top_call": "",
+      "priority": 43
+    },
+    {
+      "id": "CVE-2026-40192",
+      "severity": "HIGH",
+      "cvss": 8.7,
+      "epss": 0.00485,
+      "kev": false,
+      "fix_version": "12.2.0",
+      "evidence": "traced",
+      "reachable_from": [
+        "pillow"
+      ],
+      "top_call": "",
+      "priority": 43
+    },
+    {
+      "id": "CVE-2026-42308",
+      "severity": "MEDIUM",
+      "cvss": 5.5,
+      "epss": 0.00114,
+      "kev": false,
+      "fix_version": "12.2.0",
+      "evidence": "traced",
+      "reachable_from": [
+        "pillow"
+      ],
+      "top_call": "",
+      "priority": 43
+    },
+    {
+      "id": "CVE-2026-42310",
+      "severity": "MEDIUM",
+      "cvss": 5.5,
+      "epss": 0.00126,
+      "kev": false,
+      "fix_version": "12.2.0",
+      "evidence": "traced",
+      "reachable_from": [
+        "pillow"
+      ],
+      "top_call": "",
+      "priority": 43
+    },
+    {
+      "id": "CVE-2026-42309",
+      "severity": "MEDIUM",
+      "cvss": 5.5,
+      "epss": 0.00133,
+      "kev": false,
+      "fix_version": "12.2.0",
+      "evidence": "traced",
+      "reachable_from": [
+        "pillow"
+      ],
+      "top_call": "",
+      "priority": 43
+    },
+    {
+      "id": "CVE-2026-27205",
+      "severity": "LOW",
+      "cvss": 2.3,
+      "epss": 0.00374,
+      "kev": false,
+      "fix_version": "3.1.3",
+      "evidence": "traced",
+      "reachable_from": [
+        "flask"
+      ],
+      "top_call": "",
+      "priority": 43
+    },
+    {
+      "id": "CVE-2026-3219",
+      "severity": "MEDIUM",
+      "cvss": 4.6,
+      "epss": 0.00144,
+      "kev": false,
+      "fix_version": "26.1",
+      "evidence": "traced",
+      "reachable_from": [
+        "apache_superset",
+        "deprecated",
+        "babel",
+        "limits",
+        "click-plugins",
+        "dnspython",
+        "xlrd",
+        "jinja2",
+        "flask-babel",
+        "sqlalchemy-utils",
+        "mako",
+        "flask-limiter",
+        "celery",
+        "email-validator",
+        "email_validator",
+        "pandas",
+        "apache-superset",
+        "flask",
+        "pyparsing",
+        "flask-appbuilder",
+        "apache-superset-core",
+        "alembic",
+        "pydantic",
+        "wtforms",
+        "flask-wtf",
+        "shillelagh",
+        "sqlglot",
+        "pygeohash",
+        "flask-login",
+        "flask-sqlalchemy",
+        "flask-jwt-extended",
+        "flask-cors",
+        "flask-caching",
+        "flask-migrate",
+        "flask-compress",
+        "google-auth",
+        "flask-session",
+        "wtforms-json"
+      ],
+      "top_call": "/app/superset/advanced_data_type/api.py:AdvancedDataTypeRestApi.get:55",
+      "priority": 40
+    },
+    {
+      "id": "CVE-2025-8869",
+      "severity": "MEDIUM",
+      "cvss": 5.9,
+      "epss": 0.00438,
+      "kev": false,
+      "fix_version": "25.3",
+      "evidence": "traced",
+      "reachable_from": [
+        "apache_superset",
+        "deprecated",
+        "babel",
+        "limits",
+        "click-plugins",
+        "dnspython",
+        "xlrd",
+        "jinja2",
+        "flask-babel",
+        "sqlalchemy-utils",
+        "mako",
+        "flask-limiter",
+        "celery",
+        "email-validator",
+        "email_validator",
+        "pandas",
+        "apache-superset",
+        "flask",
+        "pyparsing",
+        "flask-appbuilder",
+        "apache-superset-core",
+        "alembic",
+        "pydantic",
+        "wtforms",
+        "flask-wtf",
+        "shillelagh",
+        "sqlglot",
+        "pygeohash",
+        "flask-login",
+        "flask-sqlalchemy",
+        "flask-jwt-extended",
+        "flask-cors",
+        "flask-caching",
+        "flask-migrate",
+        "flask-compress",
+        "google-auth",
+        "flask-session",
+        "wtforms-json"
+      ],
+      "top_call": "/app/superset/advanced_data_type/api.py:AdvancedDataTypeRestApi.get:55",
+      "priority": 40
+    },
+    {
+      "id": "CVE-2023-5752",
+      "severity": "MEDIUM",
+      "cvss": 6.8,
+      "epss": 0.00476,
+      "kev": false,
+      "fix_version": "23.3",
+      "evidence": "traced",
+      "reachable_from": [
+        "apache_superset",
+        "deprecated",
+        "babel",
+        "limits",
+        "click-plugins",
+        "dnspython",
+        "xlrd",
+        "jinja2",
+        "flask-babel",
+        "sqlalchemy-utils",
+        "mako",
+        "flask-limiter",
+        "celery",
+        "email-validator",
+        "email_validator",
+        "pandas",
+        "apache-superset",
+        "flask",
+        "pyparsing",
+        "flask-appbuilder",
+        "apache-superset-core",
+        "alembic",
+        "pydantic",
+        "wtforms",
+        "flask-wtf",
+        "shillelagh",
+        "sqlglot",
+        "pygeohash",
+        "flask-login",
+        "flask-sqlalchemy",
+        "flask-jwt-extended",
+        "flask-cors",
+        "flask-caching",
+        "flask-migrate",
+        "flask-compress",
+        "google-auth",
+        "flask-session",
+        "wtforms-json"
+      ],
+      "top_call": "/app/superset/advanced_data_type/api.py:AdvancedDataTypeRestApi.get:55",
+      "priority": 40
+    },
+    {
+      "id": "CVE-2026-6357",
+      "severity": "MEDIUM",
+      "cvss": 5.3,
+      "epss": 0.00138,
+      "kev": false,
+      "fix_version": "26.1",
+      "evidence": "traced",
+      "reachable_from": [
+        "apache_superset",
+        "deprecated",
+        "babel",
+        "limits",
+        "click-plugins",
+        "dnspython",
+        "xlrd",
+        "jinja2",
+        "flask-babel",
+        "sqlalchemy-utils",
+        "mako",
+        "flask-limiter",
+        "celery",
+        "email-validator",
+        "email_validator",
+        "pandas",
+        "apache-superset",
+        "flask",
+        "pyparsing",
+        "flask-appbuilder",
+        "apache-superset-core",
+        "alembic",
+        "pydantic",
+        "wtforms",
+        "flask-wtf",
+        "shillelagh",
+        "sqlglot",
+        "pygeohash",
+        "flask-login",
+        "flask-sqlalchemy",
+        "flask-jwt-extended",
+        "flask-cors",
+        "flask-caching",
+        "flask-migrate",
+        "flask-compress",
+        "google-auth",
+        "flask-session",
+        "wtforms-json"
+      ],
+      "top_call": "/app/superset/advanced_data_type/api.py:AdvancedDataTypeRestApi.get:55",
+      "priority": 40
+    },
+    {
+      "id": "CVE-2026-1703",
+      "severity": "LOW",
+      "cvss": 2,
+      "epss": 0.0039,
+      "kev": false,
+      "fix_version": "26.0",
+      "evidence": "traced",
+      "reachable_from": [
+        "apache_superset",
+        "deprecated",
+        "babel",
+        "limits",
+        "click-plugins",
+        "dnspython",
+        "xlrd",
+        "jinja2",
+        "flask-babel",
+        "sqlalchemy-utils",
+        "mako",
+        "flask-limiter",
+        "celery",
+        "email-validator",
+        "email_validator",
+        "pandas",
+        "apache-superset",
+        "flask",
+        "pyparsing",
+        "flask-appbuilder",
+        "apache-superset-core",
+        "alembic",
+        "pydantic",
+        "wtforms",
+        "flask-wtf",
+        "shillelagh",
+        "sqlglot",
+        "pygeohash",
+        "flask-login",
+        "flask-sqlalchemy",
+        "flask-jwt-extended",
+        "flask-cors",
+        "flask-caching",
+        "flask-migrate",
+        "flask-compress",
+        "google-auth",
+        "flask-session",
+        "wtforms-json"
+      ],
+      "top_call": "/app/superset/advanced_data_type/api.py:AdvancedDataTypeRestApi.get:55",
+      "priority": 40
+    },
+    {
+      "id": "CVE-2018-20796",
+      "severity": "NEGLIGIBLE",
+      "cvss": null,
+      "epss": 0.05804,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 38
+    },
+    {
+      "id": "CVE-2026-0915",
+      "severity": "HIGH",
+      "cvss": 7.5,
+      "epss": 0.00564,
+      "kev": false,
+      "fix_version": "2.36-9+deb12u14",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 37
+    },
+    {
+      "id": "CVE-2026-4046",
+      "severity": "HIGH",
+      "cvss": 7.5,
+      "epss": 0.00357,
+      "kev": false,
+      "fix_version": "2.36-9+deb12u14",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 37
+    },
+    {
+      "id": "CVE-2025-15281",
+      "severity": "HIGH",
+      "cvss": 7.5,
+      "epss": 0.00286,
+      "kev": false,
+      "fix_version": "2.36-9+deb12u14",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 37
+    },
+    {
+      "id": "CVE-2026-0861",
+      "severity": "HIGH",
+      "cvss": 8.4,
+      "epss": 0.00352,
+      "kev": false,
+      "fix_version": "2.36-9+deb12u14",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 37
+    },
+    {
+      "id": "CVE-2026-4437",
+      "severity": "HIGH",
+      "cvss": 7.5,
+      "epss": 0.00292,
+      "kev": false,
+      "fix_version": "2.36-9+deb12u14",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 37
+    },
+    {
+      "id": "CVE-2026-4438",
+      "severity": "MEDIUM",
+      "cvss": 5.4,
+      "epss": 0.00189,
+      "kev": false,
+      "fix_version": "2.36-9+deb12u14",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 37
+    },
+    {
+      "id": "CVE-2019-1010022",
+      "severity": "NEGLIGIBLE",
+      "cvss": null,
+      "epss": 0.03249,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 34
+    },
+    {
+      "id": "CVE-2019-1010025",
+      "severity": "NEGLIGIBLE",
+      "cvss": null,
+      "epss": 0.02286,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 34
+    },
+    {
+      "id": "CVE-2019-1010023",
+      "severity": "NEGLIGIBLE",
+      "cvss": null,
+      "epss": 0.03069,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 34
+    },
+    {
+      "id": "CVE-2019-9192",
+      "severity": "NEGLIGIBLE",
+      "cvss": null,
+      "epss": 0.02447,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 34
+    },
+    {
+      "id": "CVE-2010-4756",
+      "severity": "NEGLIGIBLE",
+      "cvss": null,
+      "epss": 0.02633,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 34
+    },
+    {
+      "id": "CVE-2019-1010024",
+      "severity": "NEGLIGIBLE",
+      "cvss": null,
+      "epss": 0.0322,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 34
+    },
+    {
+      "id": "CVE-2026-5450",
+      "severity": "CRITICAL",
+      "cvss": 9.8,
+      "epss": 0.00451,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 31
+    },
+    {
+      "id": "CVE-2026-5928",
+      "severity": "HIGH",
+      "cvss": 7.5,
+      "epss": 0.00345,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 31
+    },
+    {
+      "id": "CVE-2026-5435",
+      "severity": "HIGH",
+      "cvss": 7.3,
+      "epss": 0.00197,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 31
+    },
+    {
+      "id": "CVE-2026-6238",
+      "severity": "MEDIUM",
+      "cvss": 6.5,
+      "epss": 0.00311,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "symbol-link",
+      "reachable_from": [
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "pydantic_core",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 31
+    },
+    {
+      "id": "GHSA-537c-gmf6-5ccf",
+      "severity": "HIGH",
+      "cvss": 7.5,
+      "epss": null,
+      "kev": false,
+      "fix_version": "48.0.1",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "cryptography"
+      ],
+      "top_call": "",
+      "priority": 26
+    },
+    {
+      "id": "CVE-2026-23949",
+      "severity": "HIGH",
+      "cvss": 8.6,
+      "epss": 0.00527,
+      "kev": false,
+      "fix_version": "6.1.0",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "jaraco-context"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-41205",
+      "severity": "HIGH",
+      "cvss": 7.7,
+      "epss": 0.00361,
+      "kev": false,
+      "fix_version": "1.3.11",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "mako"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-44307",
+      "severity": "HIGH",
+      "cvss": 8.7,
+      "epss": 0.00609,
+      "kev": false,
+      "fix_version": "1.3.12",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "mako"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-25087",
+      "severity": "HIGH",
+      "cvss": 7,
+      "epss": 0.00807,
+      "kev": false,
+      "fix_version": "23.0.1",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "pyarrow"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-32597",
+      "severity": "HIGH",
+      "cvss": 7.5,
+      "epss": 0.00198,
+      "kev": false,
+      "fix_version": "2.12.0",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "pyjwt"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-48526",
+      "severity": "HIGH",
+      "cvss": 7.4,
+      "epss": 0.00198,
+      "kev": false,
+      "fix_version": "2.13.0",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "pyjwt"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-27459",
+      "severity": "HIGH",
+      "cvss": 7.2,
+      "epss": 0.005,
+      "kev": false,
+      "fix_version": "26.0.0",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "pyopenssl"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-44432",
+      "severity": "HIGH",
+      "cvss": 8.9,
+      "epss": 0.00388,
+      "kev": false,
+      "fix_version": "2.7.0",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "urllib3"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-44431",
+      "severity": "HIGH",
+      "cvss": 8.2,
+      "epss": 0.00483,
+      "kev": false,
+      "fix_version": "2.7.0",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "urllib3"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-39892",
+      "severity": "MEDIUM",
+      "cvss": 6.9,
+      "epss": 0.00525,
+      "kev": false,
+      "fix_version": "46.0.7",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "cryptography"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-45409",
+      "severity": "MEDIUM",
+      "cvss": 6.9,
+      "epss": 0.00408,
+      "kev": false,
+      "fix_version": "3.15",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "idna"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2025-69534",
+      "severity": "MEDIUM",
+      "cvss": 7.5,
+      "epss": 0.00465,
+      "kev": false,
+      "fix_version": "3.8.1",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "markdown"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-48523",
+      "severity": "MEDIUM",
+      "cvss": 5.4,
+      "epss": 0.00127,
+      "kev": false,
+      "fix_version": "2.13.0",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "pyjwt"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-48522",
+      "severity": "MEDIUM",
+      "cvss": 4.2,
+      "epss": 0.00181,
+      "kev": false,
+      "fix_version": "2.13.0",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "pyjwt"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-48525",
+      "severity": "MEDIUM",
+      "cvss": 5.3,
+      "epss": 0.00288,
+      "kev": false,
+      "fix_version": "2.13.0",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "pyjwt"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-28684",
+      "severity": "MEDIUM",
+      "cvss": 6.6,
+      "epss": 0.00236,
+      "kev": false,
+      "fix_version": "1.2.2",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "python-dotenv"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-25645",
+      "severity": "MEDIUM",
+      "cvss": 4.4,
+      "epss": 0.00182,
+      "kev": false,
+      "fix_version": "2.33.0",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "requests"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-34073",
+      "severity": "LOW",
+      "cvss": 5.3,
+      "epss": 0.00154,
+      "kev": false,
+      "fix_version": "46.0.6",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "cryptography"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-4539",
+      "severity": "LOW",
+      "cvss": 3.3,
+      "epss": 0.00156,
+      "kev": false,
+      "fix_version": "2.20.0",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "pygments"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-48524",
+      "severity": "LOW",
+      "cvss": 3.7,
+      "epss": 0.00222,
+      "kev": false,
+      "fix_version": "2.13.0",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "pyjwt"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2026-27448",
+      "severity": "LOW",
+      "cvss": 1.7,
+      "epss": 0.00241,
+      "kev": false,
+      "fix_version": "26.0.0",
+      "evidence": "declared-dependency",
+      "reachable_from": [
+        "pyopenssl"
+      ],
+      "top_call": "",
+      "priority": 25
+    },
+    {
+      "id": "CVE-2022-27943",
+      "severity": "NEGLIGIBLE",
+      "cvss": null,
+      "epss": 0.00892,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "binary-link",
+      "reachable_from": [
+        "pydantic_core",
+        "MarkupSafe",
+        "PyYAML",
+        "SQLAlchemy",
+        "Bottleneck",
+        "PyNaCl"
+      ],
+      "top_call": "",
+      "priority": 21
+    }
+  ],
+  "gate": {
+    "policy": "none",
+    "tripped": false,
+    "reason": ""
+  },
+  "deph_exit": 0,
+  "artifacts": {
+    "report_json": "examples/gallery/superset/deph-report.json",
+    "report_html": "report.html",
+    "sarif": "",
+    "sbom_cyclonedx": "",
+    "summary_md": "examples/gallery/superset/summary.md"
+  }
+}

@@ -5,6 +5,9 @@ Real output from `deph-action`, produced by scanning a small Flask service
 (`flask`, `jinja2`, `requests`, `pyyaml`), so deph traces multiple CVEs as reachable
 across a realistic dependency + native-library graph.
 
+> Scanned **2026-06-24** against a local build (`tar sha256:6e639dc4cd78…5905`).
+> Point-in-time: CVE data drifts, so re-run to refresh. Full digest in [`verdict.json`](verdict.json).
+
 [![open the live report](https://img.shields.io/badge/▶-open%20the%20live%20interactive%20report-2d6090)](https://emphereio.github.io/deph-action/report.html)
 
 [![report preview](report-preview.png)](https://emphereio.github.io/deph-action/report.html)

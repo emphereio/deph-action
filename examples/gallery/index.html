@@ -16,31 +16,45 @@
     .stat { color: #6a737d; }
     .reach { color: #c9512b; font-weight: 600; }
     .note { color: #6a737d; font-size: .85rem; }
+    .stamp { color: #8a929b; font-size: .78rem; margin-top: .25rem;
+             font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
   </style>
 </head>
 <body>
   <h1>deph — example reports</h1>
   <p class="sub">Real deph scans you can click through. For each, deph maps every CVE-affected
-  component to whether the application actually reaches it. Scanned 2026-06-23 (point-in-time).</p>
+  component to whether the application actually reaches it. Each card is stamped with its scan
+  date and the exact image digest it was run against, because <code>:latest</code> moves and
+  CVE data drifts. These are point-in-time, not live.</p>
 
   <ul>
     <li>
+      <a class="title" href="superset/report.html">apache/superset:latest →</a>
+      <div class="stat">1,332 known CVEs · <span class="reach">53 in the execution path</span> · 33 linked · 1,246 no path found</div>
+      <div class="note">Heavy Python image, a 1,302-node graph. 96% of the CVEs are present but unreachable.</div>
+      <div class="stamp">scanned 2026-06-24 · linux/arm64 · @sha256:fb3464528ec7…3705</div>
+    </li>
+    <li>
       <a class="title" href="grafana/report.html">grafana/grafana:latest →</a>
       <div class="stat">37 known CVEs · <span class="reach">26 in the execution path</span> · 11 no path found</div>
+      <div class="stamp">scanned 2026-06-24 · linux/arm64 · @sha256:121a7a9ece6d…6f63</div>
     </li>
     <li>
       <a class="title" href="prometheus/report.html">prom/prometheus:latest →</a>
       <div class="stat">23 known CVEs · <span class="reach">8 in the execution path</span> · 15 no path found</div>
+      <div class="stamp">scanned 2026-06-24 · linux/arm64 · @sha256:a75c5a35bc21…1f29</div>
     </li>
     <li>
       <a class="title" href="../report.html">demo app (Flask) →</a>
       <div class="stat">132 known CVEs · <span class="reach">42 in the execution path</span> · 58 linked · 32 no path found</div>
-      <div class="note">A small service that deliberately calls several vulnerable dependencies — a denser graph.</div>
+      <div class="note">A constructed service that deliberately calls several vulnerable dependencies, a denser graph.</div>
+      <div class="stamp">scanned 2026-06-24 · local build · tar sha256:6e639dc4cd78…5905</div>
     </li>
   </ul>
 
-  <p class="note">Reachability is shown for the ecosystems deph has measured (Go especially);
-  "no path found" means no execution path was traced, not a proof of safety.
+  <p class="note">Full image digests are recorded in each example's <code>verdict.json</code>.
+  Reachability is shown for the ecosystems deph has measured (Go especially); "no path found"
+  means no execution path was traced, not a proof of safety.
   <a href="https://github.com/emphereio/deph-action">deph-action</a></p>
 </body>
 </html>

@@ -694,34 +694,13 @@
         },
         "cves": [
           {
-            "id": "CVE-2020-8911",
-            "severity": "MEDIUM",
-            "summary": "A padding oracle vulnerability exists in the AWS S3 Crypto SDK for GoLang versions prior to V2. The SDK allows users to encrypt files with AES-CBC without computing a Message Authentication Code (MAC), which then allows an attacker who has write access to the target's S3 bucket and can observe whether or not an endpoint with access to the key can decrypt a file, they can reconstruct the plaintext with (on average) 128*length (plaintext) queries to the endpoint, by exploiting CBC's ability to manipulate the bytes of the next block and PKCS5 padding errors. It is recommended to update your SDK to V2 or later, and re-encrypt your files.",
-            "cvss_score": 5.6,
-            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:N/A:N",
-            "epss_score": 0.00348,
-            "epss_percentile": 0.26421,
-            "data_source": "https://github.com/google/security-research/security/advisories/GHSA-f5pg-7wfw-84q9",
-            "urls": [
-              "https://github.com/aws/aws-sdk-go/commit/1e84382fa1c0086362b5a4b68e068d4f8518d40e",
-              "https://github.com/aws/aws-sdk-go/commit/ae9b9fd92af132cfd8d879809d8611825ba135f4",
-              "https://github.com/aws/aws-sdk-go/pull/3403",
-              "https://aws.amazon.com/blogs/developer/updates-to-the-amazon-s3-encryption-client/?s=09",
-              "https://bugzilla.redhat.com/show_bug.cgi?id=1869800",
-              "https://github.com/sophieschmieg/exploits/tree/master/aws_s3_crypto_poc"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
             "id": "CVE-2020-8912",
             "severity": "LOW",
             "summary": "A vulnerability in the in-band key negotiation exists in the AWS S3 Crypto SDK for GoLang versions prior to V2. An attacker with write access to the targeted bucket can change the encryption algorithm of an object in the bucket, which can then allow them to change AES-GCM to AES-CTR. Using this in combination with a decryption oracle can reveal the authentication key used by AES-GCM as decrypting the GMAC tag leaves the authentication key recoverable as an algebraic equation. It is recommended to update your SDK to V2 or later, and re-encrypt your files.",
             "cvss_score": 2.5,
             "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:L/I:N/A:N",
             "epss_score": 0.00231,
-            "epss_percentile": 0.13693,
+            "epss_percentile": 0.13724,
             "data_source": "https://github.com/google/security-research/security/advisories/GHSA-7f33-f4f5-xwgw",
             "urls": [
               "https://github.com/aws/aws-sdk-go/commit/1e84382fa1c0086362b5a4b68e068d4f8518d40e",
@@ -729,6 +708,27 @@
               "https://github.com/aws/aws-sdk-go/pull/3403",
               "https://aws.amazon.com/blogs/developer/updates-to-the-amazon-s3-encryption-client/?s=09",
               "https://bugzilla.redhat.com/show_bug.cgi?id=1869801",
+              "https://github.com/sophieschmieg/exploits/tree/master/aws_s3_crypto_poc"
+            ],
+            "tier": "installed",
+            "reachable": false,
+            "class_source": "vulnsym:symbol-eliminated"
+          },
+          {
+            "id": "CVE-2020-8911",
+            "severity": "MEDIUM",
+            "summary": "A padding oracle vulnerability exists in the AWS S3 Crypto SDK for GoLang versions prior to V2. The SDK allows users to encrypt files with AES-CBC without computing a Message Authentication Code (MAC), which then allows an attacker who has write access to the target's S3 bucket and can observe whether or not an endpoint with access to the key can decrypt a file, they can reconstruct the plaintext with (on average) 128*length (plaintext) queries to the endpoint, by exploiting CBC's ability to manipulate the bytes of the next block and PKCS5 padding errors. It is recommended to update your SDK to V2 or later, and re-encrypt your files.",
+            "cvss_score": 5.6,
+            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:N/A:N",
+            "epss_score": 0.00348,
+            "epss_percentile": 0.26502,
+            "data_source": "https://github.com/google/security-research/security/advisories/GHSA-f5pg-7wfw-84q9",
+            "urls": [
+              "https://github.com/aws/aws-sdk-go/commit/1e84382fa1c0086362b5a4b68e068d4f8518d40e",
+              "https://github.com/aws/aws-sdk-go/commit/ae9b9fd92af132cfd8d879809d8611825ba135f4",
+              "https://github.com/aws/aws-sdk-go/pull/3403",
+              "https://aws.amazon.com/blogs/developer/updates-to-the-amazon-s3-encryption-client/?s=09",
+              "https://bugzilla.redhat.com/show_bug.cgi?id=1869800",
               "https://github.com/sophieschmieg/exploits/tree/master/aws_s3_crypto_poc"
             ],
             "tier": "installed",
@@ -3038,7 +3038,7 @@
             "cvss_score": 7.5,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
             "epss_score": 0.00155,
-            "epss_percentile": 0.04952,
+            "epss_percentile": 0.04957,
             "data_source": "https://github.com/advisories/GHSA-ffqx-q65f-36jf",
             "urls": [
               "https://nvd.nist.gov/vuln/detail/CVE-2026-28377",
@@ -3065,7 +3065,7 @@
             "cvss_score": 7.5,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
             "epss_score": 0.00387,
-            "epss_percentile": 0.30383,
+            "epss_percentile": 0.30463,
             "data_source": "https://github.com/advisories/GHSA-p4r4-xvrq-gvmc",
             "urls": [
               "https://nvd.nist.gov/vuln/detail/CVE-2026-21728",
@@ -4229,28 +4229,6 @@
         },
         "cves": [
           {
-            "id": "CVE-2026-55689",
-            "severity": "MEDIUM",
-            "summary": "OpenFGA: OIDC audience validation skipped when --authn-oidc-audience is unset",
-            "fix_version": "1.18.0",
-            "fix_state": "fixed",
-            "cvss_score": 6.8,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:N",
-            "data_source": "https://github.com/advisories/GHSA-hcxc-wf8j-23hv",
-            "urls": [
-              "https://github.com/openfga/openfga/security/advisories/GHSA-hcxc-wf8j-23hv"
-            ],
-            "tier": "reachable",
-            "reachable": true,
-            "evidence": "binary-symbol",
-            "reachable_from": [
-              "github.com/openfga/openfga"
-            ],
-            "reachability_class": "request",
-            "controllability": "external-input",
-            "class_source": "handler-pattern:net/http"
-          },
-          {
             "id": "CVE-2026-55170",
             "severity": "LOW",
             "summary": "OpenFGA Improper Policy Enforcement",
@@ -4273,6 +4251,28 @@
             "class_source": "handler-pattern:net/http"
           },
           {
+            "id": "CVE-2026-55689",
+            "severity": "MEDIUM",
+            "summary": "OpenFGA: OIDC audience validation skipped when --authn-oidc-audience is unset",
+            "fix_version": "1.18.0",
+            "fix_state": "fixed",
+            "cvss_score": 6.8,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:N",
+            "data_source": "https://github.com/advisories/GHSA-hcxc-wf8j-23hv",
+            "urls": [
+              "https://github.com/openfga/openfga/security/advisories/GHSA-hcxc-wf8j-23hv"
+            ],
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "binary-symbol",
+            "reachable_from": [
+              "github.com/openfga/openfga"
+            ],
+            "reachability_class": "request",
+            "controllability": "external-input",
+            "class_source": "handler-pattern:net/http"
+          },
+          {
             "id": "CVE-2026-48096",
             "severity": "MEDIUM",
             "summary": "OpenFGA has cache-key delimiter injection in shared-iterator and v2 iterator that caches enables intra-store authorization-decision poisoning",
@@ -4280,8 +4280,8 @@
             "fix_state": "fixed",
             "cvss_score": 5,
             "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:L",
-            "epss_score": 0.00093,
-            "epss_percentile": 0.00742,
+            "epss_score": 0.00101,
+            "epss_percentile": 0.011,
             "data_source": "https://github.com/advisories/GHSA-8396-jffm-qx4w",
             "urls": [
               "https://github.com/openfga/openfga/security/advisories/GHSA-8396-jffm-qx4w",
@@ -5194,7 +5194,7 @@
             "cvss_score": 7.5,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
             "epss_score": 0.00329,
-            "epss_percentile": 0.2447,
+            "epss_percentile": 0.2454,
             "data_source": "https://github.com/advisories/GHSA-mh2q-q3fh-2475",
             "urls": [
               "https://github.com/open-telemetry/opentelemetry-go/security/advisories/GHSA-mh2q-q3fh-2475",
@@ -5368,7 +5368,7 @@
             "cvss_score": 7.3,
             "cvss_vector": "CVSS:4.0/AV:L/AC:H/AT:N/PR:L/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
             "epss_score": 0.00196,
-            "epss_percentile": 0.09406,
+            "epss_percentile": 0.09418,
             "data_source": "https://github.com/advisories/GHSA-hfvc-g4fc-pqhx",
             "urls": [
               "https://github.com/open-telemetry/opentelemetry-go/security/advisories/GHSA-hfvc-g4fc-pqhx",
@@ -5595,63 +5595,6 @@
         },
         "cves": [
           {
-            "id": "CVE-2026-27136",
-            "severity": "MEDIUM",
-            "summary": "Parsing arbitrary HTML which is then rendered using Render can result in an unexpected HTML tree. This can be leveraged to execute XSS attacks in applications that attempt to sanitize input HTML before rendering.",
-            "fix_version": "0.55.0",
-            "fix_state": "fixed",
-            "cvss_score": 6.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-            "epss_score": 0.00236,
-            "epss_percentile": 0.14316,
-            "data_source": "https://go.dev/issue/79575",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/iI-mYSI0lu8",
-              "https://go.dev/cl/781685"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-42506",
-            "severity": "MEDIUM",
-            "summary": "Parsing arbitrary HTML which is then rendered using Render can result in an unexpected HTML tree. This can be leveraged to execute XSS attacks in applications that attempt to sanitize input HTML before rendering.",
-            "fix_version": "0.55.0",
-            "fix_state": "fixed",
-            "cvss_score": 6.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-            "epss_score": 0.00249,
-            "epss_percentile": 0.1591,
-            "data_source": "https://go.dev/issue/79571",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/iI-mYSI0lu8",
-              "https://go.dev/cl/781700"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-25681",
-            "severity": "MEDIUM",
-            "summary": "Parsing arbitrary HTML which is then rendered using Render can result in an unexpected HTML tree. This can be leveraged to execute XSS attacks in applications that attempt to sanitize input HTML before rendering.",
-            "fix_version": "0.55.0",
-            "fix_state": "fixed",
-            "cvss_score": 6.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-            "epss_score": 0.00236,
-            "epss_percentile": 0.14316,
-            "data_source": "https://go.dev/issue/79574",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/iI-mYSI0lu8",
-              "https://go.dev/cl/781703"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
             "id": "CVE-2026-33814",
             "severity": "HIGH",
             "summary": "When processing HTTP/2 SETTINGS frames, transport will enter an infinite loop of writing CONTINUATION frames if it receives a SETTINGS_MAX_FRAME_SIZE with a value of 0.",
@@ -5660,7 +5603,7 @@
             "cvss_score": 7.5,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
             "epss_score": 0.00565,
-            "epss_percentile": 0.4237,
+            "epss_percentile": 0.4245,
             "data_source": "https://go.dev/cl/761581",
             "urls": [
               "https://go.dev/cl/761640",
@@ -5678,19 +5621,19 @@
             "class_source": "handler-pattern:net/http"
           },
           {
-            "id": "CVE-2026-25680",
+            "id": "CVE-2026-27136",
             "severity": "MEDIUM",
-            "summary": "Parsing arbitrary HTML can consume excessive CPU time, possibly leading to denial of service.",
+            "summary": "Parsing arbitrary HTML which is then rendered using Render can result in an unexpected HTML tree. This can be leveraged to execute XSS attacks in applications that attempt to sanitize input HTML before rendering.",
             "fix_version": "0.55.0",
             "fix_state": "fixed",
-            "cvss_score": 6.5,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
-            "epss_score": 0.0034,
-            "epss_percentile": 0.25606,
-            "data_source": "https://go.dev/cl/781702",
+            "cvss_score": 6.1,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+            "epss_score": 0.00178,
+            "epss_percentile": 0.07468,
+            "data_source": "https://go.dev/issue/79575",
             "urls": [
-              "https://go.dev/issue/79573",
-              "https://groups.google.com/g/golang-announce/c/iI-mYSI0lu8"
+              "https://groups.google.com/g/golang-announce/c/iI-mYSI0lu8",
+              "https://go.dev/cl/781685"
             ],
             "tier": "installed",
             "reachable": false,
@@ -5704,8 +5647,8 @@
             "fix_state": "fixed",
             "cvss_score": 9.6,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:N",
-            "epss_score": 0.00359,
-            "epss_percentile": 0.27523,
+            "epss_score": 0.00344,
+            "epss_percentile": 0.26128,
             "data_source": "https://go.dev/cl/767220",
             "urls": [
               "https://go.dev/issue/78760",
@@ -5729,12 +5672,69 @@
             "fix_state": "fixed",
             "cvss_score": 6.1,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-            "epss_score": 0.00236,
-            "epss_percentile": 0.14316,
+            "epss_score": 0.00178,
+            "epss_percentile": 0.07469,
             "data_source": "https://go.dev/issue/79572",
             "urls": [
               "https://groups.google.com/g/golang-announce/c/iI-mYSI0lu8",
               "https://go.dev/cl/781701"
+            ],
+            "tier": "installed",
+            "reachable": false,
+            "class_source": "vulnsym:symbol-eliminated"
+          },
+          {
+            "id": "CVE-2026-42506",
+            "severity": "MEDIUM",
+            "summary": "Parsing arbitrary HTML which is then rendered using Render can result in an unexpected HTML tree. This can be leveraged to execute XSS attacks in applications that attempt to sanitize input HTML before rendering.",
+            "fix_version": "0.55.0",
+            "fix_state": "fixed",
+            "cvss_score": 6.1,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+            "epss_score": 0.00188,
+            "epss_percentile": 0.0849,
+            "data_source": "https://go.dev/issue/79571",
+            "urls": [
+              "https://groups.google.com/g/golang-announce/c/iI-mYSI0lu8",
+              "https://go.dev/cl/781700"
+            ],
+            "tier": "installed",
+            "reachable": false,
+            "class_source": "vulnsym:symbol-eliminated"
+          },
+          {
+            "id": "CVE-2026-25680",
+            "severity": "MEDIUM",
+            "summary": "Parsing arbitrary HTML can consume excessive CPU time, possibly leading to denial of service.",
+            "fix_version": "0.55.0",
+            "fix_state": "fixed",
+            "cvss_score": 6.5,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+            "epss_score": 0.00248,
+            "epss_percentile": 0.15838,
+            "data_source": "https://go.dev/cl/781702",
+            "urls": [
+              "https://go.dev/issue/79573",
+              "https://groups.google.com/g/golang-announce/c/iI-mYSI0lu8"
+            ],
+            "tier": "installed",
+            "reachable": false,
+            "class_source": "vulnsym:symbol-eliminated"
+          },
+          {
+            "id": "CVE-2026-25681",
+            "severity": "MEDIUM",
+            "summary": "Parsing arbitrary HTML which is then rendered using Render can result in an unexpected HTML tree. This can be leveraged to execute XSS attacks in applications that attempt to sanitize input HTML before rendering.",
+            "fix_version": "0.55.0",
+            "fix_state": "fixed",
+            "cvss_score": 6.1,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+            "epss_score": 0.00178,
+            "epss_percentile": 0.07469,
+            "data_source": "https://go.dev/issue/79574",
+            "urls": [
+              "https://groups.google.com/g/golang-announce/c/iI-mYSI0lu8",
+              "https://go.dev/cl/781703"
             ],
             "tier": "installed",
             "reachable": false,
@@ -5801,8 +5801,8 @@
             "fix_state": "fixed",
             "cvss_score": 3.3,
             "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N",
-            "epss_score": 0.00145,
-            "epss_percentile": 0.04039,
+            "epss_score": 0.00114,
+            "epss_percentile": 0.01743,
             "data_source": "https://go.dev/issue/78916",
             "urls": [
               "https://go.dev/cl/770080",
@@ -6292,134 +6292,19 @@
         },
         "cves": [
           {
-            "id": "CVE-2026-33814",
-            "severity": "HIGH",
-            "summary": "When processing HTTP/2 SETTINGS frames, transport will enter an infinite loop of writing CONTINUATION frames if it receives a SETTINGS_MAX_FRAME_SIZE with a value of 0.",
-            "fix_version": "1.25.10",
-            "fix_state": "fixed",
-            "cvss_score": 7.5,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.00565,
-            "epss_percentile": 0.4237,
-            "data_source": "https://go.dev/cl/761581",
-            "urls": [
-              "https://go.dev/cl/761640",
-              "https://go.dev/issue/78476",
-              "https://groups.google.com/g/golang-announce/c/qcCIEXso47M"
-            ],
-            "tier": "reachable",
-            "reachable": true,
-            "evidence": "binary-symbol",
-            "reachable_from": [
-              "stdlib"
-            ],
-            "reachability_class": "binary",
-            "class_source": "vulnsym:stdlib-symbol-present"
-          },
-          {
-            "id": "CVE-2026-25679",
-            "severity": "HIGH",
-            "summary": "url.Parse insufficiently validated the host/authority component and accepted some invalid URLs.",
-            "fix_version": "1.25.8",
-            "fix_state": "fixed",
-            "cvss_score": 7.5,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.0052,
-            "epss_percentile": 0.3997,
-            "data_source": "https://go.dev/cl/752180",
-            "urls": [
-              "https://go.dev/issue/77578",
-              "https://groups.google.com/g/golang-announce/c/EdhZqrQ98hk"
-            ],
-            "tier": "reachable",
-            "reachable": true,
-            "evidence": "binary-symbol",
-            "reachable_from": [
-              "stdlib"
-            ],
-            "reachability_class": "binary",
-            "class_source": "vulnsym:stdlib-symbol-present"
-          },
-          {
-            "id": "CVE-2026-32282",
+            "id": "CVE-2026-39823",
             "severity": "MEDIUM",
-            "summary": "On Linux, if the target of Root.Chmod is replaced with a symlink while the chmod operation is in progress, Chmod can operate on the target of the symlink, even when the target lies outside the root.\n\nThe Linux fchmodat syscall silently ignores the AT_SYMLINK_NOFOLLOW flag, which Root.Chmod uses to avoid symlink traversal. Root.Chmod checks its target before acting and returns an error if the target is a symlink lying outside the root, so the impact is limited to cases where the target is replaced with a symlink between the check and operation.",
-            "fix_version": "1.25.9",
-            "fix_state": "fixed",
-            "cvss_score": 6.4,
-            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:H/UI:N/S:U/C:H/I:H/A:H",
-            "epss_score": 0.00292,
-            "epss_percentile": 0.20575,
-            "data_source": "https://go.dev/cl/763761",
-            "urls": [
-              "https://go.dev/issue/78293",
-              "https://groups.google.com/g/golang-announce/c/0uYbvbPZRWU"
-            ],
-            "tier": "installed",
-            "reachable": false
-          },
-          {
-            "id": "CVE-2026-39820",
-            "severity": "HIGH",
-            "summary": "Well-crafted inputs reaching ParseAddress, ParseAddressList, and ParseDate were able to trigger excessive CPU exhaustion and memory allocations.",
+            "summary": "CVE-2026-27142 fixed a vulnerability in which URLs were not correctly escaped inside of a \u003cmeta\u003e tag's \u003ccontent\u003e attribute. If the URL content were to insert ASCII whitespaces around the '=' rune inside of the \u003ccontent\u003e attribute, the escaper would fail to similarly escape it, leading to XSS.",
             "fix_version": "1.25.10",
             "fix_state": "fixed",
-            "cvss_score": 7.5,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.00369,
-            "epss_percentile": 0.28503,
-            "data_source": "https://go.dev/issue/78566",
+            "cvss_score": 6.1,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+            "epss_score": 0.00314,
+            "epss_percentile": 0.22998,
+            "data_source": "https://go.dev/issue/78913",
             "urls": [
-              "https://go.dev/cl/759940",
+              "https://go.dev/cl/769920",
               "https://groups.google.com/g/golang-announce/c/qcCIEXso47M"
-            ],
-            "tier": "reachable",
-            "reachable": true,
-            "evidence": "binary-symbol",
-            "reachable_from": [
-              "stdlib"
-            ],
-            "reachability_class": "binary",
-            "class_source": "vulnsym:stdlib-symbol-present"
-          },
-          {
-            "id": "CVE-2026-42504",
-            "severity": "HIGH",
-            "summary": "Decoding a maliciously-crafted MIME header containing many invalid encoded-words can consume excessive CPU.",
-            "fix_version": "1.25.11",
-            "fix_state": "fixed",
-            "cvss_score": 7.5,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.00384,
-            "epss_percentile": 0.30045,
-            "data_source": "https://go.dev/issue/79217",
-            "urls": [
-              "https://go.dev/cl/774481",
-              "https://groups.google.com/g/golang-announce/c/tKs3rmcBcKw"
-            ],
-            "tier": "reachable",
-            "reachable": true,
-            "evidence": "binary-symbol",
-            "reachable_from": [
-              "stdlib"
-            ],
-            "reachability_class": "binary",
-            "class_source": "vulnsym:stdlib-symbol-present"
-          },
-          {
-            "id": "CVE-2026-32283",
-            "severity": "HIGH",
-            "summary": "If one side of the TLS connection sends multiple key update messages post-handshake in a single record, the connection can deadlock, causing uncontrolled consumption of resources. This can lead to a denial of service.\n\nThis only affects TLS 1.3.",
-            "fix_version": "1.25.9",
-            "fix_state": "fixed",
-            "cvss_score": 7.5,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.00449,
-            "epss_percentile": 0.35617,
-            "data_source": "https://go.dev/cl/763767",
-            "urls": [
-              "https://go.dev/issue/78334",
-              "https://groups.google.com/g/golang-announce/c/0uYbvbPZRWU"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -6438,8 +6323,8 @@
             "fix_state": "fixed",
             "cvss_score": 6.5,
             "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:H",
-            "epss_score": 0.00325,
-            "epss_percentile": 0.24003,
+            "epss_score": 0.00561,
+            "epss_percentile": 0.42201,
             "data_source": "https://go.dev/cl/783621",
             "urls": [
               "https://go.dev/issue/79694",
@@ -6455,72 +6340,6 @@
             "class_source": "vulnsym:stdlib-symbol-present"
           },
           {
-            "id": "CVE-2026-33811",
-            "severity": "HIGH",
-            "summary": "When using LookupCNAME with the cgo DNS resolver, a very long CNAME response can trigger a double-free of C memory and a crash.",
-            "fix_version": "1.25.10",
-            "fix_state": "fixed",
-            "cvss_score": 7.5,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.00504,
-            "epss_percentile": 0.39025,
-            "data_source": "https://go.dev/issue/78803",
-            "urls": [
-              "https://go.dev/cl/767860",
-              "https://groups.google.com/g/golang-announce/c/qcCIEXso47M"
-            ],
-            "tier": "reachable",
-            "reachable": true,
-            "evidence": "binary-symbol",
-            "reachable_from": [
-              "stdlib"
-            ],
-            "reachability_class": "binary",
-            "class_source": "vulnsym:stdlib-symbol-present"
-          },
-          {
-            "id": "CVE-2026-27139",
-            "severity": "LOW",
-            "summary": "On Unix platforms, when listing the contents of a directory using File.ReadDir or File.Readdir the returned FileInfo could reference a file outside of the Root in which the File was opened.\n\nThe impact of this escape is limited to reading metadata provided by lstat from arbitrary locations on the filesystem without permitting reading or writing files outside the root.",
-            "fix_version": "1.25.8",
-            "fix_state": "fixed",
-            "cvss_score": 2.5,
-            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:L/I:N/A:N",
-            "epss_score": 0.00201,
-            "epss_percentile": 0.09931,
-            "data_source": "https://groups.google.com/g/golang-announce/c/EdhZqrQ98hk",
-            "urls": [
-              "https://go.dev/issue/77827",
-              "https://go.dev/cl/749480"
-            ],
-            "tier": "reachable",
-            "reachable": true,
-            "evidence": "binary-symbol",
-            "reachable_from": [
-              "stdlib"
-            ],
-            "reachability_class": "binary",
-            "class_source": "vulnsym:stdlib-symbol-present"
-          },
-          {
-            "id": "CVE-2026-32288",
-            "severity": "MEDIUM",
-            "summary": "tar.Reader can allocate an unbounded amount of memory when reading a maliciously-crafted archive containing a large number of sparse regions encoded in the \"old GNU sparse map\" format.",
-            "fix_version": "1.25.9",
-            "fix_state": "fixed",
-            "cvss_score": 5.5,
-            "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
-            "epss_score": 0.0029,
-            "epss_percentile": 0.20438,
-            "data_source": "https://go.dev/cl/763766",
-            "urls": [
-              "https://go.dev/issue/78301",
-              "https://groups.google.com/g/golang-announce/c/0uYbvbPZRWU"
-            ],
-            "tier": "installed",
-            "reachable": false
-          },
-          {
             "id": "CVE-2026-39826",
             "severity": "MEDIUM",
             "summary": "If a trusted template author were to write a \u003cscript\u003e tag containing an empty 'type' attribute or a 'type' attribute with an ASCII whitespace, the execution of the template would incorrectly escape any data passed into the \u003cscript\u003e block.",
@@ -6529,59 +6348,11 @@
             "cvss_score": 6.1,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
             "epss_score": 0.00371,
-            "epss_percentile": 0.28724,
+            "epss_percentile": 0.28806,
             "data_source": "https://go.dev/issue/78981",
             "urls": [
               "https://go.dev/cl/771180",
               "https://groups.google.com/g/golang-announce/c/qcCIEXso47M"
-            ],
-            "tier": "reachable",
-            "reachable": true,
-            "evidence": "binary-symbol",
-            "reachable_from": [
-              "stdlib"
-            ],
-            "reachability_class": "binary",
-            "class_source": "vulnsym:stdlib-symbol-present"
-          },
-          {
-            "id": "CVE-2026-32289",
-            "severity": "MEDIUM",
-            "summary": "Context was not properly tracked across template branches for JS template literals, leading to possibly incorrect escaping of content when branches were used. Additionally template actions within JS template literals did not properly track the brace depth, leading to incorrect escaping being applied.\n\nThese issues could cause actions within JS template literals to be incorrectly or improperly escaped, leading to XSS vulnerabilities.",
-            "fix_version": "1.25.9",
-            "fix_state": "fixed",
-            "cvss_score": 6.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-            "epss_score": 0.0029,
-            "epss_percentile": 0.20439,
-            "data_source": "https://go.dev/cl/763762",
-            "urls": [
-              "https://go.dev/issue/78331",
-              "https://groups.google.com/g/golang-announce/c/0uYbvbPZRWU"
-            ],
-            "tier": "reachable",
-            "reachable": true,
-            "evidence": "binary-symbol",
-            "reachable_from": [
-              "stdlib"
-            ],
-            "reachability_class": "binary",
-            "class_source": "vulnsym:stdlib-symbol-present"
-          },
-          {
-            "id": "CVE-2026-39836",
-            "severity": "HIGH",
-            "summary": "The Dial and LookupPort functions panic on Windows when provided with an input containing a NUL (0).",
-            "fix_version": "1.25.10",
-            "fix_state": "fixed",
-            "cvss_score": 7.5,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.00588,
-            "epss_percentile": 0.43438,
-            "data_source": "https://go.dev/issue/79006",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/qcCIEXso47M",
-              "https://go.dev/cl/775320"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -6600,8 +6371,8 @@
             "fix_state": "fixed",
             "cvss_score": 5.3,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
-            "epss_score": 0.00263,
-            "epss_percentile": 0.17438,
+            "epss_score": 0.0037,
+            "epss_percentile": 0.28726,
             "data_source": "https://go.dev/issue/79346",
             "urls": [
               "https://go.dev/cl/777060",
@@ -6624,8 +6395,8 @@
             "fix_state": "fixed",
             "cvss_score": 7.5,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.00371,
-            "epss_percentile": 0.28752,
+            "epss_score": 0.00378,
+            "epss_percentile": 0.29455,
             "data_source": "https://go.dev/cl/758320",
             "urls": [
               "https://go.dev/issue/78282",
@@ -6641,19 +6412,19 @@
             "class_source": "vulnsym:stdlib-symbol-present"
           },
           {
-            "id": "CVE-2026-27142",
+            "id": "CVE-2026-32289",
             "severity": "MEDIUM",
-            "summary": "Actions which insert URLs into the content attribute of HTML meta tags are not escaped. This can allow XSS if the meta tag also has an http-equiv attribute with the value \"refresh\".\n\nA new GODEBUG setting has been added, htmlmetacontenturlescape, which can be used to disable escaping URLs in actions in the meta content attribute which follow \"url=\" by setting htmlmetacontenturlescape=0.",
-            "fix_version": "1.25.8",
+            "summary": "Context was not properly tracked across template branches for JS template literals, leading to possibly incorrect escaping of content when branches were used. Additionally template actions within JS template literals did not properly track the brace depth, leading to incorrect escaping being applied.\n\nThese issues could cause actions within JS template literals to be incorrectly or improperly escaped, leading to XSS vulnerabilities.",
+            "fix_version": "1.25.9",
             "fix_state": "fixed",
             "cvss_score": 6.1,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-            "epss_score": 0.00303,
-            "epss_percentile": 0.21697,
-            "data_source": "https://groups.google.com/g/golang-announce/c/EdhZqrQ98hk",
+            "epss_score": 0.0029,
+            "epss_percentile": 0.205,
+            "data_source": "https://go.dev/cl/763762",
             "urls": [
-              "https://go.dev/issue/77954",
-              "https://go.dev/cl/752081"
+              "https://go.dev/issue/78331",
+              "https://groups.google.com/g/golang-announce/c/0uYbvbPZRWU"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -6665,19 +6436,61 @@
             "class_source": "vulnsym:stdlib-symbol-present"
           },
           {
-            "id": "CVE-2026-42499",
+            "id": "CVE-2026-39820",
             "severity": "HIGH",
-            "summary": "Pathological inputs could cause DoS through consumePhrase when parsing an email address according to RFC 5322.",
+            "summary": "Well-crafted inputs reaching ParseAddress, ParseAddressList, and ParseDate were able to trigger excessive CPU exhaustion and memory allocations.",
             "fix_version": "1.25.10",
             "fix_state": "fixed",
             "cvss_score": 7.5,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.00577,
-            "epss_percentile": 0.42919,
-            "data_source": "https://go.dev/issue/78987",
+            "epss_score": 0.00486,
+            "epss_percentile": 0.38017,
+            "data_source": "https://go.dev/issue/78566",
             "urls": [
-              "https://go.dev/cl/771520",
+              "https://go.dev/cl/759940",
               "https://groups.google.com/g/golang-announce/c/qcCIEXso47M"
+            ],
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "binary-symbol",
+            "reachable_from": [
+              "stdlib"
+            ],
+            "reachability_class": "binary",
+            "class_source": "vulnsym:stdlib-symbol-present"
+          },
+          {
+            "id": "CVE-2026-32282",
+            "severity": "MEDIUM",
+            "summary": "On Linux, if the target of Root.Chmod is replaced with a symlink while the chmod operation is in progress, Chmod can operate on the target of the symlink, even when the target lies outside the root.\n\nThe Linux fchmodat syscall silently ignores the AT_SYMLINK_NOFOLLOW flag, which Root.Chmod uses to avoid symlink traversal. Root.Chmod checks its target before acting and returns an error if the target is a symlink lying outside the root, so the impact is limited to cases where the target is replaced with a symlink between the check and operation.",
+            "fix_version": "1.25.9",
+            "fix_state": "fixed",
+            "cvss_score": 6.4,
+            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:H/UI:N/S:U/C:H/I:H/A:H",
+            "epss_score": 0.00292,
+            "epss_percentile": 0.2064,
+            "data_source": "https://go.dev/cl/763761",
+            "urls": [
+              "https://go.dev/issue/78293",
+              "https://groups.google.com/g/golang-announce/c/0uYbvbPZRWU"
+            ],
+            "tier": "installed",
+            "reachable": false
+          },
+          {
+            "id": "CVE-2026-27139",
+            "severity": "LOW",
+            "summary": "On Unix platforms, when listing the contents of a directory using File.ReadDir or File.Readdir the returned FileInfo could reference a file outside of the Root in which the File was opened.\n\nThe impact of this escape is limited to reading metadata provided by lstat from arbitrary locations on the filesystem without permitting reading or writing files outside the root.",
+            "fix_version": "1.25.8",
+            "fix_state": "fixed",
+            "cvss_score": 2.5,
+            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:L/I:N/A:N",
+            "epss_score": 0.00201,
+            "epss_percentile": 0.09948,
+            "data_source": "https://groups.google.com/g/golang-announce/c/EdhZqrQ98hk",
+            "urls": [
+              "https://go.dev/issue/77827",
+              "https://go.dev/cl/749480"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -6697,7 +6510,7 @@
             "cvss_score": 7.5,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
             "epss_score": 0.00349,
-            "epss_percentile": 0.26558,
+            "epss_percentile": 0.26637,
             "data_source": "https://go.dev/cl/758061",
             "urls": [
               "https://go.dev/issue/78281",
@@ -6713,19 +6526,109 @@
             "class_source": "vulnsym:stdlib-symbol-present"
           },
           {
-            "id": "CVE-2026-39823",
-            "severity": "MEDIUM",
-            "summary": "CVE-2026-27142 fixed a vulnerability in which URLs were not correctly escaped inside of a \u003cmeta\u003e tag's \u003ccontent\u003e attribute. If the URL content were to insert ASCII whitespaces around the '=' rune inside of the \u003ccontent\u003e attribute, the escaper would fail to similarly escape it, leading to XSS.",
+            "id": "CVE-2026-42499",
+            "severity": "HIGH",
+            "summary": "Pathological inputs could cause DoS through consumePhrase when parsing an email address according to RFC 5322.",
             "fix_version": "1.25.10",
             "fix_state": "fixed",
-            "cvss_score": 6.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-            "epss_score": 0.00314,
-            "epss_percentile": 0.22925,
-            "data_source": "https://go.dev/issue/78913",
+            "cvss_score": 7.5,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+            "epss_score": 0.00577,
+            "epss_percentile": 0.43,
+            "data_source": "https://go.dev/issue/78987",
             "urls": [
-              "https://go.dev/cl/769920",
+              "https://go.dev/cl/771520",
               "https://groups.google.com/g/golang-announce/c/qcCIEXso47M"
+            ],
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "binary-symbol",
+            "reachable_from": [
+              "stdlib"
+            ],
+            "reachability_class": "binary",
+            "class_source": "vulnsym:stdlib-symbol-present"
+          },
+          {
+            "id": "CVE-2026-42504",
+            "severity": "HIGH",
+            "summary": "Decoding a maliciously-crafted MIME header containing many invalid encoded-words can consume excessive CPU.",
+            "fix_version": "1.25.11",
+            "fix_state": "fixed",
+            "cvss_score": 7.5,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+            "epss_score": 0.0056,
+            "epss_percentile": 0.42188,
+            "data_source": "https://go.dev/issue/79217",
+            "urls": [
+              "https://go.dev/cl/774481",
+              "https://groups.google.com/g/golang-announce/c/tKs3rmcBcKw"
+            ],
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "binary-symbol",
+            "reachable_from": [
+              "stdlib"
+            ],
+            "reachability_class": "binary",
+            "class_source": "vulnsym:stdlib-symbol-present"
+          },
+          {
+            "id": "CVE-2026-39836",
+            "severity": "HIGH",
+            "summary": "The Dial and LookupPort functions panic on Windows when provided with an input containing a NUL (0).",
+            "fix_version": "1.25.10",
+            "fix_state": "fixed",
+            "cvss_score": 7.5,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+            "epss_score": 0.00588,
+            "epss_percentile": 0.43517,
+            "data_source": "https://go.dev/issue/79006",
+            "urls": [
+              "https://groups.google.com/g/golang-announce/c/qcCIEXso47M",
+              "https://go.dev/cl/775320"
+            ],
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "binary-symbol",
+            "reachable_from": [
+              "stdlib"
+            ],
+            "reachability_class": "binary",
+            "class_source": "vulnsym:stdlib-symbol-present"
+          },
+          {
+            "id": "CVE-2026-32288",
+            "severity": "MEDIUM",
+            "summary": "tar.Reader can allocate an unbounded amount of memory when reading a maliciously-crafted archive containing a large number of sparse regions encoded in the \"old GNU sparse map\" format.",
+            "fix_version": "1.25.9",
+            "fix_state": "fixed",
+            "cvss_score": 5.5,
+            "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+            "epss_score": 0.0029,
+            "epss_percentile": 0.20499,
+            "data_source": "https://go.dev/cl/763766",
+            "urls": [
+              "https://go.dev/issue/78301",
+              "https://groups.google.com/g/golang-announce/c/0uYbvbPZRWU"
+            ],
+            "tier": "installed",
+            "reachable": false
+          },
+          {
+            "id": "CVE-2026-32283",
+            "severity": "HIGH",
+            "summary": "If one side of the TLS connection sends multiple key update messages post-handshake in a single record, the connection can deadlock, causing uncontrolled consumption of resources. This can lead to a denial of service.\n\nThis only affects TLS 1.3.",
+            "fix_version": "1.25.9",
+            "fix_state": "fixed",
+            "cvss_score": 7.5,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+            "epss_score": 0.00449,
+            "epss_percentile": 0.35694,
+            "data_source": "https://go.dev/cl/763767",
+            "urls": [
+              "https://go.dev/issue/78334",
+              "https://groups.google.com/g/golang-announce/c/0uYbvbPZRWU"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -6745,11 +6648,108 @@
             "cvss_score": 5.3,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
             "epss_score": 0.0039,
-            "epss_percentile": 0.3063,
+            "epss_percentile": 0.30713,
             "data_source": "https://go.dev/cl/770541",
             "urls": [
               "https://go.dev/issue/78948",
               "https://groups.google.com/g/golang-announce/c/qcCIEXso47M"
+            ],
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "binary-symbol",
+            "reachable_from": [
+              "stdlib"
+            ],
+            "reachability_class": "binary",
+            "class_source": "vulnsym:stdlib-symbol-present"
+          },
+          {
+            "id": "CVE-2026-27142",
+            "severity": "MEDIUM",
+            "summary": "Actions which insert URLs into the content attribute of HTML meta tags are not escaped. This can allow XSS if the meta tag also has an http-equiv attribute with the value \"refresh\".\n\nA new GODEBUG setting has been added, htmlmetacontenturlescape, which can be used to disable escaping URLs in actions in the meta content attribute which follow \"url=\" by setting htmlmetacontenturlescape=0.",
+            "fix_version": "1.25.8",
+            "fix_state": "fixed",
+            "cvss_score": 6.1,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+            "epss_score": 0.00328,
+            "epss_percentile": 0.24387,
+            "data_source": "https://groups.google.com/g/golang-announce/c/EdhZqrQ98hk",
+            "urls": [
+              "https://go.dev/issue/77954",
+              "https://go.dev/cl/752081"
+            ],
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "binary-symbol",
+            "reachable_from": [
+              "stdlib"
+            ],
+            "reachability_class": "binary",
+            "class_source": "vulnsym:stdlib-symbol-present"
+          },
+          {
+            "id": "CVE-2026-33814",
+            "severity": "HIGH",
+            "summary": "When processing HTTP/2 SETTINGS frames, transport will enter an infinite loop of writing CONTINUATION frames if it receives a SETTINGS_MAX_FRAME_SIZE with a value of 0.",
+            "fix_version": "1.25.10",
+            "fix_state": "fixed",
+            "cvss_score": 7.5,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+            "epss_score": 0.00565,
+            "epss_percentile": 0.4245,
+            "data_source": "https://go.dev/cl/761581",
+            "urls": [
+              "https://go.dev/cl/761640",
+              "https://go.dev/issue/78476",
+              "https://groups.google.com/g/golang-announce/c/qcCIEXso47M"
+            ],
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "binary-symbol",
+            "reachable_from": [
+              "stdlib"
+            ],
+            "reachability_class": "binary",
+            "class_source": "vulnsym:stdlib-symbol-present"
+          },
+          {
+            "id": "CVE-2026-33811",
+            "severity": "HIGH",
+            "summary": "When using LookupCNAME with the cgo DNS resolver, a very long CNAME response can trigger a double-free of C memory and a crash.",
+            "fix_version": "1.25.10",
+            "fix_state": "fixed",
+            "cvss_score": 7.5,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+            "epss_score": 0.00588,
+            "epss_percentile": 0.43517,
+            "data_source": "https://go.dev/issue/78803",
+            "urls": [
+              "https://go.dev/cl/767860",
+              "https://groups.google.com/g/golang-announce/c/qcCIEXso47M"
+            ],
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "binary-symbol",
+            "reachable_from": [
+              "stdlib"
+            ],
+            "reachability_class": "binary",
+            "class_source": "vulnsym:stdlib-symbol-present"
+          },
+          {
+            "id": "CVE-2026-25679",
+            "severity": "HIGH",
+            "summary": "url.Parse insufficiently validated the host/authority component and accepted some invalid URLs.",
+            "fix_version": "1.25.8",
+            "fix_state": "fixed",
+            "cvss_score": 7.5,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+            "epss_score": 0.0052,
+            "epss_percentile": 0.40054,
+            "data_source": "https://go.dev/cl/752180",
+            "urls": [
+              "https://go.dev/issue/77578",
+              "https://groups.google.com/g/golang-announce/c/EdhZqrQ98hk"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -6772,18 +6772,18 @@
         },
         "cves": [
           {
-            "id": "CVE-2026-42507",
+            "id": "CVE-2026-27145",
             "severity": "MEDIUM",
-            "summary": "When returning errors, functions in the net/textproto package would include its input as part of the error. This might allow an attacker to inject misleading content to errors that are printed or logged.",
+            "summary": "(*x509.Certificate).VerifyHostname previously called matchHostnames in a loop over all DNS Subject Alternative Name (SAN) entries. This caused strings.Split(host, \".\") to execute repeatedly on the same input hostname.\n\nWith a large DNS SAN list, verification costs scaled quadratically based on the number of SAN entries multiplied by the hostname's label count. Because x509.Verify validates hostnames before building the certificate chain, this overhead occurred even for untrusted certificates.",
             "fix_version": "1.25.11",
             "fix_state": "fixed",
-            "cvss_score": 5.3,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
-            "epss_score": 0.00263,
-            "epss_percentile": 0.17438,
-            "data_source": "https://go.dev/issue/79346",
+            "cvss_score": 6.5,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:H",
+            "epss_score": 0.00561,
+            "epss_percentile": 0.42201,
+            "data_source": "https://go.dev/cl/783621",
             "urls": [
-              "https://go.dev/cl/777060",
+              "https://go.dev/issue/79694",
               "https://groups.google.com/g/golang-announce/c/tKs3rmcBcKw"
             ],
             "tier": "reachable",
@@ -6796,18 +6796,18 @@
             "class_source": "vulnsym:stdlib-symbol-present"
           },
           {
-            "id": "CVE-2026-27145",
+            "id": "CVE-2026-42507",
             "severity": "MEDIUM",
-            "summary": "(*x509.Certificate).VerifyHostname previously called matchHostnames in a loop over all DNS Subject Alternative Name (SAN) entries. This caused strings.Split(host, \".\") to execute repeatedly on the same input hostname.\n\nWith a large DNS SAN list, verification costs scaled quadratically based on the number of SAN entries multiplied by the hostname's label count. Because x509.Verify validates hostnames before building the certificate chain, this overhead occurred even for untrusted certificates.",
+            "summary": "When returning errors, functions in the net/textproto package would include its input as part of the error. This might allow an attacker to inject misleading content to errors that are printed or logged.",
             "fix_version": "1.25.11",
             "fix_state": "fixed",
-            "cvss_score": 6.5,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:H",
-            "epss_score": 0.00325,
-            "epss_percentile": 0.24003,
-            "data_source": "https://go.dev/cl/783621",
+            "cvss_score": 5.3,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N",
+            "epss_score": 0.0037,
+            "epss_percentile": 0.28726,
+            "data_source": "https://go.dev/issue/79346",
             "urls": [
-              "https://go.dev/issue/79694",
+              "https://go.dev/cl/777060",
               "https://groups.google.com/g/golang-announce/c/tKs3rmcBcKw"
             ],
             "tier": "reachable",
@@ -6827,8 +6827,8 @@
             "fix_state": "fixed",
             "cvss_score": 7.5,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.00384,
-            "epss_percentile": 0.30045,
+            "epss_score": 0.0056,
+            "epss_percentile": 0.42188,
             "data_source": "https://go.dev/issue/79217",
             "urls": [
               "https://go.dev/cl/774481",
@@ -7094,7 +7094,7 @@
             "cvss_score": 6.5,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
             "epss_score": 0.00252,
-            "epss_percentile": 0.16278,
+            "epss_percentile": 0.16318,
             "data_source": "https://nvd.nist.gov/vuln/detail/CVE-2025-60876",
             "urls": [
               "https://gist.github.com/subyumatest/41554af6a72aedaacaec026adc311092",
@@ -7128,7 +7128,7 @@
             "cvss_score": 6.5,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
             "epss_score": 0.00252,
-            "epss_percentile": 0.16278,
+            "epss_percentile": 0.16318,
             "data_source": "https://nvd.nist.gov/vuln/detail/CVE-2025-60876",
             "urls": [
               "https://gist.github.com/subyumatest/41554af6a72aedaacaec026adc311092",
@@ -7382,7 +7382,7 @@
             "cvss_score": 6.5,
             "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N",
             "epss_score": 0.00252,
-            "epss_percentile": 0.16278,
+            "epss_percentile": 0.16318,
             "data_source": "https://nvd.nist.gov/vuln/detail/CVE-2025-60876",
             "urls": [
               "https://gist.github.com/subyumatest/41554af6a72aedaacaec026adc311092",
@@ -7436,11 +7436,6 @@
     },
     "edges": [
       {
-        "from": "os:apk-tools",
-        "to": "os:ca-certificates-bundle",
-        "type": "depends-on"
-      },
-      {
         "from": "os:libcurl",
         "to": "os:ca-certificates-bundle",
         "type": "depends-on"
@@ -7448,6 +7443,11 @@
       {
         "from": "os:musl-utils",
         "to": "os:scanelf",
+        "type": "depends-on"
+      },
+      {
+        "from": "os:apk-tools",
+        "to": "os:ca-certificates-bundle",
         "type": "depends-on"
       },
       {
@@ -7541,18 +7541,658 @@
         "type": "owned-by"
       },
       {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/google/go-cmp",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/patrickmn/go-cache",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/cespare/xxhash/v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/prometheus/client_model",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.yaml.in/yaml/v2@v2.4.4",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.yaml.in/yaml/v2@v2.4.3",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/prometheus/common@v0.67.5",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/prometheus/common@v0.68.1",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/google/uuid",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:golang.org/x/net@v0.49.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:golang.org/x/net@v0.55.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/grpc-ecosystem/go-grpc-middleware/v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:google.golang.org/protobuf@v1.36.11",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:google.golang.org/protobuf@v1.36.12-0.20260120151049-f2248ac996af",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/cheekybits/genny",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/cenkalti/backoff/v5",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:google.golang.org/genproto@v0.0.0-20260319201613-d00831a3d3e7",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:google.golang.org/genproto@v0.0.0-20210630183607-d20f26d13c79",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/beorn7/perks",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/mattetti/filebuffer",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:google.golang.org/grpc@v1.81.1",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:google.golang.org/grpc@v1.79.3",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:golang.org/x/text@v0.33.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:golang.org/x/text@v0.37.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/jaegertracing/jaeger-idl",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace@v1.44.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace@v1.40.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace@v1.42.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/oklog/run@v1.1.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/oklog/run@v1.2.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/grpc-ecosystem/go-grpc-middleware/providers/prometheus",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/zeebo/xxh3@v1.1.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/zeebo/xxh3@v1.0.2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/fatih/color@v1.18.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/fatih/color@v1.19.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/modern-go/concurrent",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/openzipkin/zipkin-go",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/grafana/pyroscope-go/godeltaprof",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/contrib/samplers/jaegerremote@v0.37.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/contrib/samplers/jaegerremote@v0.36.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/contrib/samplers/jaegerremote@v0.34.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel@v1.44.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel@v1.43.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel@v1.40.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/modern-go/reflect2@v1.0.3-0.20250322232337-35a7c28c31ee",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/modern-go/reflect2@v1.0.2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/olekukonko/tablewriter@v1.1.4",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/olekukonko/tablewriter@v1.1.3",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/grafana/otel-profiling-go",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:golang.org/x/exp@v0.0.0-20260410095643-746e56fc9e2f",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:golang.org/x/exp@v0.0.0-20260112195511-716be5621a96",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:golang.org/x/exp@v0.0.0-20251002181428-27f1f14c8bb9",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel/metric@v1.40.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel/metric@v1.44.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel/metric@v1.43.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/contrib/propagators/jaeger@v1.42.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/contrib/propagators/jaeger@v1.40.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/contrib/propagators/jaeger@v1.43.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/klauspost/compress@v1.18.6",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/klauspost/compress@v1.18.4",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/klauspost/compress@v1.18.2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/clipperhouse/displaywidth@v0.11.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/clipperhouse/displaywidth@v0.6.2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/clipperhouse/displaywidth@v0.10.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/mattn/go-runewidth@v0.0.19",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/mattn/go-runewidth@v0.0.20",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/json-iterator/go",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel/sdk@v1.44.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel/sdk@v1.40.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel/sdk@v1.43.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/mattn/go-isatty@v0.0.22",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/mattn/go-isatty@v0.0.20",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel/trace@v1.40.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel/trace@v1.43.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel/trace@v1.44.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc@v1.40.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc@v1.44.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc@v1.42.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/prometheus/procfs@v0.16.1",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/prometheus/procfs@v0.20.1",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/munnerz/goautoneg",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/google/flatbuffers",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:golang.org/x/xerrors",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/gogo/protobuf",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:stdlib@go1.26.3",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:stdlib@go1.26.4",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:stdlib@go1.25.7",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/prometheus/client_golang",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/olekukonko/ll@v0.1.4-0.20260115111900-9e59c2286df0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/olekukonko/ll@v0.1.6",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/hashicorp/yamux",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/olekukonko/errors@v1.2.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/olekukonko/errors@v1.1.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/grafana/grafana-plugin-sdk-go@v0.291.1",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/grafana/grafana-plugin-sdk-go@v0.292.1",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/grafana/grafana-plugin-sdk-go@v0.290.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/grpc-ecosystem/grpc-gateway/v2@v2.29.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/grpc-ecosystem/grpc-gateway/v2@v2.27.7",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/grpc-ecosystem/grpc-gateway/v2@v2.28.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/pierrec/lz4/v4@v4.1.25",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/pierrec/lz4/v4@v4.1.23",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/pierrec/lz4/v4@v4.1.26",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/go-logr/stdr",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace@v0.67.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace@v0.69.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace@v0.65.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/gogo/googleapis",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc@v0.65.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc@v0.68.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc@v0.67.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:golang.org/x/sys@v0.45.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:golang.org/x/sys@v0.40.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/clipperhouse/uax29/v2@v2.7.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/clipperhouse/uax29/v2@v2.6.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/clipperhouse/uax29/v2@v2.3.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/golang/protobuf",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/apache/arrow-go/v18@v18.5.2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/apache/arrow-go/v18@v18.6.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/apache/arrow-go/v18@v18.5.1",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/hashicorp/go-plugin",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/auto/sdk",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/olekukonko/cat",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/hashicorp/go-hclog",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/mattn/go-colorable",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/proto/otlp@v1.10.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:go.opentelemetry.io/proto/otlp@v1.9.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/go-logr/logr",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-zipkin-datasource",
+        "to": "go:github.com/clipperhouse/stringish",
+        "type": "depends-on"
+      },
+      {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:go.opentelemetry.io/auto/sdk",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:go.yaml.in/yaml/v2@v2.4.4",
+        "to": "go:go.yaml.in/yaml/v2@v2.4.3",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:go.yaml.in/yaml/v2@v2.4.3",
+        "to": "go:go.yaml.in/yaml/v2@v2.4.4",
         "type": "depends-on"
       },
       {
@@ -7607,12 +8247,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/aws/aws-sdk-go-v2/credentials@v1.19.17",
+        "to": "go:github.com/aws/aws-sdk-go-v2/credentials@v1.19.7",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/aws/aws-sdk-go-v2/credentials@v1.19.7",
+        "to": "go:github.com/aws/aws-sdk-go-v2/credentials@v1.19.17",
         "type": "depends-on"
       },
       {
@@ -7622,12 +8262,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/pierrec/lz4/v4@v4.1.26",
+        "to": "go:github.com/pierrec/lz4/v4@v4.1.23",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/pierrec/lz4/v4@v4.1.23",
+        "to": "go:github.com/pierrec/lz4/v4@v4.1.26",
         "type": "depends-on"
       },
       {
@@ -7647,22 +8287,22 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/prometheus/common@v0.68.1",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:github.com/prometheus/common@v0.67.5",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc@v1.44.0",
+        "to": "go:github.com/prometheus/common@v0.68.1",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc@v1.40.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
+        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc@v1.44.0",
         "type": "depends-on"
       },
       {
@@ -7677,7 +8317,7 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/klauspost/compress@v1.18.4",
+        "to": "go:github.com/klauspost/compress@v1.18.2",
         "type": "depends-on"
       },
       {
@@ -7687,7 +8327,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/klauspost/compress@v1.18.2",
+        "to": "go:github.com/klauspost/compress@v1.18.4",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
+        "to": "go:github.com/aws/aws-sdk-go-v2/feature/ec2/imds@v1.18.17",
         "type": "depends-on"
       },
       {
@@ -7697,7 +8342,7 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/aws/aws-sdk-go-v2/feature/ec2/imds@v1.18.17",
+        "to": "go:go.opentelemetry.io/otel/sdk@v1.44.0",
         "type": "depends-on"
       },
       {
@@ -7712,11 +8357,6 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:go.opentelemetry.io/otel/sdk@v1.44.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:github.com/aws/aws-sdk-go-v2/internal/ini",
         "type": "depends-on"
       },
@@ -7727,12 +8367,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/go-openapi/swag/jsonname@v0.25.5",
+        "to": "go:github.com/go-openapi/swag/jsonname@v0.26.1",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/go-openapi/swag/jsonname@v0.26.1",
+        "to": "go:github.com/go-openapi/swag/jsonname@v0.25.5",
         "type": "depends-on"
       },
       {
@@ -7772,7 +8412,7 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/clipperhouse/displaywidth@v0.10.0",
+        "to": "go:github.com/clipperhouse/displaywidth@v0.11.0",
         "type": "depends-on"
       },
       {
@@ -7782,12 +8422,7 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/clipperhouse/displaywidth@v0.11.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/modern-go/reflect2@v1.0.2",
+        "to": "go:github.com/clipperhouse/displaywidth@v0.10.0",
         "type": "depends-on"
       },
       {
@@ -7797,17 +8432,22 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
+        "to": "go:github.com/modern-go/reflect2@v1.0.2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:github.com/prometheus/client_model",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/zeebo/xxh3@v1.1.0",
+        "to": "go:github.com/zeebo/xxh3@v1.0.2",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/zeebo/xxh3@v1.0.2",
+        "to": "go:github.com/zeebo/xxh3@v1.1.0",
         "type": "depends-on"
       },
       {
@@ -7842,12 +8482,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/mailru/easyjson@v0.7.7",
+        "to": "go:github.com/mailru/easyjson@v0.9.1",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/mailru/easyjson@v0.9.1",
+        "to": "go:github.com/mailru/easyjson@v0.7.7",
         "type": "depends-on"
       },
       {
@@ -7882,12 +8522,17 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
+        "to": "go:github.com/emicklei/go-restful/v3@v3.11.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:github.com/emicklei/go-restful/v3@v3.13.0",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/emicklei/go-restful/v3@v3.11.0",
+        "to": "go:github.com/apache/arrow-go/v18@v18.5.2",
         "type": "depends-on"
       },
       {
@@ -7898,11 +8543,6 @@
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:github.com/apache/arrow-go/v18@v18.5.1",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/apache/arrow-go/v18@v18.5.2",
         "type": "depends-on"
       },
       {
@@ -7922,17 +8562,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:go.opentelemetry.io/proto/otlp@v1.9.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:go.opentelemetry.io/proto/otlp@v1.10.0",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/aws/aws-sdk-go-v2/internal/endpoints/v2@v2.7.17",
+        "to": "go:go.opentelemetry.io/proto/otlp@v1.9.0",
         "type": "depends-on"
       },
       {
@@ -7942,17 +8577,22 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
+        "to": "go:github.com/aws/aws-sdk-go-v2/internal/endpoints/v2@v2.7.17",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:github.com/huandu/go-clone",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/huandu/go-sqlbuilder@v1.40.2",
+        "to": "go:github.com/huandu/go-sqlbuilder@v1.39.1",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/huandu/go-sqlbuilder@v1.39.1",
+        "to": "go:github.com/huandu/go-sqlbuilder@v1.40.2",
         "type": "depends-on"
       },
       {
@@ -7977,12 +8617,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:golang.org/x/sync@v0.21.0",
+        "to": "go:golang.org/x/sync@v0.20.0",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:golang.org/x/sync@v0.20.0",
+        "to": "go:golang.org/x/sync@v0.21.0",
         "type": "depends-on"
       },
       {
@@ -7997,17 +8637,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/aws/aws-sdk-go-v2/config@v1.32.7",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:github.com/aws/aws-sdk-go-v2/config@v1.32.18",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/aws/smithy-go@v1.26.0",
+        "to": "go:github.com/aws/aws-sdk-go-v2/config@v1.32.7",
         "type": "depends-on"
       },
       {
@@ -8017,12 +8652,17 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/mattn/go-isatty@v0.0.22",
+        "to": "go:github.com/aws/smithy-go@v1.26.0",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:github.com/mattn/go-isatty@v0.0.20",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
+        "to": "go:github.com/mattn/go-isatty@v0.0.22",
         "type": "depends-on"
       },
       {
@@ -8047,22 +8687,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:google.golang.org/genproto@v0.0.0-20260319201613-d00831a3d3e7",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:google.golang.org/genproto@v0.0.0-20210630183607-d20f26d13c79",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc@v0.65.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc@v0.67.0",
+        "to": "go:google.golang.org/genproto@v0.0.0-20260319201613-d00831a3d3e7",
         "type": "depends-on"
       },
       {
@@ -8072,12 +8702,22 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/clipperhouse/uax29/v2@v2.7.0",
+        "to": "go:go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc@v0.67.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
+        "to": "go:go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc@v0.65.0",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:github.com/clipperhouse/uax29/v2@v2.3.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
+        "to": "go:github.com/clipperhouse/uax29/v2@v2.7.0",
         "type": "depends-on"
       },
       {
@@ -8107,6 +8747,11 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
+        "to": "go:stdlib@go1.25.7",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:stdlib@go1.26.3",
         "type": "depends-on"
       },
@@ -8117,7 +8762,7 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:stdlib@go1.25.7",
+        "to": "go:github.com/aws/aws-sdk-go-v2/service/ssooidc@v1.36.0",
         "type": "depends-on"
       },
       {
@@ -8127,17 +8772,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/aws/aws-sdk-go-v2/service/ssooidc@v1.36.0",
+        "to": "go:golang.org/x/sys@v0.40.0",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:golang.org/x/sys@v0.45.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:golang.org/x/sys@v0.40.0",
         "type": "depends-on"
       },
       {
@@ -8172,7 +8812,7 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace@v1.42.0",
+        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace@v1.44.0",
         "type": "depends-on"
       },
       {
@@ -8182,7 +8822,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace@v1.44.0",
+        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace@v1.42.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
+        "to": "go:go.opentelemetry.io/otel/trace@v1.40.0",
         "type": "depends-on"
       },
       {
@@ -8197,22 +8842,17 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:go.opentelemetry.io/otel/trace@v1.40.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:github.com/munnerz/goautoneg",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/aws/aws-sdk-go-v2/internal/configsources@v1.4.25",
+        "to": "go:github.com/aws/aws-sdk-go-v2/internal/configsources@v1.4.17",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/aws/aws-sdk-go-v2/internal/configsources@v1.4.17",
+        "to": "go:github.com/aws/aws-sdk-go-v2/internal/configsources@v1.4.25",
         "type": "depends-on"
       },
       {
@@ -8252,7 +8892,7 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/grpc-ecosystem/grpc-gateway/v2@v2.29.0",
+        "to": "go:github.com/grpc-ecosystem/grpc-gateway/v2@v2.27.7",
         "type": "depends-on"
       },
       {
@@ -8262,12 +8902,7 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/grpc-ecosystem/grpc-gateway/v2@v2.27.7",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/aws/aws-sdk-go-v2@v1.41.1",
+        "to": "go:github.com/grpc-ecosystem/grpc-gateway/v2@v2.29.0",
         "type": "depends-on"
       },
       {
@@ -8277,12 +8912,17 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:golang.org/x/exp@v0.0.0-20260112195511-716be5621a96",
+        "to": "go:github.com/aws/aws-sdk-go-v2@v1.41.1",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:golang.org/x/exp@v0.0.0-20260410095643-746e56fc9e2f",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
+        "to": "go:golang.org/x/exp@v0.0.0-20260112195511-716be5621a96",
         "type": "depends-on"
       },
       {
@@ -8312,12 +8952,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:go.opentelemetry.io/otel/metric@v1.40.0",
+        "to": "go:go.opentelemetry.io/otel/metric@v1.43.0",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:go.opentelemetry.io/otel/metric@v1.43.0",
+        "to": "go:go.opentelemetry.io/otel/metric@v1.40.0",
         "type": "depends-on"
       },
       {
@@ -8337,12 +8977,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/oklog/run@v1.1.0",
+        "to": "go:github.com/oklog/run@v1.2.0",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/oklog/run@v1.2.0",
+        "to": "go:github.com/oklog/run@v1.1.0",
         "type": "depends-on"
       },
       {
@@ -8357,12 +8997,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/grafana/grafana-aws-sdk@v1.4.3",
+        "to": "go:github.com/grafana/grafana-aws-sdk@v1.4.4",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/grafana/grafana-aws-sdk@v1.4.4",
+        "to": "go:github.com/grafana/grafana-aws-sdk@v1.4.3",
         "type": "depends-on"
       },
       {
@@ -8412,12 +9052,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/go-openapi/jsonpointer@v0.23.1",
+        "to": "go:github.com/go-openapi/jsonpointer@v0.22.5",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/go-openapi/jsonpointer@v0.22.5",
+        "to": "go:github.com/go-openapi/jsonpointer@v0.23.1",
         "type": "depends-on"
       },
       {
@@ -8447,12 +9087,12 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/mattn/go-runewidth@v0.0.20",
+        "to": "go:github.com/mattn/go-runewidth@v0.0.19",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/mattn/go-runewidth@v0.0.19",
+        "to": "go:github.com/mattn/go-runewidth@v0.0.20",
         "type": "depends-on"
       },
       {
@@ -8487,17 +9127,17 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/grafana/grafana-plugin-sdk-go@v0.291.1",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:github.com/grafana/grafana-plugin-sdk-go@v0.292.1",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:github.com/grafana/grafana-plugin-sdk-go@v0.290.0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
+        "to": "go:github.com/grafana/grafana-plugin-sdk-go@v0.291.1",
         "type": "depends-on"
       },
       {
@@ -8517,22 +9157,22 @@
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:go.opentelemetry.io/contrib/samplers/jaegerremote@v0.34.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:go.opentelemetry.io/contrib/samplers/jaegerremote@v0.36.0",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
-        "to": "go:github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding@v1.13.4",
+        "to": "go:go.opentelemetry.io/contrib/samplers/jaegerremote@v0.34.0",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding@v1.13.9",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
+        "to": "go:github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding@v1.13.4",
         "type": "depends-on"
       },
       {
@@ -8543,646 +9183,6 @@
       {
         "from": "go:github.com/grafana/grafana-elasticsearch-datasource",
         "to": "go:github.com/go-openapi/swag@v0.23.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/google/go-cmp",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/patrickmn/go-cache",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/cespare/xxhash/v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/prometheus/client_model",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.yaml.in/yaml/v2@v2.4.4",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.yaml.in/yaml/v2@v2.4.3",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/prometheus/common@v0.68.1",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/prometheus/common@v0.67.5",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/google/uuid",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:golang.org/x/net@v0.55.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:golang.org/x/net@v0.49.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/grpc-ecosystem/go-grpc-middleware/v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:google.golang.org/protobuf@v1.36.11",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:google.golang.org/protobuf@v1.36.12-0.20260120151049-f2248ac996af",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/cheekybits/genny",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/cenkalti/backoff/v5",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:google.golang.org/genproto@v0.0.0-20210630183607-d20f26d13c79",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:google.golang.org/genproto@v0.0.0-20260319201613-d00831a3d3e7",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/beorn7/perks",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/mattetti/filebuffer",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:google.golang.org/grpc@v1.81.1",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:google.golang.org/grpc@v1.79.3",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:golang.org/x/text@v0.37.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:golang.org/x/text@v0.33.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/jaegertracing/jaeger-idl",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace@v1.40.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace@v1.44.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace@v1.42.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/oklog/run@v1.2.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/oklog/run@v1.1.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/grpc-ecosystem/go-grpc-middleware/providers/prometheus",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/zeebo/xxh3@v1.1.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/zeebo/xxh3@v1.0.2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/fatih/color@v1.19.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/fatih/color@v1.18.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/modern-go/concurrent",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/openzipkin/zipkin-go",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/grafana/pyroscope-go/godeltaprof",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/contrib/samplers/jaegerremote@v0.36.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/contrib/samplers/jaegerremote@v0.37.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/contrib/samplers/jaegerremote@v0.34.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel@v1.40.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel@v1.44.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel@v1.43.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/modern-go/reflect2@v1.0.2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/modern-go/reflect2@v1.0.3-0.20250322232337-35a7c28c31ee",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/olekukonko/tablewriter@v1.1.4",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/olekukonko/tablewriter@v1.1.3",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/grafana/otel-profiling-go",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:golang.org/x/exp@v0.0.0-20260112195511-716be5621a96",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:golang.org/x/exp@v0.0.0-20260410095643-746e56fc9e2f",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:golang.org/x/exp@v0.0.0-20251002181428-27f1f14c8bb9",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel/metric@v1.40.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel/metric@v1.43.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel/metric@v1.44.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/contrib/propagators/jaeger@v1.43.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/contrib/propagators/jaeger@v1.42.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/contrib/propagators/jaeger@v1.40.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/klauspost/compress@v1.18.6",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/klauspost/compress@v1.18.2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/klauspost/compress@v1.18.4",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/clipperhouse/displaywidth@v0.10.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/clipperhouse/displaywidth@v0.6.2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/clipperhouse/displaywidth@v0.11.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/mattn/go-runewidth@v0.0.20",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/mattn/go-runewidth@v0.0.19",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/json-iterator/go",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel/sdk@v1.43.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel/sdk@v1.44.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel/sdk@v1.40.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/mattn/go-isatty@v0.0.22",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/mattn/go-isatty@v0.0.20",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel/trace@v1.40.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel/trace@v1.43.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel/trace@v1.44.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc@v1.42.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc@v1.44.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc@v1.40.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/prometheus/procfs@v0.20.1",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/prometheus/procfs@v0.16.1",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/munnerz/goautoneg",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/google/flatbuffers",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:golang.org/x/xerrors",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/gogo/protobuf",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:stdlib@go1.26.3",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:stdlib@go1.26.4",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:stdlib@go1.25.7",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/prometheus/client_golang",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/olekukonko/ll@v0.1.6",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/olekukonko/ll@v0.1.4-0.20260115111900-9e59c2286df0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/hashicorp/yamux",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/olekukonko/errors@v1.2.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/olekukonko/errors@v1.1.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/grafana/grafana-plugin-sdk-go@v0.292.1",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/grafana/grafana-plugin-sdk-go@v0.290.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/grafana/grafana-plugin-sdk-go@v0.291.1",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/grpc-ecosystem/grpc-gateway/v2@v2.28.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/grpc-ecosystem/grpc-gateway/v2@v2.27.7",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/grpc-ecosystem/grpc-gateway/v2@v2.29.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/pierrec/lz4/v4@v4.1.26",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/pierrec/lz4/v4@v4.1.23",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/pierrec/lz4/v4@v4.1.25",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/go-logr/stdr",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace@v0.65.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace@v0.67.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace@v0.69.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/gogo/googleapis",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc@v0.68.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc@v0.65.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc@v0.67.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:golang.org/x/sys@v0.45.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:golang.org/x/sys@v0.40.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/clipperhouse/uax29/v2@v2.3.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/clipperhouse/uax29/v2@v2.6.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/clipperhouse/uax29/v2@v2.7.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/golang/protobuf",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/apache/arrow-go/v18@v18.6.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/apache/arrow-go/v18@v18.5.1",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/apache/arrow-go/v18@v18.5.2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/hashicorp/go-plugin",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/auto/sdk",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/olekukonko/cat",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/hashicorp/go-hclog",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/mattn/go-colorable",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/proto/otlp@v1.9.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:go.opentelemetry.io/proto/otlp@v1.10.0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/go-logr/logr",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/grafana/grafana-zipkin-datasource",
-        "to": "go:github.com/clipperhouse/stringish",
         "type": "depends-on"
       },
       {
@@ -13109,32 +13109,32 @@
         "curl": 2
       },
       "base_copyleft": [
-        "scanelf@1.3.9-r1 (GPL-2.0-only)",
-        "ssl_client@1.37.0-r31 (GPL-2.0-only)",
-        "alpine-baselayout@3.7.2-r1 (GPL-2.0-only)",
-        "bash@5.3.9-r1 (GPL-3.0-or-later)",
-        "busybox@1.37.0-r31 (GPL-2.0-only)",
         "busybox-binsh@1.37.0-r31 (GPL-2.0-only)",
-        "libunistring@1.4.2-r0 (GPL-2.0-or-later OR LGPL-3.0-or-later)",
+        "scanelf@1.3.9-r1 (GPL-2.0-only)",
         "readline@8.3.3-r1 (GPL-3.0-or-later)",
         "libapk@3.0.6-r0 (GPL-2.0-only)",
-        "bubblewrap@0.11.2-r0 (LGPL-2.0-or-later)",
-        "libidn2@2.3.8-r0 (GPL-2.0-or-later OR LGPL-3.0-or-later)",
-        "ca-certificates@20260611-r0 (MPL-2.0 AND MIT)",
-        "apk-tools@3.0.6-r0 (GPL-2.0-only)",
+        "bash@5.3.9-r1 (GPL-3.0-or-later)",
+        "ca-certificates-bundle@20260611-r0 (MPL-2.0 AND MIT)",
+        "ssl_client@1.37.0-r31 (GPL-2.0-only)",
         "alpine-baselayout-data@3.7.2-r1 (GPL-2.0-only)",
-        "ca-certificates-bundle@20260611-r0 (MPL-2.0 AND MIT)"
+        "apk-tools@3.0.6-r0 (GPL-2.0-only)",
+        "ca-certificates@20260611-r0 (MPL-2.0 AND MIT)",
+        "bubblewrap@0.11.2-r0 (LGPL-2.0-or-later)",
+        "libunistring@1.4.2-r0 (GPL-2.0-or-later OR LGPL-3.0-or-later)",
+        "busybox@1.37.0-r31 (GPL-2.0-only)",
+        "alpine-baselayout@3.7.2-r1 (GPL-2.0-only)",
+        "libidn2@2.3.8-r0 (GPL-2.0-or-later OR LGPL-3.0-or-later)"
       ],
       "unknown": [
-        "BSD-3-Clause OR GPL-2.0-only",
-        "MIT AND BSD-2-Clause AND GPL-2.0-or-later",
-        "BSD-3-Clause OR GPL-2.0-or-later",
-        "curl",
-        "Public-Domain",
-        "LGPL-2.0-or-later",
         "GPL-2.0-or-later OR LGPL-3.0-or-later",
+        "LGPL-2.0-or-later",
+        "Public-Domain",
+        "BSD-3-Clause OR GPL-2.0-only",
+        "curl",
+        "X11",
+        "MIT AND BSD-2-Clause AND GPL-2.0-or-later",
         "MPL-2.0 AND MIT",
-        "X11"
+        "BSD-3-Clause OR GPL-2.0-or-later"
       ],
       "total_scanned": 36
     },
@@ -13317,15 +13317,15 @@
         ],
         "instances": [
           {
+            "package": "busybox-binsh",
+            "priority": 9
+          },
+          {
             "package": "ssl_client",
             "priority": 9
           },
           {
             "package": "busybox",
-            "priority": 9
-          },
-          {
-            "package": "busybox-binsh",
             "priority": 9
           }
         ]
@@ -13582,7 +13582,7 @@
             "dimension": "exploitation",
             "score": 2,
             "max_score": 30,
-            "reason": "EPSS 0.00"
+            "reason": "EPSS 0.01"
           },
           {
             "dimension": "reachability",
@@ -14333,7 +14333,7 @@
             "dimension": "exploitation",
             "score": 2,
             "max_score": 30,
-            "reason": "EPSS 0.00"
+            "reason": "EPSS 0.01"
           },
           {
             "dimension": "reachability",

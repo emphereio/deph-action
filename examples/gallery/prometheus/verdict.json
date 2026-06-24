@@ -7,7 +7,7 @@
   },
   "image": {
     "ref": "prom/prometheus:latest",
-    "digest": "",
+    "digest": "sha256:a75c5a35bc21d7afe69551eefa3cb1e1fb1775fe759408007a66b54ec3de1f29",
     "digest_kind": "repo-digest",
     "source_mode": "registry"
   },
@@ -27,8 +27,8 @@
     "not_found_in_path": 15,
     "in_path_by_severity": {
       "critical": 0,
-      "high": 3,
-      "medium": 4,
+      "high": 4,
+      "medium": 3,
       "low": 0
     },
     "kev_in_path": 0,
@@ -92,6 +92,20 @@
       "priority": 51
     },
     {
+      "id": "CVE-2026-33997",
+      "severity": "HIGH",
+      "cvss": 8.1,
+      "epss": 0.00315,
+      "kev": false,
+      "fix_version": "",
+      "evidence": "binary-symbol",
+      "reachable_from": [
+        "github.com/docker/docker"
+      ],
+      "top_call": "",
+      "priority": 48
+    },
+    {
       "id": "CVE-2026-42306",
       "severity": "HIGH",
       "cvss": 7.2,
@@ -123,21 +137,7 @@
       "id": "CVE-2026-41568",
       "severity": "MEDIUM",
       "cvss": 6.1,
-      "epss": 0.001,
-      "kev": false,
-      "fix_version": "",
-      "evidence": "binary-symbol",
-      "reachable_from": [
-        "github.com/docker/docker"
-      ],
-      "top_call": "",
-      "priority": 47
-    },
-    {
-      "id": "CVE-2026-33997",
-      "severity": "MEDIUM",
-      "cvss": 6.8,
-      "epss": 0.00315,
+      "epss": 0.00108,
       "kev": false,
       "fix_version": "",
       "evidence": "binary-symbol",
@@ -153,10 +153,10 @@
     "tripped": false,
     "reason": ""
   },
-  "deph_exit": 1,
+  "deph_exit": 0,
   "artifacts": {
-    "report_json": "/tmp/gallery/prometheus.json",
-    "report_html": "",
+    "report_json": "examples/gallery/prometheus/deph-report.json",
+    "report_html": "report.html",
     "sarif": "",
     "sbom_cyclonedx": "",
     "summary_md": "examples/gallery/prometheus/summary.md"
