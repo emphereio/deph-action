@@ -1,0 +1,24 @@
+# Curated gallery. The gallery-refresh workflow re-scans each `scan` entry on a
+# schedule (and on demand) and regenerates index.html from the fresh verdicts.
+# This is the only file you edit to change which images appear in the gallery.
+#
+# scan:  registry images, re-pulled and re-scanned by the workflow.
+# static: examples not re-scanned by the workflow (e.g. the local demo build).
+
+scan:
+  - ref: apache/superset:latest
+    name: superset
+    title: apache/superset
+    note: Heavy Python image, a dense cross-layer graph.
+  - ref: grafana/grafana:latest
+    name: grafana
+    title: grafana/grafana
+  - ref: prom/prometheus:latest
+    name: prometheus
+    title: prom/prometheus
+
+static:
+  - href: ../report.html
+    verdict: ../verdict.json
+    title: demo app (Flask)
+    note: A constructed service that deliberately calls several vulnerable dependencies.
