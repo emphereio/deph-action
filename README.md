@@ -72,6 +72,8 @@ deph's path-finding is **measured against independent oracles, not asserted** �
 
 Read these as evidence, not marketing: the constructed numbers are correctness on known-answer cases (real-world dead-code and reflection/DI remain documented frontiers, not solved); the per-runtime table is the current cross-ecosystem picture; the ~83/83 is the honest real-world Go picture; recall figures are lower bounds. Real-image **precision/recall is Go-only so far** — there's no `govulncheck`-equivalent reference for the other ecosystems yet. Runtime path-confirmation uses a per-runtime oracle — Go/native: eBPF symbol uprobes; Python: in-process `sys.monitoring`; PHP: in-process Zend Observer; Node.js: in-process V8 precise-coverage — with eBPF the common kernel layer (where one exists) and absence-of-observation never read as "not reachable." The full methodology and reproduce commands are maintained with the deph engine.
 
+<sub>Background: [the lab behind these numbers](https://www.emphere.com/blog/groundzero-isolated-kernel-and-exploit-lab).</sub>
+
 ## Usage
 
 Run it **after the image is built**. Build → (test) → **deph-action**.
