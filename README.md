@@ -139,7 +139,7 @@ When you push the image, pass the digest from `docker/build-push-action` so the 
 | --- | --- | --- | --- |
 | `image` | yes | | Local image name (auto-saved & scanned) or a registry reference deph pulls. |
 | `image-digest` | no | | Digest to bind the verdict to, e.g. `${{ steps.build.outputs.digest }}`. |
-| `deph-version` | no | `v0.1.3` | deph release tag to download (from `emphereio/deph-dist`). |
+| `deph-version` | no | `v0.1.4` | deph release tag to download (from `emphereio/deph-dist`). |
 | `deph-token` | no | | Token to download the deph release; falls back to `github.token`. Set a PAT only if the deph repo is private. |
 | `severity` | no | | Severity filter passed to deph (e.g. `critical,high`). |
 | `vex` | no | | VEX document path(s) for suppression. |
