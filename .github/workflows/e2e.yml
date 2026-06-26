@@ -12,7 +12,7 @@ on:
     inputs:
       deph-version:
         description: deph release tag to test
-        default: v0.1.4
+        default: v0.1.5
         required: true
   pull_request:
 
@@ -20,7 +20,7 @@ permissions:
   contents: read
 
 env:
-  DEPH_VERSION: ${{ inputs.deph-version || 'v0.1.4' }}
+  DEPH_VERSION: ${{ inputs.deph-version || 'v0.1.5' }}
 
 jobs:
   # 1. Registry path: deph pulls a public image directly (no local daemon image).

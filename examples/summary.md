@@ -37,5 +37,5 @@ image `deph-showcase:ci@sha256:0ab6dead21e6a8fd84c67b622919a14186cab672680e17c95
 
 32 CVEs are present but deph found no execution path to the affected code.
 
-<sub>deph v0.1.4 · run #28216604799</sub>
+<sub>deph v0.1.5 · run #28216604799</sub>
 <!-- deph-action -->
