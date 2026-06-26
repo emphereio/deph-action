@@ -53,6 +53,28 @@ what is specific to THIS image — its reachability and the verified upgrade mat
 generic security advice, never an explanation of what a CVE is, never a restatement of the \
 scan's CVE table. If a line could have been written without the scan, cut it."""
 
+THREAT_TASK = """Threat-model the REACHABLE CVEs using SSVC (Stakeholder-Specific
+Vulnerability Categorization — the CISA/CMU deployer decision tree). deph has PROVEN
+reachability; that is the gate, never dispute it.
+
+First call `posture` (this image's deployment context) and `triage` (the reachable set).
+For each `act` CVE, call `cve_context`, then fill the SSVC decision points FROM FACTS and
+CITE the deph signal for each:
+ - Exploitation: none | poc | active        ← EPSS / KEV
+ - Automatable: yes | no                     ← CVSS vector (AV:N + AC:L + PR:N + UI:N ⇒ yes)
+ - Technical Impact: partial | total         ← CVSS C/I/A (high C or I ⇒ total)
+ - Exposure: open | controlled | small       ← reachability + posture (reachable AND
+   network-facing / exposed port / runs-as-root ⇒ open; reachable but internal ⇒ controlled)
+Apply the SSVC tree to a decision: **Act | Attend | Track**. Then state, explicitly:
+ - the ONE assumption you must make (mission/well-being impact — deployment-specific, not
+   observable from the image), and
+ - the single posture fact that would FLIP the decision (e.g. "not exposed ⇒ Track").
+
+Per-CVE line: `CVE` · pkg · **DECISION** · SSVC[expl/autom/impact/exposure] · one-sentence
+scenario grounded in posture · what would flip it. Lead with Act. Open with a 2-line image
+posture summary (what runs, root?, exposed?, secrets?) since it drives everything. Be concise,
+cite signals, never claim anything is unreachable."""
+
 CONTEXT_TASK = """Triage the REACHABLE CVEs the way a senior security analyst would.
 
 deph has already PROVEN these are reachable — that gate is fixed; never dispute it or
@@ -157,7 +179,7 @@ def run_agent(report, task, max_turns=12, trace=None):
 def main():
     ap = argparse.ArgumentParser(description="deph remediation agent (model-agnostic, propose -> verify).")
     ap.add_argument("report")
-    ap.add_argument("--mode", choices=["plan", "ask", "triage", "context"], default="plan")
+    ap.add_argument("--mode", choices=["plan", "ask", "triage", "context", "threat"], default="plan")
     ap.add_argument("--ask", help="question for --mode ask")
     ap.add_argument("--show-trace", action="store_true", help="print the tool calls the agent made")
     args = ap.parse_args()
@@ -171,6 +193,8 @@ def main():
         task = TRIAGE_TASK
     elif args.mode == "context":
         task = CONTEXT_TASK
+    elif args.mode == "threat":
+        task = THREAT_TASK
     else:
         task = args.ask or "Summarize the most urgent reachable CVEs."
     trace = [] if args.show_trace else None

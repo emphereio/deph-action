@@ -122,6 +122,29 @@ def plan_remediation(report):
     return build_plan(report)
 
 
+def posture(report):
+    """The image's deployment posture — the threat-model context that sits beside
+    reachability: what runs, how it's configured, and what's dangerous in the image.
+    These are the facts that turn 'reachable' into 'realistically exploitable here'."""
+    g = report["graph"]
+    by_cat = {}
+    for x in g.get("findings") or []:
+        by_cat.setdefault(x.get("category", "?"), []).append(
+            {"severity": x.get("severity"), "title": x.get("title")})
+    eps = [n.get("name") for n in g["nodes"].values() if n.get("type") == "app-entrypoint"]
+    inv = [n.get("name") for n in g["nodes"].values() if n.get("type") == "binary-invocation"]
+    return {
+        "image": g.get("image_ref"), "platform": g.get("os_family"),
+        "entrypoints": eps, "invocations": sorted(set(inv))[:20],
+        "config": by_cat.get("config", []),
+        "secrets": len(by_cat.get("secret", [])),
+        "secret_titles": [s["title"] for s in by_cat.get("secret", [])][:5],
+        "supply_chain": {k: len(by_cat.get(k, []))
+                         for k in ("ghost-binary", "lifecycle-hook", "typosquat",
+                                   "phantom-dep", "execution-surface") if by_cat.get(k)},
+    }
+
+
 def cve_context(report, cve_id):
     """Everything a human analyst reads to judge a CVE in context: the description,
     CVSS vector, EPSS, the reachable-from path, the affected package/version, and
@@ -242,6 +265,7 @@ REGISTRY = {
     }),
     "plan_remediation": (plan_remediation, True, {"type": "object", "properties": {}}),
     "triage": (build_triage, True, {"type": "object", "properties": {}}),
+    "posture": (posture, True, {"type": "object", "properties": {}}),
     "explain_reachability": (explain_reachability, True, {
         "type": "object", "properties": {"cve_id": {"type": "string"}}, "required": ["cve_id"],
     }),
@@ -261,6 +285,7 @@ TOOL_DESCRIPTIONS = {
     "package_remediation": "The deterministic rollup for one package (its computed target + cleared CVEs).",
     "plan_remediation": "The whole-image deterministic remediation plan (ranked upgrades + stats).",
     "triage": "Deterministic triage: every CVE bucketed act/watch/ignore with an anchored reason. The buckets are authoritative — never soften them.",
+    "posture": "The image's deployment posture: what runs (entrypoints/invocations), how it's configured (runs-as-root, exposed ports), secrets in the image, and supply-chain findings. The context for threat modeling.",
     "explain_reachability": "Reachability evidence for one CVE: tier, evidence, call path, runtime. Deterministic.",
     "cve_context": "Everything an analyst reads about one CVE: description, CVSS vector, EPSS, the reachable-from path, package/version, and the image + platform. Use it to judge real-world exploitability in THIS image.",
     "latest_releases": "LIVE registry lookup for versions newer than the scan DB. Advisory, point-in-time.",
