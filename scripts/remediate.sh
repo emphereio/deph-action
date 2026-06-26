@@ -26,6 +26,15 @@ case "${DEPH_REMEDIATE_MODE:-plan}" in
   plan)
     md="$outdir/remediation.md"
     python3 "$agent" "$report" --mode plan >"$md"
+    # Point at the full report instead of restating it; invite the opt-in bot.
+    {
+      printf '\n---\n'
+      if [[ -n "${GITHUB_RUN_ID:-}" && -n "${GITHUB_REPOSITORY:-}" ]]; then
+        printf 'Full reachability graph + evidence: the `deph-report` artifact (report.html) on [this run](%s/%s/actions/runs/%s).\n' \
+          "${GITHUB_SERVER_URL:-https://github.com}" "$GITHUB_REPOSITORY" "$GITHUB_RUN_ID"
+      fi
+      printf 'Ask `@deph <question>` on this PR to dig into any of it.\n'
+    } >>"$md"
     out_set "remediation-markdown" "$md"
     log "remediation plan -> $md"
     if [[ "${DEPH_COMMENT_ON_PR:-auto}" != "off" ]]; then

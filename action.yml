@@ -240,6 +240,8 @@ runs:
         GH_TOKEN: ${{ inputs.deph-token != '' && inputs.deph-token || github.token }}
         GITHUB_REPOSITORY: ${{ github.repository }}
         GITHUB_REF: ${{ github.ref }}
+        GITHUB_SERVER_URL: ${{ github.server_url }}
+        GITHUB_RUN_ID: ${{ github.run_id }}
       run: "${{ github.action_path }}/scripts/remediate.sh"
 
     # Investigate mode (the @deph bot): answer a question against an existing report.
