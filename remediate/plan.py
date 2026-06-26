@@ -9,6 +9,7 @@ this module is the comparator that decides what a given target really clears.
 """
 import argparse
 import json
+import os
 import re
 import sys
 
@@ -221,21 +222,21 @@ def render_markdown(plan, top=6):
     are usually different people, with the command honest to each."""
     s = plan["stats"]
     pkgs = plan["packages"]
-    # Split by ecosystem, not layer: a pip/npm package is an app dependency wherever
-    # it sits; only os-package nodes are OS-managed.
-    app = [p for p in pkgs if p["node_type"] != "os-package"]
-    osp = [p for p in pkgs if p["node_type"] == "os-package"]
-    # Unique reachable CVEs cleared — never double-count a CVE shared across packages.
-    cleared = len({c["id"] for p in pkgs for c in p["clears"] if c.get("reachable")})
+    # Focus on reachable risk, and split by who owns the fix (app deps vs OS packages
+    # are usually different people). Only list upgrades that clear a reachable CVE.
+    app = [p for p in pkgs if p["node_type"] != "os-package" and p["reachable_cleared"] > 0]
+    osp = [p for p in pkgs if p["node_type"] == "os-package" and p["reachable_cleared"] > 0]
+    cleared = len({c["id"] for p in (app + osp) for c in p["clears"] if c.get("reachable")})
+    non_reach = len(pkgs) - len(app) - len(osp)
     uf_reach = len({u["id"] for u in plan["unfixable"] if u.get("reachable")})
 
     out = [f"## deph fix path — {md_escape(plan['image'] or 'image')}"]
-    if not pkgs:
+    if not app and not osp:
         out.append(f"No reachable CVE is fixable by an upgrade ({s['reachable']} reachable; "
                    "the rest have no upstream fix or are already current).")
         return "\n".join(out)
 
-    out.append(f"**{len(pkgs)} upgrade(s) clear {cleared} of {s['reachable']} reachable CVEs.**")
+    out.append(f"**{len(app) + len(osp)} upgrade(s) clear {cleared} of {s['reachable']} reachable CVEs.**")
     out.append("")
 
     if app:
@@ -248,9 +249,13 @@ def render_markdown(plan, top=6):
                    "image, or patch in the Dockerfile (`RUN` the command below).")
         out += _rows(osp, 4, flag_major=False)
         out.append("")
-    if uf_reach:
-        out.append(f"{uf_reach} reachable CVE(s) have no upstream fix yet — track, can't upgrade away.")
 
+    notes = []
+    if uf_reach:
+        notes.append(f"{uf_reach} reachable CVE(s) have no upstream fix yet — track, can't upgrade away.")
+    if non_reach:
+        notes.append(f"{non_reach} more package(s) only clear non-reachable CVEs (see report).")
+    out += notes
     return "\n".join(out)
 
 
@@ -264,6 +269,9 @@ def main():
     with open(args.report) as f:
         report = json.load(f)
     plan = build_plan(report)
+    # Local images scan from a tarball, so the report's image_ref is a temp path —
+    # let the caller supply the friendly name for the title.
+    plan["image"] = os.environ.get("DEPH_REMEDIATE_IMAGE") or plan["image"]
 
     if args.format == "json":
         json.dump(plan, sys.stdout, indent=2)

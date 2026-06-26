@@ -232,6 +232,7 @@ runs:
       env:
         DEPH_REMEDIATE_MODE: plan
         DEPH_REMEDIATE_REPORT: ${{ steps.run.outputs.report-json }}
+        DEPH_IMAGE: ${{ inputs.image }}
         DEPH_OUTPUT_DIRECTORY: ${{ steps.run.outputs.output-directory }}
         DEPH_COMMENT_ON_PR: ${{ inputs.comment-on-pr }}
         DEPH_LLM_BASE_URL: ${{ inputs.llm-base-url }}

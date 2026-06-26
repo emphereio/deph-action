@@ -27,7 +27,7 @@ case "${DEPH_REMEDIATE_MODE:-plan}" in
     md="$outdir/remediation.md"
     # The auto comment is DETERMINISTIC by design — no model on every PR (no slop,
     # reproducible, no key, no tokens). The AI is opt-in via the @deph bot.
-    python3 "$root/remediate/plan.py" "$report" >"$md"
+    DEPH_REMEDIATE_IMAGE="${DEPH_IMAGE:-}" python3 "$root/remediate/plan.py" "$report" >"$md"
     # Point at the full report instead of restating it; invite the opt-in bot.
     {
       printf '\n---\n'
