@@ -3,7 +3,7 @@
   "producer": {
     "name": "deph-action",
     "version": "1.0.0",
-    "deph_version": "v0.1.4"
+    "deph_version": "v0.1.5"
   },
   "image": {
     "ref": "prom/prometheus:latest",
@@ -14,8 +14,8 @@
   "source": {
     "repository": "emphereio/deph-action",
     "ref": "refs/heads/main",
-    "sha": "2b9c4cf737f65fa39011654df82071aedbc8bc66",
-    "run_id": "28216604799",
+    "sha": "fe28553e99f2211cbb395b0c33364c793f6171a8",
+    "run_id": "28221995506",
     "run_attempt": "1",
     "workflow": "gallery-refresh",
     "event": "workflow_dispatch"
@@ -78,10 +78,10 @@
       "priority": 51
     },
     {
-      "id": "CVE-2026-42306",
+      "id": "CVE-2026-41567",
       "severity": "HIGH",
       "cvss": 7.2,
-      "epss": 0.00104,
+      "epss": 0.00137,
       "kev": false,
       "fix_version": "",
       "evidence": "binary-symbol",
@@ -92,10 +92,10 @@
       "priority": 47
     },
     {
-      "id": "CVE-2026-41567",
+      "id": "CVE-2026-42306",
       "severity": "HIGH",
       "cvss": 7.2,
-      "epss": 0.00137,
+      "epss": 0.00104,
       "kev": false,
       "fix_version": "",
       "evidence": "binary-symbol",

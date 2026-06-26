@@ -18,22 +18,22 @@ image `grafana/grafana:latest@sha256:121a7a9ece6dc10b969f1f96eed64b4f07dfac0d0b8
 | CVE-2026-25679 | HIGH | 1.25.8 | traced: stdlib |
 | CVE-2026-32289 | MEDIUM | 1.25.9 | traced: stdlib |
 | CVE-2026-27139 | LOW | 1.25.8 | traced: stdlib |
-| CVE-2026-32281 | HIGH | 1.25.9 | binary-symbol: stdlib |
-| CVE-2026-32283 | HIGH | 1.25.9 | binary-symbol: stdlib |
-| CVE-2026-33814 | HIGH | 1.25.10 | binary-symbol: stdlib |
 | CVE-2026-39820 | HIGH | 1.25.10 | binary-symbol: stdlib |
-| CVE-2026-42504 | HIGH | 1.25.11 | binary-symbol: stdlib |
-| CVE-2026-42499 | HIGH | 1.25.10 | binary-symbol: stdlib |
-| CVE-2026-33811 | HIGH | 1.25.10 | binary-symbol: stdlib |
 | CVE-2026-32280 | HIGH | 1.25.9 | binary-symbol: stdlib |
-| CVE-2026-42507 | MEDIUM | 1.25.11 | binary-symbol: stdlib |
-| CVE-2026-39825 | MEDIUM | 1.25.10 | binary-symbol: stdlib |
-| CVE-2026-39826 | MEDIUM | 1.25.10 | binary-symbol: stdlib |
-| CVE-2026-39823 | MEDIUM | 1.25.10 | binary-symbol: stdlib |
+| CVE-2026-42499 | HIGH | 1.25.10 | binary-symbol: stdlib |
+| CVE-2026-33814 | HIGH | 1.25.10 | binary-symbol: stdlib |
+| CVE-2026-32283 | HIGH | 1.25.9 | binary-symbol: stdlib |
+| CVE-2026-33811 | HIGH | 1.25.10 | binary-symbol: stdlib |
+| CVE-2026-42504 | HIGH | 1.25.11 | binary-symbol: stdlib |
+| CVE-2026-32281 | HIGH | 1.25.9 | binary-symbol: stdlib |
 | CVE-2026-27145 | MEDIUM | 1.25.11 | binary-symbol: stdlib |
+| CVE-2026-39826 | MEDIUM | 1.25.10 | binary-symbol: stdlib |
+| CVE-2026-39825 | MEDIUM | 1.25.10 | binary-symbol: stdlib |
+| CVE-2026-42507 | MEDIUM | 1.25.11 | binary-symbol: stdlib |
+| CVE-2026-39823 | MEDIUM | 1.25.10 | binary-symbol: stdlib |
 | CVE-2026-27142 | MEDIUM | 1.25.8 | binary-symbol: stdlib |
 
 3 CVEs are present but deph found no execution path to the affected code.
 
-<sub>deph v0.1.4 · run #28216604799</sub>
+<sub>deph v0.1.5 · run #28221995506</sub>
 <!-- deph-action -->

@@ -386,30 +386,6 @@
         },
         "cves": [
           {
-            "id": "CVE-2026-42306",
-            "severity": "HIGH",
-            "summary": "Docker: Race condition in docker cp allows bind mount redirection to host path",
-            "fix_state": "not-fixed",
-            "cvss_score": 7.2,
-            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:C/C:N/I:H/A:H",
-            "epss_score": 0.00104,
-            "epss_percentile": 0.01258,
-            "data_source": "https://github.com/advisories/GHSA-rg2x-37c3-w2rh",
-            "urls": [
-              "https://github.com/moby/moby/security/advisories/GHSA-rg2x-37c3-w2rh",
-              "https://nvd.nist.gov/vuln/detail/CVE-2026-42306"
-            ],
-            "tier": "reachable",
-            "reachable": true,
-            "evidence": "binary-symbol",
-            "reachable_from": [
-              "github.com/docker/docker"
-            ],
-            "reachability_class": "request",
-            "controllability": "external-input",
-            "class_source": "handler-pattern:net/http"
-          },
-          {
             "id": "CVE-2026-34040",
             "severity": "HIGH",
             "summary": "Moby has AuthZ plugin bypass when provided oversized request bodies",
@@ -502,6 +478,30 @@
             "urls": [
               "https://github.com/moby/moby/security/advisories/GHSA-vp62-88p7-qqf5",
               "https://nvd.nist.gov/vuln/detail/CVE-2026-41568"
+            ],
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "binary-symbol",
+            "reachable_from": [
+              "github.com/docker/docker"
+            ],
+            "reachability_class": "request",
+            "controllability": "external-input",
+            "class_source": "handler-pattern:net/http"
+          },
+          {
+            "id": "CVE-2026-42306",
+            "severity": "HIGH",
+            "summary": "Docker: Race condition in docker cp allows bind mount redirection to host path",
+            "fix_state": "not-fixed",
+            "cvss_score": 7.2,
+            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:C/C:N/I:H/A:H",
+            "epss_score": 0.00104,
+            "epss_percentile": 0.01258,
+            "data_source": "https://github.com/advisories/GHSA-rg2x-37c3-w2rh",
+            "urls": [
+              "https://github.com/moby/moby/security/advisories/GHSA-rg2x-37c3-w2rh",
+              "https://nvd.nist.gov/vuln/detail/CVE-2026-42306"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -5298,25 +5298,25 @@
     ],
     "probe_summary": {
       "ran": true,
-      "audit_id": "3898d79ea20da84ea6ecff173e9d85efb10b08a13508dc9a834d9f58358bc09c",
+      "audit_id": "3b169e9d5a68787a2c4d3f4e6e00f6e5109e952a5ae89c09100765d13ef6b075",
       "collector": "ebpf",
       "fidelity": "full",
       "proc_fidelity": "authoritative",
-      "duration_ms": 45494,
-      "signal_count": 126,
+      "duration_ms": 45528,
+      "signal_count": 120,
       "coverage": [
         {
           "id": "startup+http-stimulus",
           "kind": "startup+http-stimulus",
           "label": "container startup + HTTP stimulus",
-          "ended_ns": 45494068319,
+          "ended_ns": 45528192724,
           "status": "complete"
         }
       ],
       "exit_reason": "exited"
     },
     "scan_meta": {
-      "deph_version": "v0.1.4",
+      "deph_version": "v0.1.5",
       "schema_version": "1",
       "probe_enabled": true
     },
