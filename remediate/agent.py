@@ -131,7 +131,7 @@ def _config():
     }
 
 
-def call_llm(cfg, messages, tools_spec, max_tokens=4096):
+def call_llm(cfg, messages, tools_spec, max_tokens=8000):
     body = json.dumps({
         "model": cfg["model"], "max_tokens": max_tokens,
         "messages": messages, "tools": tools_spec, "tool_choice": "auto",
