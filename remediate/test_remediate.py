@@ -7,6 +7,7 @@ import unittest
 
 import plan
 import tools
+import triage
 
 
 def _report(nodes):
@@ -89,6 +90,46 @@ class Rollup(unittest.TestCase):
         self.assertEqual(ids, {"CVE-1"})
         self.assertEqual({c["id"] for c in v["not_cleared"]}, {"CVE-2"})
         self.assertEqual({c["id"] for c in v["no_fix"]}, {"CVE-3"})
+
+
+class Triage(unittest.TestCase):
+    def test_ignore_only_on_no_path(self):
+        b, r = triage.classify(_cve("X", tier="installed"))
+        self.assertEqual(b, triage.IGNORE)
+        self.assertIn("no execution path", r)
+
+    def test_linked_is_watch(self):
+        self.assertEqual(triage.classify(_cve("X", tier="linked"))[0], triage.WATCH)
+
+    def test_runtime_observed_acts(self):
+        c = _cve("X", tier="reachable")
+        c["runtime_observed"] = True
+        b, r = triage.classify(c)
+        self.assertEqual(b, triage.ACT)
+        self.assertIn("runtime-confirmed", r)
+
+    def test_external_input_acts(self):
+        c = _cve("X", tier="reachable")
+        c["controllability"] = "external-input"
+        self.assertEqual(triage.classify(c)[0], triage.ACT)
+
+    def test_reachable_low_signal_watches(self):
+        c = _cve("X", tier="reachable", sev="MEDIUM")  # no path/exploit signal
+        self.assertEqual(triage.classify(c)[0], triage.WATCH)
+
+    def test_strongest_bucket_wins_across_packages(self):
+        rep = _report({
+            "a": _node("dup", "pip-package", "1.0", [_cve("CVE-D", tier="installed")]),
+            "b": _node("dup2", "pip-package", "1.0",
+                       [dict(_cve("CVE-D", tier="reachable"), evidence="traced")]),
+        })
+        t = build_triage_local(rep)
+        item = next(i for i in t["items"] if i["id"] == "CVE-D")
+        self.assertEqual(item["bucket"], triage.ACT)  # reachable instance wins over installed
+
+
+def build_triage_local(rep):
+    return triage.build_triage(rep)
 
 
 class Security(unittest.TestCase):

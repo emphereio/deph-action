@@ -20,6 +20,7 @@ import urllib.request
 import urllib.error
 
 from plan import build_plan, max_version, _loose, eco_label
+from triage import build_triage
 
 # Package names that reach a registry URL. Conservative on purpose: covers pip,
 # npm (incl. @scope/name), deb, etc.; rejects anything that could escape the path.
@@ -204,6 +205,7 @@ REGISTRY = {
         "type": "object", "properties": {"package": {"type": "string"}}, "required": ["package"],
     }),
     "plan_remediation": (plan_remediation, True, {"type": "object", "properties": {}}),
+    "triage": (build_triage, True, {"type": "object", "properties": {}}),
     "explain_reachability": (explain_reachability, True, {
         "type": "object", "properties": {"cve_id": {"type": "string"}}, "required": ["cve_id"],
     }),
@@ -219,6 +221,7 @@ TOOL_DESCRIPTIONS = {
     "cves_cleared": "VERIFIER: given a package and a proposed target version, return exactly which CVEs that bump clears. Always use this to check a target before recommending it. Deterministic.",
     "package_remediation": "The deterministic rollup for one package (its computed target + cleared CVEs).",
     "plan_remediation": "The whole-image deterministic remediation plan (ranked upgrades + stats).",
+    "triage": "Deterministic triage: every CVE bucketed act/watch/ignore with an anchored reason. The buckets are authoritative — never soften them.",
     "explain_reachability": "Reachability evidence for one CVE: tier, evidence, call path, runtime. Deterministic.",
     "latest_releases": "LIVE registry lookup for versions newer than the scan DB. Advisory, point-in-time.",
 }

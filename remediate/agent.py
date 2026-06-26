@@ -53,6 +53,15 @@ what is specific to THIS image — its reachability and the verified upgrade mat
 generic security advice, never an explanation of what a CVE is, never a restatement of the \
 scan's CVE table. If a line could have been written without the scan, cut it."""
 
+TRIAGE_TASK = """Produce a SHORT triage digest as GitHub markdown — the first-line noise cut.
+Call `triage` for the deterministic buckets (act/watch/ignore); those are AUTHORITATIVE — \
+never move a CVE to a softer bucket or invent a reason.
+- Lead: "N findings → A act · W watch · I ignore."
+- "Act now": CLUSTER the act items by package / shared upgrade, one line each, keeping the \
+anchored reason. Add image-specific context only where it sharpens the call.
+- One line each for watch and ignore, using the deterministic reason.
+- Under ~12 lines. No CVE explanations, no generic advice — you compress and cluster what the tool returns."""
+
 PLAN_TASK = """Write a SHORT "fix path" PR comment in GitHub markdown — not a report.
 
 - First line, bold: how many upgrades clear how many of the REACHABLE CVEs \
@@ -128,7 +137,7 @@ def run_agent(report, task, max_turns=12, trace=None):
 def main():
     ap = argparse.ArgumentParser(description="deph remediation agent (model-agnostic, propose -> verify).")
     ap.add_argument("report")
-    ap.add_argument("--mode", choices=["plan", "ask"], default="plan")
+    ap.add_argument("--mode", choices=["plan", "ask", "triage"], default="plan")
     ap.add_argument("--ask", help="question for --mode ask")
     ap.add_argument("--show-trace", action="store_true", help="print the tool calls the agent made")
     args = ap.parse_args()
@@ -136,7 +145,12 @@ def main():
     with open(args.report) as f:
         report = json.load(f)
 
-    task = PLAN_TASK if args.mode == "plan" else (args.ask or "Summarize the most urgent reachable CVEs.")
+    if args.mode == "plan":
+        task = PLAN_TASK
+    elif args.mode == "triage":
+        task = TRIAGE_TASK
+    else:
+        task = args.ask or "Summarize the most urgent reachable CVEs."
     trace = [] if args.show_trace else None
     out = run_agent(report, task, trace=trace)
 
