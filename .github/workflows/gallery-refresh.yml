@@ -54,6 +54,8 @@ jobs:
         with:
           image: ${{ matrix.image.ref }}
           deph-version: ${{ env.DEPH_VERSION }}
+          probe: ${{ matrix.image.probe || 'off' }}
+          probe-timeout: 45s
       - name: Stage gallery files
         run: |
           set -euo pipefail

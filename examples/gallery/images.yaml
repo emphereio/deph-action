@@ -4,18 +4,25 @@
 #
 # scan:  registry images, re-pulled and re-scanned by the workflow.
 # static: examples not re-scanned by the workflow (e.g. the local demo build).
+#
+# probe: off | startup | dynamic (default off). 'dynamic' adds eBPF runtime
+# confirmation — per-function for Go images, load observation otherwise — and
+# needs the image to run as a service on a bare `docker run`.
 
 scan:
   - ref: apache/superset:latest
     name: superset
     title: apache/superset
     note: Heavy Python image, a dense cross-layer graph.
+    probe: off
   - ref: grafana/grafana:latest
     name: grafana
     title: grafana/grafana
+    probe: dynamic
   - ref: prom/prometheus:latest
     name: prometheus
     title: prom/prometheus
+    probe: dynamic
 
 static:
   - href: ../report.html
