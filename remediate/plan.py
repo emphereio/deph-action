@@ -49,6 +49,27 @@ def _loose(v: str):
     return tuple(out)
 
 
+def _norm(v):
+    """Strip common ecosystem prefixes so Go ('go1.25.7', 'v1.44.0') compares cleanly."""
+    v = str(v).strip()
+    for pre in ("go", "v"):
+        if v.startswith(pre) and v[len(pre):len(pre) + 1].isdigit():
+            return v[len(pre):]
+    return v
+
+
+def is_downgrade(cur, target):
+    """Best-effort: is target <= cur? Normalizes ecosystem prefixes first, then uses
+    PEP 440 when available, else the loose comparator. Used only to drop downgrade /
+    no-op suggestions (grype's fix_version is normally a forward fix)."""
+    nc, nt = _norm(cur), _norm(target)
+    try:
+        from packaging.version import Version
+        return Version(nt) <= Version(nc)
+    except Exception:
+        return _loose(nt) <= _loose(nc)
+
+
 def max_version(versions):
     """Highest version in a same-ecosystem group.
 
@@ -106,10 +127,10 @@ def build_plan(report):
             target = max_version([e["fix_version"] for e in fixable])
             name = n.get("name")
             cur = n.get("version")
-            # Never suggest a downgrade or no-op: if the installed version already
-            # satisfies the highest fix, the CVE is already cleared or a feed
-            # anomaly — not something an upgrade fixes. Skip it.
-            if cur and max_version([cur, target]) == cur:
+            # Never suggest a downgrade: skip only when we can reliably prove the
+            # installed version already satisfies the fix (feed anomaly). Mismatched
+            # formats stay in — better to show a real upgrade than hide it.
+            if cur and is_downgrade(cur, target):
                 continue
             # Only emit a runnable command when the names validate; an unusual
             # string is itself a signal, not something to paste into a shell.
@@ -170,61 +191,65 @@ def build_plan(report):
     }
 
 
-SEV_RANK = {"CRITICAL": 0, "HIGH": 1, "MEDIUM": 2, "LOW": 3, "NEGLIGIBLE": 4, "UNKNOWN": 5}
+def _major_bump(cur, target):
+    """Heuristic: do the leading integers differ? (Flags semver/PEP440 major jumps.)"""
+    a = re.match(r"\D*(\d+)", str(cur or ""))
+    b = re.match(r"\D*(\d+)", str(target or ""))
+    return bool(a and b and a.group(1) != b.group(1))
 
 
-def render_markdown(plan, top=8):
-    s = plan["stats"]
-    out = []
-    out.append(f"## deph remediation plan — {plan['image']}")
-    out.append(
-        f"{s['total']} CVEs · **{s['reachable']} reachable** · "
-        f"{s['resolvable']} resolvable by upgrade ({s['resolvable_reachable']} of them reachable) · "
-        f"base-os {s['base_os']} / app {s['app']}"
-    )
-    out.append("")
-
-    # Lead with packages that clear reachable risk; fall back to highest priority.
-    actionable = [p for p in plan["packages"] if p["reachable_cleared"] > 0] or plan["packages"]
-    out.append("### Do first — ranked by reachable risk removed")
-    for p in actionable[:top]:
-        rc = p["reachable_cleared"]
-        n = len(p["clears"])
-        tag = f"{rc} reachable" if rc else "0 reachable"
-        out.append(
-            f"- **{md_escape(p['package'])} {md_escape(p['current_version'])} → "
-            f"{md_escape(p['target_version'])}** clears {n} CVE(s) ({tag}) · "
-            f"{p['ecosystem']} · {p['layer_origin']}"
-        )
+def _rows(items, limit, flag_major):
+    lines = []
+    ranked = sorted(items, key=lambda p: (p["reachable_cleared"], p["priority_cleared"]), reverse=True)
+    for p in ranked[:limit]:
+        cav = " · major bump" if (flag_major and _major_bump(p["current_version"], p["target_version"])) else ""
         if p.get("command"):
-            out.append(f"  `{p['command']}`")
+            tail = f" · `{p['command']}`"
         else:
-            out.append("  ⚠ unusual package/version string — verify manually before upgrading")
+            tail = " · ⚠ unusual name, verify manually"
+        lines.append(
+            f"- `{md_escape(p['package'])}` {md_escape(p['current_version'])} → "
+            f"{md_escape(p['target_version'])} — {p['reachable_cleared']} reachable{cav}{tail}"
+        )
+    if len(ranked) > limit:
+        lines.append(f"- …and {len(ranked) - limit} more")
+    return lines
+
+
+def render_markdown(plan, top=6):
+    """Terse fix-path. Split by who fixes it (app deps vs OS packages), since those
+    are usually different people, with the command honest to each."""
+    s = plan["stats"]
+    pkgs = plan["packages"]
+    # Split by ecosystem, not layer: a pip/npm package is an app dependency wherever
+    # it sits; only os-package nodes are OS-managed.
+    app = [p for p in pkgs if p["node_type"] != "os-package"]
+    osp = [p for p in pkgs if p["node_type"] == "os-package"]
+    # Unique reachable CVEs cleared — never double-count a CVE shared across packages.
+    cleared = len({c["id"] for p in pkgs for c in p["clears"] if c.get("reachable")})
+    uf_reach = len({u["id"] for u in plan["unfixable"] if u.get("reachable")})
+
+    out = [f"## deph fix path — {md_escape(plan['image'] or 'image')}"]
+    if not pkgs:
+        out.append(f"No reachable CVE is fixable by an upgrade ({s['reachable']} reachable; "
+                   "the rest have no upstream fix or are already current).")
+        return "\n".join(out)
+
+    out.append(f"**{len(pkgs)} upgrade(s) clear {cleared} of {s['reachable']} reachable CVEs.**")
     out.append("")
 
-    # Base-OS rollup: one line, since the move is usually a base-image bump.
-    base = [p for p in plan["packages"] if p["layer_origin"] == "base-image"]
-    base_cleared = sum(len(p["clears"]) for p in base)
-    if base:
-        out.append(
-            f"### Base OS — {len(base)} package(s), {base_cleared} CVE(s) resolvable"
-        )
-        out.append(
-            "These come from the base image (build-history attribution, not your Dockerfile). "
-            "Bumping the base image tag is usually the single move that clears most of them."
-        )
+    if app:
+        out.append("**App dependencies** — you own these: pin in your manifest "
+                   "(requirements.txt / package.json …) and rebuild.")
+        out += _rows(app, top, flag_major=True)
         out.append("")
-
-    if plan["unfixable"]:
-        uniq_uf = sorted({u["id"]: u for u in plan["unfixable"]}.values(),
-                         key=lambda u: SEV_RANK.get((u["severity"] or "UNKNOWN").upper(), 9))
-        out.append(f"### No fix available — {len(uniq_uf)} CVE(s)")
-        for u in uniq_uf[:5]:
-            out.append(
-                f"- {md_escape(u['id'])} ({md_escape(u['package'])}, "
-                f"{md_escape(u['fix_state'] or 'no fix')}) — track, not actionable here."
-            )
+    if osp:
+        out.append("**OS / base image** — usually your platform/base-image team: bump the base "
+                   "image, or patch in the Dockerfile (`RUN` the command below).")
+        out += _rows(osp, 4, flag_major=False)
         out.append("")
+    if uf_reach:
+        out.append(f"{uf_reach} reachable CVE(s) have no upstream fix yet — track, can't upgrade away.")
 
     return "\n".join(out)
 

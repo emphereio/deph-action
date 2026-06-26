@@ -25,7 +25,9 @@ mkdir -p "$outdir"
 case "${DEPH_REMEDIATE_MODE:-plan}" in
   plan)
     md="$outdir/remediation.md"
-    python3 "$agent" "$report" --mode plan >"$md"
+    # The auto comment is DETERMINISTIC by design — no model on every PR (no slop,
+    # reproducible, no key, no tokens). The AI is opt-in via the @deph bot.
+    python3 "$root/remediate/plan.py" "$report" >"$md"
     # Point at the full report instead of restating it; invite the opt-in bot.
     {
       printf '\n---\n'

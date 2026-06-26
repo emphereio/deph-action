@@ -38,6 +38,16 @@ class VersionCompare(unittest.TestCase):
         self.assertTrue(tools.version_le("2.36-9+deb12u13", "2.36-9+deb12u14"))
 
 
+class Downgrade(unittest.TestCase):
+    def test_normalizes_go_and_v_prefixes(self):
+        self.assertTrue(plan.is_downgrade("v1.44.0", "v1.41.0"))     # real downgrade
+        self.assertFalse(plan.is_downgrade("go1.25.7", "1.25.11"))   # real upgrade, kept
+        self.assertTrue(plan.is_downgrade("go1.26.3", "1.25.11"))    # already ahead, dropped
+
+    def test_keeps_real_upgrades_in_odd_formats(self):
+        self.assertFalse(plan.is_downgrade("2.36-9+deb12u13", "2.36-9+deb12u14"))
+
+
 class Rollup(unittest.TestCase):
     def setUp(self):
         self.report = _report({
