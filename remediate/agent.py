@@ -53,6 +53,26 @@ what is specific to THIS image — its reachability and the verified upgrade mat
 generic security advice, never an explanation of what a CVE is, never a restatement of the \
 scan's CVE table. If a line could have been written without the scan, cut it."""
 
+CONTEXT_TASK = """Triage the REACHABLE CVEs the way a senior security analyst would.
+
+deph has already PROVEN these are reachable — that gate is fixed; never dispute it or
+call anything "not reachable". You refine WITHIN the reachable set using judgment a tool
+can't make: reading each CVE's description against this specific image.
+
+Steps:
+1. Call `triage`; take the `act` items (the highest-priority reachable). If there are few,
+   also take the strongest `watch` items.
+2. For each, call `cve_context` and READ the description. Then judge, given THIS image
+   (infer its purpose from the image name + platform + the reachable-from path + the
+   package's role): is the vulnerable functionality actually exercised/exploitable here?
+
+Output one tight line per CVE:
+`CVE-id` · package · **[exploitable-here | unlikely-here | verify]** · one sentence grounded
+in the description vs this image (e.g. "RAW-image parser bug; a blog rarely ingests RAW
+files → unlikely" or "request-path XML parse; this is an API that parses XML → exploitable").
+Cluster identical reasoning. When you genuinely can't tell, say **verify** and name exactly
+what to check. Lead with exploitable-here. Be honest and concise — no filler, no CVE 101."""
+
 TRIAGE_TASK = """Produce a SHORT triage digest as GitHub markdown — the first-line noise cut.
 Call `triage` for the deterministic buckets (act/watch/ignore); those are AUTHORITATIVE — \
 never move a CVE to a softer bucket or invent a reason.
@@ -137,7 +157,7 @@ def run_agent(report, task, max_turns=12, trace=None):
 def main():
     ap = argparse.ArgumentParser(description="deph remediation agent (model-agnostic, propose -> verify).")
     ap.add_argument("report")
-    ap.add_argument("--mode", choices=["plan", "ask", "triage"], default="plan")
+    ap.add_argument("--mode", choices=["plan", "ask", "triage", "context"], default="plan")
     ap.add_argument("--ask", help="question for --mode ask")
     ap.add_argument("--show-trace", action="store_true", help="print the tool calls the agent made")
     args = ap.parse_args()
@@ -149,6 +169,8 @@ def main():
         task = PLAN_TASK
     elif args.mode == "triage":
         task = TRIAGE_TASK
+    elif args.mode == "context":
+        task = CONTEXT_TASK
     else:
         task = args.ask or "Summarize the most urgent reachable CVEs."
     trace = [] if args.show_trace else None

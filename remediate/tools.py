@@ -122,6 +122,42 @@ def plan_remediation(report):
     return build_plan(report)
 
 
+def cve_context(report, cve_id):
+    """Everything a human analyst reads to judge a CVE in context: the description,
+    CVSS vector, EPSS, the reachable-from path, the affected package/version, and
+    the image + platform. The deterministic reachability is the gate; this is the
+    material the AI reasons over WITHIN that gate."""
+    g = report["graph"]
+    instances, src = [], None
+    for n in g["nodes"].values():
+        for c in n.get("cves") or []:
+            if c["id"] != cve_id:
+                continue
+            src = c
+            instances.append({
+                "package": n.get("name"), "version": n.get("version"),
+                "node_type": n.get("type"), "tier": c.get("tier"),
+                "evidence": c.get("evidence"), "reachability_class": c.get("reachability_class"),
+                "controllability": c.get("controllability"),
+                "reachable_from": (c.get("reachable_from") or [])[:12],
+                "layer_origin": c.get("layer_origin"),
+            })
+    if not src:
+        return {"cve": cve_id, "note": "not found"}
+    return {
+        "cve": cve_id,
+        "description": src.get("summary"),
+        "severity": src.get("severity"),
+        "cvss_vector": src.get("cvss_vector"),
+        "cvss_score": src.get("cvss_score"),
+        "epss": src.get("epss_score"),
+        "fix_version": src.get("fix_version"),
+        "image": g.get("image_ref"),
+        "platform": g.get("os_family"),
+        "instances": instances,
+    }
+
+
 def explain_reachability(report, cve_id):
     """Reachability evidence for one CVE: where it sits and how deph reached it."""
     hits = []
@@ -209,6 +245,9 @@ REGISTRY = {
     "explain_reachability": (explain_reachability, True, {
         "type": "object", "properties": {"cve_id": {"type": "string"}}, "required": ["cve_id"],
     }),
+    "cve_context": (cve_context, True, {
+        "type": "object", "properties": {"cve_id": {"type": "string"}}, "required": ["cve_id"],
+    }),
     "latest_releases": (latest_releases, False, {
         "type": "object",
         "properties": {"ecosystem": {"type": "string"}, "package": {"type": "string"}},
@@ -223,6 +262,7 @@ TOOL_DESCRIPTIONS = {
     "plan_remediation": "The whole-image deterministic remediation plan (ranked upgrades + stats).",
     "triage": "Deterministic triage: every CVE bucketed act/watch/ignore with an anchored reason. The buckets are authoritative — never soften them.",
     "explain_reachability": "Reachability evidence for one CVE: tier, evidence, call path, runtime. Deterministic.",
+    "cve_context": "Everything an analyst reads about one CVE: description, CVSS vector, EPSS, the reachable-from path, package/version, and the image + platform. Use it to judge real-world exploitability in THIS image.",
     "latest_releases": "LIVE registry lookup for versions newer than the scan DB. Advisory, point-in-time.",
 }
 
