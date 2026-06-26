@@ -93,6 +93,43 @@ inputs:
       "0" uses the repository default; otherwise 1–90.
     required: false
     default: "0"
+  remediate:
+    description: >-
+      Remediation plan: off | plan. 'plan' turns the scan into a ranked fix plan
+      (which upgrade clears which reachable CVEs) and, on PRs, posts it as a sticky
+      comment. With no llm-model it posts the deterministic plan; with one it adds
+      AI narration and freshness checks.
+    required: false
+    default: "off"
+  mode:
+    description: >-
+      scan | investigate. 'investigate' skips scanning and answers `question`
+      against an existing `report` JSON — this is what the @deph PR bot calls.
+    required: false
+    default: scan
+  question:
+    description: "Question to answer when mode=investigate."
+    required: false
+    default: ""
+  report:
+    description: "Path to an existing deph report JSON for mode=investigate."
+    required: false
+    default: ""
+  llm-base-url:
+    description: >-
+      OpenAI-compatible base URL for the remediation model. Works with OpenAI,
+      Anthropic (compat endpoint), OpenRouter, Groq, and local runtimes (Ollama,
+      vLLM). The model is the user's choice; the tools are the contract.
+    required: false
+    default: "https://api.openai.com/v1"
+  llm-model:
+    description: "Model id for remediation. Empty disables AI; the deterministic plan still runs."
+    required: false
+    default: ""
+  llm-api-key:
+    description: "API key for the LLM endpoint. Omit for keyless local servers."
+    required: false
+    default: ""
 
 outputs:
   report-json:
@@ -134,6 +171,12 @@ outputs:
   deph-exit-code:
     description: "deph scan exit code (0 clean, 1 findings, 2 error)."
     value: ${{ steps.run.outputs.deph-exit-code }}
+  remediation-markdown:
+    description: Path to the remediation plan (mode=scan) or the investigation answer (mode=investigate).
+    value: ${{ steps.remediate.outputs.remediation-markdown || steps.investigate.outputs.remediation-markdown }}
+  answer:
+    description: The investigation answer text (mode=investigate).
+    value: ${{ steps.investigate.outputs.answer }}
 
 runs:
   using: composite
@@ -142,6 +185,7 @@ runs:
     # while restore-keys restores the most recent prior DB at job start — so the
     # ~50MB grype DB is reused but still refreshes as deph updates it.
     - name: Cache deph vulnerability database
+      if: ${{ inputs.mode != 'investigate' }}
       uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
       with:
         path: ~/.cache/deph/grype
@@ -151,6 +195,7 @@ runs:
 
     - name: Run deph
       id: run
+      if: ${{ inputs.mode != 'investigate' }}
       shell: bash
       env:
         DEPH_ACTION_PATH: ${{ github.action_path }}
@@ -178,10 +223,44 @@ runs:
         GITHUB_WORKFLOW: ${{ github.workflow }}
       run: "$DEPH_ACTION_PATH/scripts/run.sh"
 
+    # Remediation plan from the scan (deterministic floor + optional AI narration).
+    # Posts its own sticky PR comment; degrades to the deterministic plan with no model.
+    - name: Remediation plan
+      id: remediate
+      if: ${{ inputs.mode != 'investigate' && inputs.remediate == 'plan' }}
+      shell: bash
+      env:
+        DEPH_REMEDIATE_MODE: plan
+        DEPH_REMEDIATE_REPORT: ${{ steps.run.outputs.report-json }}
+        DEPH_OUTPUT_DIRECTORY: ${{ steps.run.outputs.output-directory }}
+        DEPH_COMMENT_ON_PR: ${{ inputs.comment-on-pr }}
+        DEPH_LLM_BASE_URL: ${{ inputs.llm-base-url }}
+        DEPH_LLM_MODEL: ${{ inputs.llm-model }}
+        DEPH_LLM_API_KEY: ${{ inputs.llm-api-key }}
+        GH_TOKEN: ${{ inputs.deph-token != '' && inputs.deph-token || github.token }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        GITHUB_REF: ${{ github.ref }}
+      run: "${{ github.action_path }}/scripts/remediate.sh"
+
+    # Investigate mode (the @deph bot): answer a question against an existing report.
+    - name: Investigate
+      id: investigate
+      if: ${{ inputs.mode == 'investigate' }}
+      shell: bash
+      env:
+        DEPH_REMEDIATE_MODE: investigate
+        DEPH_REMEDIATE_REPORT: ${{ inputs.report }}
+        DEPH_REMEDIATE_QUESTION: ${{ inputs.question }}
+        DEPH_OUTPUT_DIRECTORY: ${{ inputs.output-directory }}
+        DEPH_LLM_BASE_URL: ${{ inputs.llm-base-url }}
+        DEPH_LLM_MODEL: ${{ inputs.llm-model }}
+        DEPH_LLM_API_KEY: ${{ inputs.llm-api-key }}
+      run: "${{ github.action_path }}/scripts/remediate.sh"
+
     # Capture artifacts BEFORE the SARIF upload and the gate, so a missing
     # security-events permission or a tripped gate never costs you the report.
     - name: Upload report artifact
-      if: ${{ inputs.upload-artifact == 'true' }}
+      if: ${{ inputs.mode != 'investigate' && inputs.upload-artifact == 'true' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: ${{ inputs.artifact-name }}
@@ -190,14 +269,14 @@ runs:
         retention-days: ${{ inputs.retention-days }}
 
     - name: Upload SARIF to code scanning
-      if: ${{ inputs.upload-sarif == 'true' && steps.run.outputs.sarif != '' }}
+      if: ${{ inputs.mode != 'investigate' && inputs.upload-sarif == 'true' && steps.run.outputs.sarif != '' }}
       uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
       with:
         sarif_file: ${{ steps.run.outputs.sarif }}
         category: deph
 
     - name: Gate
-      if: ${{ steps.run.outputs.gate-tripped == 'true' }}
+      if: ${{ inputs.mode != 'investigate' && steps.run.outputs.gate-tripped == 'true' }}
       shell: bash
       env:
         DEPH_GATE_POLICY: ${{ inputs.fail-on }}
