@@ -12,7 +12,7 @@ on:
     inputs:
       deph-version:
         description: deph release tag to test
-        default: v0.1.1
+        default: v0.1.3
         required: true
   pull_request:
 
@@ -20,7 +20,7 @@ permissions:
   contents: read
 
 env:
-  DEPH_VERSION: ${{ inputs.deph-version || 'v0.1.1' }}
+  DEPH_VERSION: ${{ inputs.deph-version || 'v0.1.3' }}
 
 jobs:
   # 1. Registry path: deph pulls a public image directly (no local daemon image).
@@ -177,3 +177,33 @@ jobs:
           gh api "repos/${{ github.repository }}/issues/${PR}/comments" --jq '.[].body' \
             | grep -q '<!-- deph-action -->' && echo "sticky PR comment posted OK" \
             || { echo "no deph-action sticky comment found on PR #${PR}"; exit 1; }
+
+  # 6. Probe path: the eBPF runtime probe (dynamic) on a Go image must attach
+  #    uprobes and confirm >=1 CVE by execution (evidence=traced). Needs Linux +
+  #    root; the action elevates via sudo automatically on hosted runners.
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - id: scan
+        uses: ./
+        with:
+          image: traefik:v3.0
+          deph-version: ${{ env.DEPH_VERSION }}
+          probe: dynamic
+          probe-timeout: 45s
+          artifact-name: e2e-probe
+      - name: Assert runtime-confirmed (traced) CVEs
+        run: |
+          v='${{ steps.scan.outputs.verdict-json }}'
+          test -s "$v" || { echo "no verdict produced"; exit 1; }
+          python3 - "$v" <<'PY'
+          import json, sys
+          d = json.load(open(sys.argv[1]))
+          inpath = d["summary"]["in_path"]
+          traced = [c for c in d.get("in_path_cves", []) if "traced" in (c.get("evidence", "") or "")]
+          print(f"in_path={inpath} runtime-confirmed(traced)={len(traced)}")
+          assert inpath > 0, "expected in-path CVEs"
+          assert len(traced) > 0, "expected >=1 runtime-confirmed (evidence=traced) CVE from the dynamic probe"
+          print(f"OK — probe confirmed {len(traced)} CVE(s) by runtime execution")
+          PY

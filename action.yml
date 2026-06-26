@@ -25,7 +25,7 @@ inputs:
   deph-version:
     description: deph release tag to download (from emphereio/deph-dist releases).
     required: false
-    default: v0.1.1
+    default: v0.1.3
   deph-token:
     description: >-
       Token used to download the deph release binary. Leave empty to use the
@@ -40,6 +40,19 @@ inputs:
     description: "Optional VEX document path(s) passed to deph for suppression."
     required: false
     default: ""
+  probe:
+    description: >-
+      Runtime probe (Linux runners only): off | startup | dynamic. 'startup' runs the
+      image and observes what loads at startup (eBPF). 'dynamic' also attaches eBPF
+      uprobes to vulnerable functions and drives the entrypoint to confirm CVEs reachable
+      by execution. Needs a root-capable runner with Docker (GitHub-hosted ubuntu works;
+      the action uses sudo automatically). It runs your image, so point it at your own builds.
+    required: false
+    default: "off"
+  probe-timeout:
+    description: "Probe window, e.g. 30s. Only used when probe is not off."
+    required: false
+    default: "30s"
   fail-on:
     description: >-
       Gate the job on in-path findings: none | any-reachable | reachable-high |
@@ -148,6 +161,8 @@ runs:
         DEPH_IMAGE_DIGEST: ${{ inputs.image-digest }}
         DEPH_SEVERITY: ${{ inputs.severity }}
         DEPH_VEX: ${{ inputs.vex }}
+        DEPH_PROBE: ${{ inputs.probe }}
+        DEPH_PROBE_TIMEOUT: ${{ inputs.probe-timeout }}
         DEPH_FAIL_ON: ${{ inputs.fail-on }}
         DEPH_UPLOAD_SARIF: ${{ inputs.upload-sarif }}
         DEPH_UPLOAD_SBOM: ${{ inputs.upload-sbom }}

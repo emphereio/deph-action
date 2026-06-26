@@ -143,12 +143,46 @@ if [[ -n "${DEPH_VEX:-}" ]]; then
   for v in ${DEPH_VEX//,/ }; do common_flags+=(--vex "$v"); done
 fi
 
-scan_flags=(scan "$scan_target" "${common_flags[@]}" --format json -o "$report_json" --ui-out "$report_html")
+# ---- runtime probe (opt-in): off | startup | dynamic -----------------------
+# eBPF needs root, so the probe pass runs under sudo when we are not already root.
+# If the runner can't support it (non-Linux, no Docker, no passwordless sudo), we
+# warn and fall back to static-only rather than failing the whole scan.
+probe_mode="${DEPH_PROBE:-off}"
+probe_flags=()
+run_prefix=()
+if [[ "$probe_mode" != "off" ]]; then
+  probe_timeout="${DEPH_PROBE_TIMEOUT:-30s}"
+  if [[ "$(uname -s)" != "Linux" ]]; then
+    log "probe=${probe_mode} requested but the runner is not Linux — skipping runtime probe (static results only)"
+    probe_mode="off"
+  elif ! command -v docker >/dev/null 2>&1; then
+    log "probe=${probe_mode} requested but Docker is unavailable — skipping runtime probe (static results only)"
+    probe_mode="off"
+  elif [[ "$(id -u)" -ne 0 ]]; then
+    if command -v sudo >/dev/null 2>&1 && sudo -n true >/dev/null 2>&1; then
+      run_prefix=(sudo -E)
+    else
+      log "probe=${probe_mode} needs root for eBPF but passwordless sudo is unavailable — skipping runtime probe (static results only)"
+      probe_mode="off"
+    fi
+  fi
+fi
+case "$probe_mode" in
+  startup) probe_flags=(--probe --probe-timeout "$probe_timeout") ;;
+  dynamic) probe_flags=(--probe --probe-dynamic --probe-timeout "$probe_timeout") ;;
+esac
+
+scan_flags=(scan "$scan_target" "${common_flags[@]}" "${probe_flags[@]}" --format json -o "$report_json" --ui-out "$report_html")
 log "scanning: deph ${scan_flags[*]}"
 set +e
-"$deph_bin" "${scan_flags[@]}"
+"${run_prefix[@]}" "$deph_bin" "${scan_flags[@]}"
 deph_exit=$?
 set -e
+# If the probe ran under sudo, the report files are root-owned — hand them back to
+# the runner user so the later (non-root) steps can read and upload them.
+if [[ ${#run_prefix[@]} -gt 0 ]]; then
+  sudo chown -R "$(id -u):$(id -g)" "$out_dir" 2>/dev/null || true
+fi
 log "deph scan exited ${deph_exit} (0=clean, 1=findings, 2=error)"
 [[ "$deph_exit" -le 1 ]] || die "deph scan failed (exit ${deph_exit})"
 [[ -s "$report_json" ]] || die "deph did not produce a report at ${report_json}"

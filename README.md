@@ -139,10 +139,12 @@ When you push the image, pass the digest from `docker/build-push-action` so the 
 | --- | --- | --- | --- |
 | `image` | yes | | Local image name (auto-saved & scanned) or a registry reference deph pulls. |
 | `image-digest` | no | | Digest to bind the verdict to, e.g. `${{ steps.build.outputs.digest }}`. |
-| `deph-version` | no | `v0.1.1` | deph release tag to download (from `emphereio/deph-dist`). |
+| `deph-version` | no | `v0.1.3` | deph release tag to download (from `emphereio/deph-dist`). |
 | `deph-token` | no | | Token to download the deph release; falls back to `github.token`. Set a PAT only if the deph repo is private. |
 | `severity` | no | | Severity filter passed to deph (e.g. `critical,high`). |
 | `vex` | no | | VEX document path(s) for suppression. |
+| `probe` | no | `off` | Runtime probe (Linux only): `off` \| `startup` \| `dynamic`. See [Runtime probe](#runtime-probe). |
+| `probe-timeout` | no | `30s` | Probe window when `probe` is on. |
 | `fail-on` | no | `none` | Gate: `none` \| `any-reachable` \| `reachable-high` \| `reachable-critical`. |
 | `upload-sarif` | no | `false` | Upload reachable-only SARIF to code scanning (second scan pass). |
 | `upload-sbom` | no | `false` | Emit a CycloneDX SBOM (second scan pass). |
@@ -151,6 +153,27 @@ When you push the image, pass the digest from `docker/build-push-action` so the 
 | `upload-artifact` | no | `true` | Upload the report directory as a workflow artifact. |
 | `artifact-name` | no | `deph-report` | Name of the uploaded artifact. |
 | `retention-days` | no | `0` | Days to retain the report artifact (TTL). `0` = repo default; otherwise 1–90. |
+
+## Runtime probe
+
+Off by default. Opt in to add a runtime layer on top of the static reachability:
+
+- **`probe: startup`** runs your image and observes what actually loads at startup (eBPF `openat`/`execve`), so a CVE in a library that never loads can be set aside. Works for **any image**.
+- **`probe: dynamic`** also attaches eBPF uprobes to vulnerable functions and drives the entrypoint, flipping CVEs that **execute** to reachable with `evidence: traced`. Function-level confirmation is **Go today**; non-Go images still get the startup observation but not per-function confirmation.
+
+Runtime-confirmed findings flow into `verdict.json`, the report, and the PR comment, marked `evidence: traced`.
+
+**Requirements and safety:**
+- **Linux runner with Docker and root.** GitHub-hosted `ubuntu-latest` works out of the box — eBPF needs root, so the action elevates with `sudo` itself and hands file ownership back; you configure nothing. On a runner that can't get root or Docker, the probe is **skipped with a warning and the static results still ship** — the job never fails just because the probe couldn't run.
+- **It runs your image.** The probe `docker run`s the target (dropped capabilities, CPU/memory/pid limits) on the ephemeral runner. Point it at **your own builds**, not untrusted third-party images.
+- The probe runs deph (a signed, attestation-verified binary) as root, so if you're security-conscious this is extra reason to pin the action by commit SHA rather than `@v0`.
+
+```yaml
+- uses: emphereio/deph-action@v0
+  with:
+    image: my-app:${{ github.sha }}   # your built image
+    probe: dynamic                    # runtime confirmation (Go: per-function; others: load observation)
+```
 
 ## Outputs
 
