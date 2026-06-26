@@ -44,8 +44,10 @@ def classify(c):
         return ACT, "reachable on the request path"
     if c.get("evidence") == "traced":
         return ACT, "full call path traced from app code"
-    if sev == "CRITICAL" or epss >= 0.10:
-        return ACT, f"reachable; elevated exploit signal (EPSS {epss:.0%}, {sev or 'unrated'})"
+    if epss >= 0.10:
+        return ACT, f"reachable; high exploit likelihood (EPSS {epss:.0%})"
+    if sev == "CRITICAL":
+        return ACT, f"reachable + CRITICAL severity (EPSS {epss:.0%})"
     return WATCH, f"reachable, low exploit signal (EPSS {epss:.0%})"
 
 
