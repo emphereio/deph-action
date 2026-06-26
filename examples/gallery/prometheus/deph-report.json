@@ -3,8 +3,8 @@
     "os_packages": 0,
     "elf_libraries": 0,
     "app_packages": 217,
-    "total_cves": 23,
-    "reachable_cves": 8,
+    "total_cves": 7,
+    "reachable_cves": 7,
     "config_issues": 1
   },
   "graph": {
@@ -161,51 +161,7 @@
         "version": "v1.55.7",
         "metadata": {
           "has_symbols": "true"
-        },
-        "cves": [
-          {
-            "id": "CVE-2020-8911",
-            "severity": "MEDIUM",
-            "summary": "A padding oracle vulnerability exists in the AWS S3 Crypto SDK for GoLang versions prior to V2. The SDK allows users to encrypt files with AES-CBC without computing a Message Authentication Code (MAC), which then allows an attacker who has write access to the target's S3 bucket and can observe whether or not an endpoint with access to the key can decrypt a file, they can reconstruct the plaintext with (on average) 128*length (plaintext) queries to the endpoint, by exploiting CBC's ability to manipulate the bytes of the next block and PKCS5 padding errors. It is recommended to update your SDK to V2 or later, and re-encrypt your files.",
-            "cvss_score": 5.6,
-            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:N/A:N",
-            "epss_score": 0.00348,
-            "epss_percentile": 0.26502,
-            "data_source": "https://github.com/google/security-research/security/advisories/GHSA-f5pg-7wfw-84q9",
-            "urls": [
-              "https://github.com/aws/aws-sdk-go/commit/1e84382fa1c0086362b5a4b68e068d4f8518d40e",
-              "https://github.com/aws/aws-sdk-go/commit/ae9b9fd92af132cfd8d879809d8611825ba135f4",
-              "https://github.com/aws/aws-sdk-go/pull/3403",
-              "https://aws.amazon.com/blogs/developer/updates-to-the-amazon-s3-encryption-client/?s=09",
-              "https://bugzilla.redhat.com/show_bug.cgi?id=1869800",
-              "https://github.com/sophieschmieg/exploits/tree/master/aws_s3_crypto_poc"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2020-8912",
-            "severity": "LOW",
-            "summary": "A vulnerability in the in-band key negotiation exists in the AWS S3 Crypto SDK for GoLang versions prior to V2. An attacker with write access to the targeted bucket can change the encryption algorithm of an object in the bucket, which can then allow them to change AES-GCM to AES-CTR. Using this in combination with a decryption oracle can reveal the authentication key used by AES-GCM as decrypting the GMAC tag leaves the authentication key recoverable as an algebraic equation. It is recommended to update your SDK to V2 or later, and re-encrypt your files.",
-            "cvss_score": 2.5,
-            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:L/I:N/A:N",
-            "epss_score": 0.00231,
-            "epss_percentile": 0.13724,
-            "data_source": "https://github.com/google/security-research/security/advisories/GHSA-7f33-f4f5-xwgw",
-            "urls": [
-              "https://github.com/aws/aws-sdk-go/commit/1e84382fa1c0086362b5a4b68e068d4f8518d40e",
-              "https://github.com/aws/aws-sdk-go/commit/ae9b9fd92af132cfd8d879809d8611825ba135f4",
-              "https://github.com/aws/aws-sdk-go/pull/3403",
-              "https://aws.amazon.com/blogs/developer/updates-to-the-amazon-s3-encryption-client/?s=09",
-              "https://bugzilla.redhat.com/show_bug.cgi?id=1869801",
-              "https://github.com/sophieschmieg/exploits/tree/master/aws_s3_crypto_poc"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          }
-        ]
+        }
       },
       "go:github.com/aws/aws-sdk-go-v2": {
         "id": "go:github.com/aws/aws-sdk-go-v2",
@@ -430,18 +386,18 @@
         },
         "cves": [
           {
-            "id": "CVE-2026-33997",
+            "id": "CVE-2026-42306",
             "severity": "HIGH",
-            "summary": "Moby has an Off-by-one error in its plugin privilege validation in github.com/docker/docker",
-            "cvss_score": 8.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N",
-            "epss_score": 0.00315,
-            "epss_percentile": 0.23089,
-            "data_source": "https://github.com/moby/moby/security/advisories/GHSA-pxq6-2prw-chj9",
+            "summary": "Docker: Race condition in docker cp allows bind mount redirection to host path",
+            "fix_state": "not-fixed",
+            "cvss_score": 7.2,
+            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:C/C:N/I:H/A:H",
+            "epss_score": 0.00104,
+            "epss_percentile": 0.01258,
+            "data_source": "https://github.com/advisories/GHSA-rg2x-37c3-w2rh",
             "urls": [
-              "https://github.com/moby/moby/commit/f4d6f25bf0c3fa12d4968320a45685947756a22a",
-              "https://docs.docker.com/engine/extend/legacy_plugins",
-              "https://github.com/moby/moby/releases/tag/docker-v29.3.1"
+              "https://github.com/moby/moby/security/advisories/GHSA-rg2x-37c3-w2rh",
+              "https://nvd.nist.gov/vuln/detail/CVE-2026-42306"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -456,64 +412,21 @@
           {
             "id": "CVE-2026-34040",
             "severity": "HIGH",
-            "summary": "Moby has AuthZ plugin bypass when provided oversized request bodies in github.com/docker/docker",
-            "cvss_score": 7.8,
-            "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+            "summary": "Moby has AuthZ plugin bypass when provided oversized request bodies",
+            "fix_version": "29.3.1",
+            "fix_state": "fixed",
+            "cvss_score": 8.8,
+            "cvss_vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
             "epss_score": 0.08123,
-            "epss_percentile": 0.94097,
-            "data_source": "https://github.com/moby/moby/security/advisories/GHSA-x744-4wpc-v9h2",
+            "epss_percentile": 0.94103,
+            "data_source": "https://github.com/advisories/GHSA-x744-4wpc-v9h2",
             "urls": [
+              "https://github.com/moby/moby/security/advisories/GHSA-v23v-6jw2-98fq",
+              "https://github.com/moby/moby/security/advisories/GHSA-x744-4wpc-v9h2",
               "https://github.com/moby/moby/commit/e89edb19ad7de0407a5d31e3111cb01aa10b5a38",
               "https://docs.docker.com/engine/extend/plugins_authorization",
-              "https://github.com/moby/moby/security/advisories/GHSA-v23v-6jw2-98fq"
-            ],
-            "tier": "reachable",
-            "reachable": true,
-            "evidence": "binary-symbol",
-            "reachable_from": [
-              "github.com/docker/docker"
-            ],
-            "reachability_class": "request",
-            "controllability": "external-input",
-            "class_source": "handler-pattern:net/http"
-          },
-          {
-            "id": "CVE-2026-41568",
-            "severity": "MEDIUM",
-            "summary": "Docker: Race condition in docker cp allows creation of arbitrary empty files on the host via symlink swap",
-            "fix_state": "not-fixed",
-            "cvss_score": 6.1,
-            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:C/C:N/I:L/A:H",
-            "epss_score": 0.00108,
-            "epss_percentile": 0.01449,
-            "data_source": "https://github.com/advisories/GHSA-vp62-88p7-qqf5",
-            "urls": [
-              "https://github.com/moby/moby/security/advisories/GHSA-vp62-88p7-qqf5",
-              "https://nvd.nist.gov/vuln/detail/CVE-2026-41568"
-            ],
-            "tier": "reachable",
-            "reachable": true,
-            "evidence": "binary-symbol",
-            "reachable_from": [
-              "github.com/docker/docker"
-            ],
-            "reachability_class": "request",
-            "controllability": "external-input",
-            "class_source": "handler-pattern:net/http"
-          },
-          {
-            "id": "CVE-2026-42306",
-            "severity": "HIGH",
-            "summary": "Docker: Race condition in docker cp allows bind mount redirection to host path",
-            "fix_state": "not-fixed",
-            "cvss_score": 7.2,
-            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:C/C:N/I:H/A:H",
-            "epss_score": 0.00104,
-            "epss_percentile": 0.01259,
-            "data_source": "https://github.com/advisories/GHSA-rg2x-37c3-w2rh",
-            "urls": [
-              "https://github.com/moby/moby/security/advisories/GHSA-rg2x-37c3-w2rh",
-              "https://nvd.nist.gov/vuln/detail/CVE-2026-42306"
+              "https://nvd.nist.gov/vuln/detail/CVE-2026-34040",
+              "https://github.com/moby/moby/releases/tag/docker-v29.3.1"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -533,11 +446,62 @@
             "cvss_score": 7.2,
             "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:C/C:H/I:H/A:N",
             "epss_score": 0.00137,
-            "epss_percentile": 0.03447,
+            "epss_percentile": 0.0345,
             "data_source": "https://github.com/advisories/GHSA-x86f-5xw2-fm2r",
             "urls": [
               "https://github.com/moby/moby/security/advisories/GHSA-x86f-5xw2-fm2r",
               "https://nvd.nist.gov/vuln/detail/CVE-2026-41567"
+            ],
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "binary-symbol",
+            "reachable_from": [
+              "github.com/docker/docker"
+            ],
+            "reachability_class": "request",
+            "controllability": "external-input",
+            "class_source": "handler-pattern:net/http"
+          },
+          {
+            "id": "CVE-2026-33997",
+            "severity": "MEDIUM",
+            "summary": "Moby has an Off-by-one error in its plugin privilege validation",
+            "fix_state": "not-fixed",
+            "cvss_score": 6.8,
+            "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:N",
+            "epss_score": 0.00315,
+            "epss_percentile": 0.23125,
+            "data_source": "https://github.com/advisories/GHSA-pxq6-2prw-chj9",
+            "urls": [
+              "https://github.com/moby/moby/security/advisories/GHSA-pxq6-2prw-chj9",
+              "https://github.com/moby/moby/commit/f4d6f25bf0c3fa12d4968320a45685947756a22a",
+              "https://docs.docker.com/engine/extend/legacy_plugins",
+              "https://github.com/moby/moby/releases/tag/docker-v29.3.1",
+              "https://nvd.nist.gov/vuln/detail/CVE-2026-33997"
+            ],
+            "tier": "reachable",
+            "reachable": true,
+            "evidence": "binary-symbol",
+            "reachable_from": [
+              "github.com/docker/docker"
+            ],
+            "reachability_class": "request",
+            "controllability": "external-input",
+            "class_source": "handler-pattern:net/http"
+          },
+          {
+            "id": "CVE-2026-41568",
+            "severity": "MEDIUM",
+            "summary": "Docker: Race condition in docker cp allows creation of arbitrary empty files on the host via symlink swap",
+            "fix_state": "not-fixed",
+            "cvss_score": 6.1,
+            "cvss_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:C/C:N/I:L/A:H",
+            "epss_score": 0.00108,
+            "epss_percentile": 0.0145,
+            "data_source": "https://github.com/advisories/GHSA-vp62-88p7-qqf5",
+            "urls": [
+              "https://github.com/moby/moby/security/advisories/GHSA-vp62-88p7-qqf5",
+              "https://nvd.nist.gov/vuln/detail/CVE-2026-41568"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -773,7 +737,7 @@
             "cvss_score": 5.3,
             "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:N/A:N",
             "epss_score": 0.00357,
-            "epss_percentile": 0.27447,
+            "epss_percentile": 0.27479,
             "data_source": "https://github.com/advisories/GHSA-2464-8j7c-4cjm",
             "urls": [
               "https://github.com/go-viper/mapstructure/security/advisories/GHSA-2464-8j7c-4cjm",
@@ -782,26 +746,6 @@
               "https://nvd.nist.gov/vuln/detail/CVE-2025-11065",
               "https://access.redhat.com/security/cve/CVE-2025-11065",
               "https://bugzilla.redhat.com/show_bug.cgi?id=2391829"
-            ],
-            "tier": "reachable",
-            "reachable": true,
-            "evidence": "binary-buildinfo",
-            "reachable_from": [
-              "github.com/go-viper/mapstructure/v2"
-            ],
-            "reachability_class": "request",
-            "controllability": "external-input",
-            "class_source": "handler-pattern:net/http"
-          },
-          {
-            "id": "GO-2025-3900",
-            "severity": "UNKNOWN",
-            "summary": "Go-viper's mapstructure May Leak Sensitive Information in Logs in github.com/go-viper/mapstructure",
-            "fix_version": "2.4.0",
-            "fix_state": "fixed",
-            "data_source": "https://github.com/go-viper/mapstructure/security/advisories/GHSA-2464-8j7c-4cjm",
-            "urls": [
-              "https://github.com/go-viper/mapstructure/commit/742921c9ba2854d27baa64272487fc5075d2c39c"
             ],
             "tier": "reachable",
             "reachable": true,
@@ -1625,7 +1569,7 @@
             "cvss_score": 6.9,
             "cvss_vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:P/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N",
             "epss_score": 0.00223,
-            "epss_percentile": 0.1267,
+            "epss_percentile": 0.1268,
             "data_source": "https://github.com/advisories/GHSA-cp6g-7hqx-qxhp",
             "urls": [
               "https://nvd.nist.gov/vuln/detail/CVE-2026-2303",
@@ -1818,259 +1762,7 @@
         "version": "v0.51.0",
         "metadata": {
           "has_symbols": "true"
-        },
-        "cves": [
-          {
-            "id": "CVE-2026-46595",
-            "severity": "CRITICAL",
-            "summary": "Previously, CVE-2024-45337 fixed an authorization bypass for misused ssh server configurations; if any other type of callback is passed other than public key, then the source-address validation would be skipped.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 10,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:L",
-            "epss_score": 0.00385,
-            "epss_percentile": 0.30163,
-            "data_source": "https://go.dev/issue/79570",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
-              "https://go.dev/cl/781642"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-39832",
-            "severity": "CRITICAL",
-            "summary": "When adding a key to a remote agent constraint extensions such as restrict-destination-v00@openssh.com were not serialized in the request. Destination restrictions were silently stripped when forwarding keys, allowing unrestricted use of the key on the remote host. The client now serializes all constraint extensions. Additionally, the in-memory keyring returned by NewKeyring() now rejects keys with unsupported constraint extensions instead of silently ignoring them.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 9.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
-            "epss_score": 0.00397,
-            "epss_percentile": 0.31428,
-            "data_source": "https://go.dev/issue/79435",
-            "urls": [
-              "https://go.dev/cl/778642",
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-39834",
-            "severity": "CRITICAL",
-            "summary": "When writing data larger than 4GB in a single Write call on an SSH channel, an integer overflow in the internal payload size calculation caused the write loop to spin indefinitely, sending empty packets without making progress. The size comparison now uses int64 to prevent truncation.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 9.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H",
-            "epss_score": 0.00466,
-            "epss_percentile": 0.36763,
-            "data_source": "https://go.dev/issue/79567",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
-              "https://go.dev/cl/781663"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-46597",
-            "severity": "HIGH",
-            "summary": "An incorrectly placed cast from bytes to int allowed for server-side panic in the AES-GCM packet decoder for well-crafted inputs.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 7.5,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.00359,
-            "epss_percentile": 0.27656,
-            "data_source": "https://go.dev/issue/79561",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
-              "https://go.dev/cl/781620"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-39830",
-            "severity": "CRITICAL",
-            "summary": "A malicious SSH peer could send unsolicited global request responses to fill an internal buffer, blocking the connection's read loop. The blocked goroutine could not be released by calling Close(), resulting in a resource leak per connection. Unsolicited global responses are now discarded.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 9.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H",
-            "epss_score": 0.00392,
-            "epss_percentile": 0.30821,
-            "data_source": "https://go.dev/issue/79564",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
-              "https://go.dev/cl/781640",
-              "https://go.dev/cl/781664"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-39827",
-            "severity": "MEDIUM",
-            "summary": "An authenticated SSH client that repeatedly opened channels which were rejected by the server caused unbounded memory growth, eventually crashing the server process and affecting all connected users. Rejected channels are now properly removed from the connection's internal state and released for garbage collection.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 6.5,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.00196,
-            "epss_percentile": 0.09415,
-            "data_source": "https://go.dev/issue/35127",
-            "urls": [
-              "https://go.dev/cl/781320",
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-42508",
-            "severity": "CRITICAL",
-            "summary": "Previously, a revoked 'SignatureKey' belonging to a CA was not correctly checked for revocation. Now, both the 'key' and 'key.SignatureKey' are checked for @revoked.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 9.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
-            "epss_score": 0.00368,
-            "epss_percentile": 0.28474,
-            "data_source": "https://go.dev/issue/79568",
-            "urls": [
-              "https://go.dev/cl/781220",
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-39831",
-            "severity": "CRITICAL",
-            "summary": "The Verify() method for FIDO/U2F security key types (sk-ecdsa-sha2-nistp256@openssh.com, sk-ssh-ed25519@openssh.com) did not check the User Presence flag. Signatures generated without physical touch were accepted, allowing unattended use of a hardware security key. To restore the previous behavior, return a \"no-touch-required\" extension in Permissions.Extensions from PublicKeyCallback.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 9.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
-            "epss_score": 0.00373,
-            "epss_percentile": 0.29008,
-            "data_source": "https://go.dev/issue/79566",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
-              "https://go.dev/cl/781662"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-39828",
-            "severity": "MEDIUM",
-            "summary": "When an SSH server authentication callback returned PartialSuccessError with non-nil Permissions, those permissions were silently discarded, potentially dropping certificate restrictions such as force-command after a second factor succeeded. Returning non-nil Permissions with PartialSuccessError now results in a connection error.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 6.3,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L",
-            "epss_score": 0.00175,
-            "epss_percentile": 0.07062,
-            "data_source": "https://go.dev/issue/79562",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
-              "https://go.dev/cl/781621"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-39835",
-            "severity": "MEDIUM",
-            "summary": "SSH servers which use CertChecker as a public key callback without setting IsUserAuthority or IsHostAuthority could be caused to panic by a client presenting a certificate. CertChecker now returns an error instead of panicking when these callbacks are nil.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 5.3,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-            "epss_score": 0.0021,
-            "epss_percentile": 0.11111,
-            "data_source": "https://go.dev/issue/79563",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
-              "https://go.dev/cl/781660"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-39833",
-            "severity": "CRITICAL",
-            "summary": "The in-memory keyring returned by NewKeyring() silently accepted keys with the ConfirmBeforeUse constraint but never enforced it. The key would sign without any confirmation prompt, with no indication to the caller that the constraint was not in effect. NewKeyring() now returns an error when unsupported constraints are requested.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 9.1,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
-            "epss_score": 0.0036,
-            "epss_percentile": 0.27767,
-            "data_source": "https://go.dev/issue/79436",
-            "urls": [
-              "https://go.dev/cl/778640",
-              "https://go.dev/cl/778641",
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-46598",
-            "severity": "MEDIUM",
-            "summary": "For certain crafted inputs, a 'ed25519.PrivateKey' was created by casting malformed wire bytes, leading to a panic when used.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 5.3,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-            "epss_score": 0.00313,
-            "epss_percentile": 0.22906,
-            "data_source": "https://go.dev/issue/79596",
-            "urls": [
-              "https://go.dev/cl/781360",
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          },
-          {
-            "id": "CVE-2026-39829",
-            "severity": "HIGH",
-            "summary": "The RSA and DSA public key parsers did not enforce size limits on key parameters. A crafted public key with an excessively large modulus or DSA parameter could cause several minutes of CPU consumption during signature verification. This could be triggered by unauthenticated clients during public key authentication. RSA moduli are now limited to 8192 bits, and DSA parameters are validated per FIPS 186-2.",
-            "fix_version": "0.52.0",
-            "fix_state": "fixed",
-            "cvss_score": 7.5,
-            "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-            "epss_score": 0.00304,
-            "epss_percentile": 0.21873,
-            "data_source": "https://go.dev/issue/79565",
-            "urls": [
-              "https://groups.google.com/g/golang-announce/c/a082jnz-LvI",
-              "https://go.dev/cl/781641",
-              "https://go.dev/cl/781661"
-            ],
-            "tier": "installed",
-            "reachable": false,
-            "class_source": "vulnsym:symbol-eliminated"
-          }
-        ]
+        }
       },
       "go:golang.org/x/exp": {
         "id": "go:golang.org/x/exp",
@@ -2336,7 +2028,7 @@
         "name": "prometheus",
         "path": "/bin/prometheus",
         "metadata": {
-          "function_count": "130369",
+          "function_count": "130415",
           "go_version": "go1.25.11",
           "handler_class": "request",
           "handler_framework": "net/http",
@@ -2350,7 +2042,7 @@
         "path": "/bin/promtool",
         "metadata": {
           "exec_confidence": "heuristic",
-          "function_count": "128834",
+          "function_count": "128880",
           "go_version": "go1.25.11",
           "handler_class": "request",
           "handler_framework": "net/http",
@@ -2361,147 +2053,7 @@
     "edges": [
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/xhit/go-str2duration/v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/mitchellh/reflectwalk",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/fxamacker/cbor/v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/mwitkow/go-conntrack",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.uber.org/zap",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/go-logr/logr",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:google.golang.org/protobuf",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/hashicorp/go-multierror",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/auto/sdk",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/hashicorp/nomad/api",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/otel",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/Code-Hex/go-generics-cache",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/otel/log",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/google/go-cmp",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/hashicorp/serf",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/open-telemetry/opentelemetry-collector-contrib/processor/deltatocumulativeprocessor",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/go-openapi/jsonreference",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/modern-go/concurrent",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/pkg/errors",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/Azure/azure-sdk-for-go/sdk/internal",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/aws/aws-sdk-go-v2/service/ssooidc",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/x448/float16",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:gopkg.in/ini.v1",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/go-logr/stdr",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/oklog/ulid",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/KimMachineGun/automemlimit",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:k8s.io/utils",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatautil",
+        "to": "go:github.com/ovh/go-ovh",
         "type": "depends-on"
       },
       {
@@ -2511,87 +2063,22 @@
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.uber.org/multierr",
+        "to": "go:github.com/klauspost/compress",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/oklog/run",
+        "to": "go:go.opentelemetry.io/otel",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:cloud.google.com/go/compute/metadata",
+        "to": "go:github.com/aws/aws-sdk-go-v2/service/sso",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/bboreham/go-loser",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/go-openapi/spec",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/go-openapi/errors",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/puzpuzpuz/xsync/v3",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/stackitcloud/stackit-sdk-go/core",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/collector/internal/telemetry",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/prometheus/otlptranslator",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/golang/protobuf",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/go-zookeeper/zk",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/aws/aws-sdk-go-v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/hashicorp/go-retryablehttp",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/alecthomas/units",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/mitchellh/mapstructure",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/AzureAD/microsoft-authentication-library-for-go",
+        "to": "go:github.com/pmezard/go-difflib",
         "type": "depends-on"
       },
       {
@@ -2601,157 +2088,22 @@
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/prometheus/client_golang",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/collector/pdata",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/kolo/xmlrpc",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/prometheus/procfs",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:cloud.google.com/go/auth",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:gopkg.in/yaml.v3",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/googleapis/enterprise-certificate-proxy",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
         "to": "go:github.com/aws/smithy-go",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/armon/go-metrics",
+        "to": "go:github.com/google/s2a-go",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/vultr/govultr/v2",
+        "to": "go:github.com/asaskevich/govalidator",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:google.golang.org/genproto/googleapis/api",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/go-openapi/analysis",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/prometheus/client_model",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/modern-go/reflect2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/envoyproxy/protoc-gen-validate",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/go-resty/resty/v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/davecgh/go-spew",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/gorilla/websocket",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/google/go-querystring",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.mongodb.org/mongo-driver",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/spf13/pflag",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/envoyproxy/go-control-plane/envoy",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/knadh/koanf/maps",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/fatih/color",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/googleapis/gax-go/v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/edsrzf/mmap-go",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/mdlayher/vsock",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/collector/pipeline",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/aws/aws-sdk-go-v2/feature/ec2/imds",
+        "to": "go:github.com/prometheus/common",
         "type": "depends-on"
       },
       {
@@ -2761,42 +2113,17 @@
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/otel/metric",
+        "to": "go:github.com/cncf/xds/go",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/proto/otlp",
+        "to": "go:github.com/modern-go/concurrent",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:google.golang.org/grpc",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/digitalocean/godo",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.uber.org/goleak",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/grafana/regexp",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/hashicorp/go-hclog",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/felixge/httpsnoop",
+        "to": "go:google.golang.org/genproto/googleapis/api",
         "type": "depends-on"
       },
       {
@@ -2811,142 +2138,7 @@
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/beorn7/perks",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:golang.org/x/time",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/cespare/xxhash/v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/stretchr/testify",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/hashicorp/errwrap",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:stdlib",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/opencontainers/go-digest",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/distribution/reference",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:k8s.io/klog",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
         "to": "go:google.golang.org/genproto/googleapis/rpc",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:golang.org/x/term",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.uber.org/atomic",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/collector/confmap/xconfmap",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/hashicorp/golang-lru",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/jmespath/go-jmespath",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/aws/aws-sdk-go-v2/credentials",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/facette/natsort",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/docker/docker",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/prometheus/sigv4",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/aws/aws-sdk-go",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/otel/trace",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/hashicorp/go-version",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/emicklei/go-restful/v3",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/google/uuid",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/go-openapi/jsonpointer",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/opencontainers/image-spec",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/dennwc/varint",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:gopkg.in/evanphx/json-patch.v4",
         "type": "depends-on"
       },
       {
@@ -2956,12 +2148,302 @@
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/go-openapi/swag",
+        "to": "go:golang.org/x/exp",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/fsnotify/fsnotify",
+        "to": "go:gopkg.in/yaml.v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/knadh/koanf/v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/fxamacker/cbor/v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/otel/trace",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/collector/pipeline",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/google/pprof",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/kylelemons/godebug",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/aws/aws-sdk-go-v2/service/ssooidc",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:k8s.io/utils",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:google.golang.org/protobuf",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/emicklei/go-restful/v3",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/opencontainers/image-spec",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/google/gofuzz",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/collector/processor",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:k8s.io/api",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:google.golang.org/api",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/munnerz/goautoneg",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/jpillora/backoff",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/hashicorp/go-immutable-radix",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:k8s.io/klog/v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/auto/sdk",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/mdlayher/vsock",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/bboreham/go-loser",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.uber.org/goleak",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/knadh/koanf/providers/confmap",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/gogo/protobuf",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/pkg/browser",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:golang.org/x/term",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/distribution/reference",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/otel/metric",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/golang/protobuf",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/mattn/go-colorable",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/stretchr/testify",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/docker/docker",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/oklog/ulid/v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/felixge/httpsnoop",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/stackitcloud/stackit-sdk-go/core",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/go-openapi/jsonreference",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/hashicorp/go-cleanhttp",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/opencontainers/go-digest",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/prometheus/procfs",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/pkg/errors",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:golang.org/x/time",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/mitchellh/mapstructure",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/googleapis/enterprise-certificate-proxy",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:k8s.io/apimachinery",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/aws/aws-sdk-go-v2/config",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:golang.org/x/net",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:sigs.k8s.io/json",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/collector/confmap",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/spf13/pflag",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.uber.org/multierr",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/go-openapi/jsonpointer",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/hashicorp/go-version",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/go-viper/mapstructure/v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/containerd/errdefs",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/docker/go-connections",
         "type": "depends-on"
       },
       {
@@ -2971,22 +2453,102 @@
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/josharian/intern",
+        "to": "go:github.com/google/gnostic-models",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:cloud.google.com/go/auth/oauth2adapt",
+        "to": "go:github.com/knadh/koanf/maps",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/ovh/go-ovh",
+        "to": "go:github.com/golang/snappy",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/prometheus/common",
+        "to": "go:github.com/gobwas/glob",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/edsrzf/mmap-go",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/hashicorp/go-rootcerts",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:stdlib",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/collector/confmap/xconfmap",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/Azure/azure-sdk-for-go/sdk/internal",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/dennwc/varint",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/go-openapi/strfmt",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/gorilla/websocket",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v4",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/go-logr/stdr",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/json-iterator/go",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/hashicorp/golang-lru",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/beorn7/perks",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/hashicorp/go-multierror",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/collector/pdata",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/docker/go-units",
         "type": "depends-on"
       },
       {
@@ -3001,112 +2563,12 @@
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/docker/go-connections",
+        "to": "go:github.com/alecthomas/units",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:golang.org/x/sys",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/aws/aws-sdk-go-v2/config",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/collector/confmap",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/prometheus/exporter-toolkit",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/hetznercloud/hcloud-go/v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/prometheus/alertmanager",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:golang.org/x/net",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/cncf/xds/go",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/json-iterator/go",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/asaskevich/govalidator",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/kylelemons/godebug",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/go-openapi/strfmt",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/aws/aws-sdk-go-v2/service/sso",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/google/gnostic-models",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:sigs.k8s.io/json",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/scaleway/scaleway-sdk-go",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/go-openapi/validate",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/mattn/go-isatty",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/knadh/koanf/v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/ionos-cloud/sdk-go/v6",
+        "to": "go:github.com/open-telemetry/opentelemetry-collector-contrib/pkg/pdatautil",
         "type": "depends-on"
       },
       {
@@ -3116,77 +2578,12 @@
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/contrib/bridges/otelzap",
+        "to": "go:github.com/nsf/jsondiff",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/linode/linodego",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/klauspost/compress",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/gobwas/glob",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/julienschmidt/httprouter",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/go-viper/mapstructure/v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:k8s.io/klog/v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/Azure/azure-sdk-for-go/sdk/azcore",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/hashicorp/go-immutable-radix",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:golang.org/x/exp",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/collector/processor",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/golang/snappy",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/alecthomas/kingpin/v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/aws/aws-sdk-go-v2/internal/ini",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/google/s2a-go",
+        "to": "go:go.mongodb.org/mongo-driver",
         "type": "depends-on"
       },
       {
@@ -3196,167 +2593,27 @@
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp",
+        "to": "go:github.com/josharian/intern",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.uber.org/automaxprocs",
+        "to": "go:github.com/prometheus/client_model",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/aws/aws-sdk-go-v2/internal/configsources",
+        "to": "go:github.com/jmespath/go-jmespath",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/open-telemetry/opentelemetry-collector-contrib/internal/exp/metrics",
+        "to": "go:go.uber.org/atomic",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:google.golang.org/api",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/docker/go-units",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/knadh/koanf/providers/confmap",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:k8s.io/client-go",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/google/pprof",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/jpillora/backoff",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/otel/sdk",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/mailru/easyjson",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/pkg/browser",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/mitchellh/copystructure",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/gophercloud/gophercloud/v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/containerd/errdefs/pkg",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/hashicorp/go-cleanhttp",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/pbnjay/memory",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:gopkg.in/yaml.v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/hashicorp/consul/api",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:golang.org/x/oauth2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:gopkg.in/inf.v0",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/mattn/go-colorable",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/collector/featuregate",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/google/gofuzz",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/prometheus/common/assets",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/coreos/go-systemd/v22",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/nsf/jsondiff",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/collector/component",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/munnerz/goautoneg",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/pmezard/go-difflib",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:k8s.io/apimachinery",
+        "to": "go:github.com/cespare/xxhash/v2",
         "type": "depends-on"
       },
       {
@@ -3366,57 +2623,27 @@
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/moby/docker-image-spec",
+        "to": "go:github.com/coreos/go-systemd/v22",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/gogo/protobuf",
+        "to": "go:github.com/go-openapi/analysis",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/collector/semconv",
+        "to": "go:github.com/prometheus/otlptranslator",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/Azure/azure-sdk-for-go/sdk/azidentity",
+        "to": "go:gopkg.in/evanphx/json-patch.v4",
         "type": "depends-on"
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:k8s.io/api",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/golang-jwt/jwt/v5",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/oklog/ulid/v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/hashicorp/go-rootcerts",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/grpc-ecosystem/grpc-gateway/v2",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/hashicorp/cronexpr",
-        "type": "depends-on"
-      },
-      {
-        "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/containerd/errdefs",
+        "to": "go:cloud.google.com/go/compute/metadata",
         "type": "depends-on"
       },
       {
@@ -3426,7 +2653,17 @@
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:github.com/miekg/dns",
+        "to": "go:github.com/go-logr/logr",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/open-telemetry/opentelemetry-collector-contrib/internal/exp/metrics",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/hashicorp/consul/api",
         "type": "depends-on"
       },
       {
@@ -3436,7 +2673,462 @@
       },
       {
         "from": "go:github.com/prometheus/prometheus",
-        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp",
+        "to": "go:github.com/mattn/go-isatty",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.uber.org/automaxprocs",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/collector/internal/telemetry",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/contrib/bridges/otelzap",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/ionos-cloud/sdk-go/v6",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/prometheus/alertmanager",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/googleapis/gax-go/v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/hashicorp/go-hclog",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/go-openapi/spec",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/prometheus/exporter-toolkit",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/modern-go/reflect2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/google/uuid",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/containerd/errdefs/pkg",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/hashicorp/serf",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:cloud.google.com/go/auth",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/collector/featuregate",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/Azure/azure-sdk-for-go/sdk/azidentity",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.uber.org/zap",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/collector/component",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/google/go-cmp",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:gopkg.in/ini.v1",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/otel/sdk",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:cloud.google.com/go/auth/oauth2adapt",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/aws/aws-sdk-go-v2/internal/configsources",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/prometheus/client_golang",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/aws/aws-sdk-go-v2/feature/ec2/imds",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/digitalocean/godo",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/x448/float16",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/otel/exporters/otlp/otlptrace",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/open-telemetry/opentelemetry-collector-contrib/processor/deltatocumulativeprocessor",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/armon/go-metrics",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/collector/semconv",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/miekg/dns",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/kolo/xmlrpc",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:gopkg.in/yaml.v3",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:golang.org/x/sys",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:google.golang.org/grpc",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/go-zookeeper/zk",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/go-resty/resty/v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/envoyproxy/go-control-plane/envoy",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/go-openapi/validate",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/scaleway/scaleway-sdk-go",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/Azure/azure-sdk-for-go/sdk/azcore",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/xhit/go-str2duration/v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/vultr/govultr/v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/hashicorp/errwrap",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/google/go-querystring",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/go-openapi/errors",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/grpc-ecosystem/grpc-gateway/v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/puzpuzpuz/xsync/v3",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/go-openapi/swag",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/mwitkow/go-conntrack",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/mitchellh/reflectwalk",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/grafana/regexp",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:golang.org/x/oauth2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/hashicorp/nomad/api",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/alecthomas/kingpin/v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:gopkg.in/inf.v0",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/oklog/ulid",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/aws/aws-sdk-go-v2/credentials",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/linode/linodego",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/hashicorp/go-retryablehttp",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/facette/natsort",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/pbnjay/memory",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/proto/otlp",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/hetznercloud/hcloud-go/v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/prometheus/sigv4",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/aws/aws-sdk-go-v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/moby/docker-image-spec",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/fatih/color",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:k8s.io/klog",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:k8s.io/client-go",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/otel/log",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/gophercloud/gophercloud/v2",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/hashicorp/cronexpr",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/julienschmidt/httprouter",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/AzureAD/microsoft-authentication-library-for-go",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/fsnotify/fsnotify",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/mitchellh/copystructure",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/oklog/run",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/aws/aws-sdk-go",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/aws/aws-sdk-go-v2/internal/ini",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/mailru/easyjson",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/KimMachineGun/automemlimit",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/davecgh/go-spew",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/Code-Hex/go-generics-cache",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/golang-jwt/jwt/v5",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/envoyproxy/protoc-gen-validate",
+        "type": "depends-on"
+      },
+      {
+        "from": "go:github.com/prometheus/prometheus",
+        "to": "go:github.com/prometheus/common/assets",
         "type": "depends-on"
       },
       {
@@ -5545,31 +5237,31 @@
     "layers": [
       {
         "index": 0,
-        "diff_id": "sha256:488b881850fc4df4e7e5c884a74de77b66fcf2509e666cd85af73d98c50721a2",
+        "diff_id": "sha256:aa7b79d243076cc760c0b06dd535bb163cb216cb4fcf4d38019ffee58d862cc6",
         "created_by": "BusyBox 1.38.0 (uclibc), Buildroot 2026.02.2, Debian 13",
         "origin": "base-image"
       },
       {
         "index": 1,
-        "diff_id": "sha256:1a85928717f7486ffa83c4f10351832cc43527d107f5e7c29a557124ad5e8108",
+        "diff_id": "sha256:d0c5af984100337bec48cd8ded1f364a8e6912460fca01944d045890e1139da2",
         "created_by": "COPY /rootfs / # buildkit",
         "origin": "base-image"
       },
       {
         "index": 2,
-        "diff_id": "sha256:d05881acd104dcc4c040cee01f6a014acbdc97f02e083f1950bb9d1cc53bf4ef",
-        "created_by": "COPY .build/linux-arm64/prometheus /bin/prometheus # buildkit",
+        "diff_id": "sha256:6d67da7bf6c1f85746de1534a50bf93ef9d3e4528f1359e5ce57c3b131632a2d",
+        "created_by": "COPY .build/linux-amd64/prometheus /bin/prometheus # buildkit",
         "origin": "application"
       },
       {
         "index": 3,
-        "diff_id": "sha256:0c28a1a9ead5e97fbc209983c6dda6b4c372f4a10cf954a7349b9350b998efa9",
-        "created_by": "COPY .build/linux-arm64/promtool /bin/promtool # buildkit",
+        "diff_id": "sha256:7d64468f9044bcf83741c4019c408596ffa53c108b416bdf4bb6cc98d5b8a32e",
+        "created_by": "COPY .build/linux-amd64/promtool /bin/promtool # buildkit",
         "origin": "application"
       },
       {
         "index": 4,
-        "diff_id": "sha256:71a7ceb7afa95a3e6170e94f42ac3a3c319a6adf91004403db2cd447d2ec52d3",
+        "diff_id": "sha256:b7ecf3eb6c093a1a1ad63200ac4d86847e699678ffa01f167dc6cb14c4f672fa",
         "created_by": "COPY documentation/examples/prometheus.yml /etc/prometheus/prometheus.yml # buildkit",
         "origin": "application"
       },
@@ -5593,92 +5285,42 @@
       },
       {
         "index": 8,
-        "diff_id": "sha256:e7ec0a32d9cf14fcc58a54195ed82206a466c27b3505ab1a1f50ad9b8de18dce",
+        "diff_id": "sha256:5c162d3e3c5772c552b6a242fa66e075897465f1851e1f22fa4b273c0acf3eec",
         "created_by": "WORKDIR /prometheus",
         "origin": "application"
       },
       {
         "index": 9,
-        "diff_id": "sha256:48d99efe15dfd18456244d46dbeac456306befd43af9d16d8d6dcd4b0bac9123",
-        "created_by": "RUN |2 ARCH=arm64 OS=linux /bin/sh -c chown -R nobody:nobody /etc/prometheus /prometheus \u0026\u0026 chmod g+w /prometheus # buildkit",
+        "diff_id": "sha256:12386280cc4fe2279b4372e5d329c5e832bb1fe16a65a70dfdceb6eb9429742f",
+        "created_by": "RUN |2 ARCH=amd64 OS=linux /bin/sh -c chown -R nobody:nobody /etc/prometheus /prometheus \u0026\u0026 chmod g+w /prometheus # buildkit",
         "origin": "application"
       }
     ],
+    "probe_summary": {
+      "ran": true,
+      "audit_id": "3898d79ea20da84ea6ecff173e9d85efb10b08a13508dc9a834d9f58358bc09c",
+      "collector": "ebpf",
+      "fidelity": "full",
+      "proc_fidelity": "authoritative",
+      "duration_ms": 45494,
+      "signal_count": 126,
+      "coverage": [
+        {
+          "id": "startup+http-stimulus",
+          "kind": "startup+http-stimulus",
+          "label": "container startup + HTTP stimulus",
+          "ended_ns": 45494068319,
+          "status": "complete"
+        }
+      ],
+      "exit_reason": "exited"
+    },
     "scan_meta": {
-      "deph_version": "dev",
-      "schema_version": "1"
+      "deph_version": "v0.1.4",
+      "schema_version": "1",
+      "probe_enabled": true
     },
     "cve_priority": {
-      "CVE-2020-8911": {
-        "priority": 12,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 2,
-            "max_score": 30,
-            "reason": "EPSS 0.00"
-          },
-          {
-            "dimension": "reachability",
-            "score": 0,
-            "max_score": 25,
-            "reason": "installed (no evidence type)"
-          },
-          {
-            "dimension": "exposure",
-            "score": 0,
-            "max_score": 20,
-            "reason": "no exposure signals"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
-            "score": 4,
-            "max_score": 10,
-            "reason": "fix status unknown"
-          }
-        ]
-      },
-      "CVE-2020-8912": {
-        "priority": 12,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 2,
-            "max_score": 30,
-            "reason": "EPSS 0.00"
-          },
-          {
-            "dimension": "reachability",
-            "score": 0,
-            "max_score": 25,
-            "reason": "installed (no evidence type)"
-          },
-          {
-            "dimension": "exposure",
-            "score": 0,
-            "max_score": 20,
-            "reason": "no exposure signals"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
-            "score": 4,
-            "max_score": 10,
-            "reason": "fix status unknown"
-          }
-        ]
-      },
       "CVE-2025-11065": {
         "priority": 51,
         "factors": [
@@ -5750,7 +5392,7 @@
         ]
       },
       "CVE-2026-33997": {
-        "priority": 48,
+        "priority": 47,
         "factors": [
           {
             "dimension": "exploitation",
@@ -5778,14 +5420,14 @@
           },
           {
             "dimension": "fixability",
-            "score": 4,
+            "score": 3,
             "max_score": 10,
-            "reason": "fix status unknown"
+            "reason": "not yet fixed"
           }
         ]
       },
       "CVE-2026-34040": {
-        "priority": 56,
+        "priority": 62,
         "factors": [
           {
             "dimension": "exploitation",
@@ -5813,324 +5455,9 @@
           },
           {
             "dimension": "fixability",
-            "score": 4,
-            "max_score": 10,
-            "reason": "fix status unknown"
-          }
-        ]
-      },
-      "CVE-2026-39827": {
-        "priority": 18,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 2,
-            "max_score": 30,
-            "reason": "EPSS 0.00"
-          },
-          {
-            "dimension": "reachability",
-            "score": 0,
-            "max_score": 25,
-            "reason": "installed (no evidence type)"
-          },
-          {
-            "dimension": "exposure",
-            "score": 0,
-            "max_score": 20,
-            "reason": "no exposure signals"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
             "score": 10,
             "max_score": 10,
-            "reason": "fix available: 0.52.0"
-          }
-        ]
-      },
-      "CVE-2026-39828": {
-        "priority": 18,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 2,
-            "max_score": 30,
-            "reason": "EPSS 0.00"
-          },
-          {
-            "dimension": "reachability",
-            "score": 0,
-            "max_score": 25,
-            "reason": "installed (no evidence type)"
-          },
-          {
-            "dimension": "exposure",
-            "score": 0,
-            "max_score": 20,
-            "reason": "no exposure signals"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
-            "score": 10,
-            "max_score": 10,
-            "reason": "fix available: 0.52.0"
-          }
-        ]
-      },
-      "CVE-2026-39829": {
-        "priority": 18,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 2,
-            "max_score": 30,
-            "reason": "EPSS 0.00"
-          },
-          {
-            "dimension": "reachability",
-            "score": 0,
-            "max_score": 25,
-            "reason": "installed (no evidence type)"
-          },
-          {
-            "dimension": "exposure",
-            "score": 0,
-            "max_score": 20,
-            "reason": "no exposure signals"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
-            "score": 10,
-            "max_score": 10,
-            "reason": "fix available: 0.52.0"
-          }
-        ]
-      },
-      "CVE-2026-39830": {
-        "priority": 18,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 2,
-            "max_score": 30,
-            "reason": "EPSS 0.00"
-          },
-          {
-            "dimension": "reachability",
-            "score": 0,
-            "max_score": 25,
-            "reason": "installed (no evidence type)"
-          },
-          {
-            "dimension": "exposure",
-            "score": 0,
-            "max_score": 20,
-            "reason": "no exposure signals"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
-            "score": 10,
-            "max_score": 10,
-            "reason": "fix available: 0.52.0"
-          }
-        ]
-      },
-      "CVE-2026-39831": {
-        "priority": 18,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 2,
-            "max_score": 30,
-            "reason": "EPSS 0.00"
-          },
-          {
-            "dimension": "reachability",
-            "score": 0,
-            "max_score": 25,
-            "reason": "installed (no evidence type)"
-          },
-          {
-            "dimension": "exposure",
-            "score": 0,
-            "max_score": 20,
-            "reason": "no exposure signals"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
-            "score": 10,
-            "max_score": 10,
-            "reason": "fix available: 0.52.0"
-          }
-        ]
-      },
-      "CVE-2026-39832": {
-        "priority": 18,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 2,
-            "max_score": 30,
-            "reason": "EPSS 0.00"
-          },
-          {
-            "dimension": "reachability",
-            "score": 0,
-            "max_score": 25,
-            "reason": "installed (no evidence type)"
-          },
-          {
-            "dimension": "exposure",
-            "score": 0,
-            "max_score": 20,
-            "reason": "no exposure signals"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
-            "score": 10,
-            "max_score": 10,
-            "reason": "fix available: 0.52.0"
-          }
-        ]
-      },
-      "CVE-2026-39833": {
-        "priority": 18,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 2,
-            "max_score": 30,
-            "reason": "EPSS 0.00"
-          },
-          {
-            "dimension": "reachability",
-            "score": 0,
-            "max_score": 25,
-            "reason": "installed (no evidence type)"
-          },
-          {
-            "dimension": "exposure",
-            "score": 0,
-            "max_score": 20,
-            "reason": "no exposure signals"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
-            "score": 10,
-            "max_score": 10,
-            "reason": "fix available: 0.52.0"
-          }
-        ]
-      },
-      "CVE-2026-39834": {
-        "priority": 18,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 2,
-            "max_score": 30,
-            "reason": "EPSS 0.00"
-          },
-          {
-            "dimension": "reachability",
-            "score": 0,
-            "max_score": 25,
-            "reason": "installed (no evidence type)"
-          },
-          {
-            "dimension": "exposure",
-            "score": 0,
-            "max_score": 20,
-            "reason": "no exposure signals"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
-            "score": 10,
-            "max_score": 10,
-            "reason": "fix available: 0.52.0"
-          }
-        ]
-      },
-      "CVE-2026-39835": {
-        "priority": 18,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 2,
-            "max_score": 30,
-            "reason": "EPSS 0.00"
-          },
-          {
-            "dimension": "reachability",
-            "score": 0,
-            "max_score": 25,
-            "reason": "installed (no evidence type)"
-          },
-          {
-            "dimension": "exposure",
-            "score": 0,
-            "max_score": 20,
-            "reason": "no exposure signals"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
-            "score": 10,
-            "max_score": 10,
-            "reason": "fix available: 0.52.0"
+            "reason": "fix available: 29.3.1"
           }
         ]
       },
@@ -6236,181 +5563,6 @@
             "score": 3,
             "max_score": 10,
             "reason": "not yet fixed"
-          }
-        ]
-      },
-      "CVE-2026-42508": {
-        "priority": 18,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 2,
-            "max_score": 30,
-            "reason": "EPSS 0.00"
-          },
-          {
-            "dimension": "reachability",
-            "score": 0,
-            "max_score": 25,
-            "reason": "installed (no evidence type)"
-          },
-          {
-            "dimension": "exposure",
-            "score": 0,
-            "max_score": 20,
-            "reason": "no exposure signals"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
-            "score": 10,
-            "max_score": 10,
-            "reason": "fix available: 0.52.0"
-          }
-        ]
-      },
-      "CVE-2026-46595": {
-        "priority": 18,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 2,
-            "max_score": 30,
-            "reason": "EPSS 0.00"
-          },
-          {
-            "dimension": "reachability",
-            "score": 0,
-            "max_score": 25,
-            "reason": "installed (no evidence type)"
-          },
-          {
-            "dimension": "exposure",
-            "score": 0,
-            "max_score": 20,
-            "reason": "no exposure signals"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
-            "score": 10,
-            "max_score": 10,
-            "reason": "fix available: 0.52.0"
-          }
-        ]
-      },
-      "CVE-2026-46597": {
-        "priority": 18,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 2,
-            "max_score": 30,
-            "reason": "EPSS 0.00"
-          },
-          {
-            "dimension": "reachability",
-            "score": 0,
-            "max_score": 25,
-            "reason": "installed (no evidence type)"
-          },
-          {
-            "dimension": "exposure",
-            "score": 0,
-            "max_score": 20,
-            "reason": "no exposure signals"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
-            "score": 10,
-            "max_score": 10,
-            "reason": "fix available: 0.52.0"
-          }
-        ]
-      },
-      "CVE-2026-46598": {
-        "priority": 18,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 2,
-            "max_score": 30,
-            "reason": "EPSS 0.00"
-          },
-          {
-            "dimension": "reachability",
-            "score": 0,
-            "max_score": 25,
-            "reason": "installed (no evidence type)"
-          },
-          {
-            "dimension": "exposure",
-            "score": 0,
-            "max_score": 20,
-            "reason": "no exposure signals"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
-            "score": 10,
-            "max_score": 10,
-            "reason": "fix available: 0.52.0"
-          }
-        ]
-      },
-      "GO-2025-3900": {
-        "priority": 52,
-        "factors": [
-          {
-            "dimension": "exploitation",
-            "score": 3,
-            "max_score": 30,
-            "reason": "no EPSS data"
-          },
-          {
-            "dimension": "reachability",
-            "score": 16,
-            "max_score": 25,
-            "reason": "binary-buildinfo"
-          },
-          {
-            "dimension": "exposure",
-            "score": 17,
-            "max_score": 20,
-            "reason": "external-input"
-          },
-          {
-            "dimension": "environment",
-            "score": 6,
-            "max_score": 15,
-            "reason": "unknown layer"
-          },
-          {
-            "dimension": "fixability",
-            "score": 10,
-            "max_score": 10,
-            "reason": "fix available: 2.4.0"
           }
         ]
       }

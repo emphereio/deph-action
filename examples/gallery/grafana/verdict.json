@@ -3,7 +3,7 @@
   "producer": {
     "name": "deph-action",
     "version": "1.0.0",
-    "deph_version": "v0.1.1"
+    "deph_version": "v0.1.4"
   },
   "image": {
     "ref": "grafana/grafana:latest",
@@ -12,27 +12,27 @@
     "source_mode": "registry"
   },
   "source": {
-    "repository": "",
-    "ref": "",
-    "sha": "",
-    "run_id": "",
-    "run_attempt": "",
-    "workflow": "",
-    "event": ""
+    "repository": "emphereio/deph-action",
+    "ref": "refs/heads/main",
+    "sha": "2b9c4cf737f65fa39011654df82071aedbc8bc66",
+    "run_id": "28216604799",
+    "run_attempt": "1",
+    "workflow": "gallery-refresh",
+    "event": "workflow_dispatch"
   },
   "summary": {
-    "total": 37,
-    "in_path": 26,
+    "total": 28,
+    "in_path": 25,
     "linked": 0,
-    "not_found_in_path": 11,
+    "not_found_in_path": 3,
     "in_path_by_severity": {
-      "critical": 1,
+      "critical": 0,
       "high": 14,
       "medium": 9,
       "low": 2
     },
     "kev_in_path": 0,
-    "fixable_in_path": 26
+    "fixable_in_path": 25
   },
   "in_path_cves": [
     {
@@ -64,34 +64,6 @@
       "priority": 55
     },
     {
-      "id": "CVE-2026-39821",
-      "severity": "CRITICAL",
-      "cvss": 9.6,
-      "epss": 0.00344,
-      "kev": false,
-      "fix_version": "0.55.0",
-      "evidence": "binary-symbol",
-      "reachable_from": [
-        "golang.org/x/net"
-      ],
-      "top_call": "",
-      "priority": 54
-    },
-    {
-      "id": "CVE-2026-28377",
-      "severity": "HIGH",
-      "cvss": 7.5,
-      "epss": 0.00155,
-      "kev": false,
-      "fix_version": "2.10.3",
-      "evidence": "binary-symbol",
-      "reachable_from": [
-        "github.com/grafana/tempo"
-      ],
-      "top_call": "",
-      "priority": 54
-    },
-    {
       "id": "CVE-2026-21728",
       "severity": "HIGH",
       "cvss": 7.5,
@@ -106,15 +78,15 @@
       "priority": 54
     },
     {
-      "id": "CVE-2026-33814",
+      "id": "CVE-2026-28377",
       "severity": "HIGH",
       "cvss": 7.5,
-      "epss": 0.00565,
+      "epss": 0.00155,
       "kev": false,
-      "fix_version": "0.53.0",
+      "fix_version": "2.10.3",
       "evidence": "binary-symbol",
       "reachable_from": [
-        "golang.org/x/net"
+        "github.com/grafana/tempo"
       ],
       "top_call": "",
       "priority": 54
@@ -162,32 +134,60 @@
       "priority": 51
     },
     {
-      "id": "CVE-2026-32280",
+      "id": "CVE-2026-39836",
       "severity": "HIGH",
       "cvss": 7.5,
-      "epss": 0.00378,
-      "kev": false,
-      "fix_version": "1.25.9",
-      "evidence": "binary-symbol",
-      "reachable_from": [
-        "stdlib"
-      ],
-      "top_call": "",
-      "priority": 37
-    },
-    {
-      "id": "CVE-2026-39820",
-      "severity": "HIGH",
-      "cvss": 7.5,
-      "epss": 0.00486,
+      "epss": 0.00588,
       "kev": false,
       "fix_version": "1.25.10",
-      "evidence": "binary-symbol",
+      "evidence": "traced",
       "reachable_from": [
         "stdlib"
       ],
       "top_call": "",
-      "priority": 37
+      "priority": 50
+    },
+    {
+      "id": "CVE-2026-25679",
+      "severity": "HIGH",
+      "cvss": 7.5,
+      "epss": 0.0052,
+      "kev": false,
+      "fix_version": "1.25.8",
+      "evidence": "traced",
+      "reachable_from": [
+        "stdlib"
+      ],
+      "top_call": "",
+      "priority": 50
+    },
+    {
+      "id": "CVE-2026-32289",
+      "severity": "MEDIUM",
+      "cvss": 6.1,
+      "epss": 0.0029,
+      "kev": false,
+      "fix_version": "1.25.9",
+      "evidence": "traced",
+      "reachable_from": [
+        "stdlib"
+      ],
+      "top_call": "",
+      "priority": 50
+    },
+    {
+      "id": "CVE-2026-27139",
+      "severity": "LOW",
+      "cvss": 2.5,
+      "epss": 0.00201,
+      "kev": false,
+      "fix_version": "1.25.8",
+      "evidence": "traced",
+      "reachable_from": [
+        "stdlib"
+      ],
+      "top_call": "",
+      "priority": 50
     },
     {
       "id": "CVE-2026-32281",
@@ -204,10 +204,38 @@
       "priority": 37
     },
     {
-      "id": "CVE-2026-42499",
+      "id": "CVE-2026-32283",
       "severity": "HIGH",
       "cvss": 7.5,
-      "epss": 0.00577,
+      "epss": 0.00449,
+      "kev": false,
+      "fix_version": "1.25.9",
+      "evidence": "binary-symbol",
+      "reachable_from": [
+        "stdlib"
+      ],
+      "top_call": "",
+      "priority": 37
+    },
+    {
+      "id": "CVE-2026-33814",
+      "severity": "HIGH",
+      "cvss": 7.5,
+      "epss": 0.00565,
+      "kev": false,
+      "fix_version": "1.25.10",
+      "evidence": "binary-symbol",
+      "reachable_from": [
+        "stdlib"
+      ],
+      "top_call": "",
+      "priority": 37
+    },
+    {
+      "id": "CVE-2026-39820",
+      "severity": "HIGH",
+      "cvss": 7.5,
+      "epss": 0.00486,
       "kev": false,
       "fix_version": "1.25.10",
       "evidence": "binary-symbol",
@@ -232,26 +260,12 @@
       "priority": 37
     },
     {
-      "id": "CVE-2026-39836",
+      "id": "CVE-2026-42499",
       "severity": "HIGH",
       "cvss": 7.5,
-      "epss": 0.00588,
+      "epss": 0.00577,
       "kev": false,
       "fix_version": "1.25.10",
-      "evidence": "binary-symbol",
-      "reachable_from": [
-        "stdlib"
-      ],
-      "top_call": "",
-      "priority": 37
-    },
-    {
-      "id": "CVE-2026-32283",
-      "severity": "HIGH",
-      "cvss": 7.5,
-      "epss": 0.00449,
-      "kev": false,
-      "fix_version": "1.25.9",
       "evidence": "binary-symbol",
       "reachable_from": [
         "stdlib"
@@ -274,12 +288,54 @@
       "priority": 37
     },
     {
-      "id": "CVE-2026-25679",
+      "id": "CVE-2026-32280",
       "severity": "HIGH",
       "cvss": 7.5,
-      "epss": 0.0052,
+      "epss": 0.00378,
       "kev": false,
-      "fix_version": "1.25.8",
+      "fix_version": "1.25.9",
+      "evidence": "binary-symbol",
+      "reachable_from": [
+        "stdlib"
+      ],
+      "top_call": "",
+      "priority": 37
+    },
+    {
+      "id": "CVE-2026-42507",
+      "severity": "MEDIUM",
+      "cvss": 5.3,
+      "epss": 0.0037,
+      "kev": false,
+      "fix_version": "1.25.11",
+      "evidence": "binary-symbol",
+      "reachable_from": [
+        "stdlib"
+      ],
+      "top_call": "",
+      "priority": 37
+    },
+    {
+      "id": "CVE-2026-39825",
+      "severity": "MEDIUM",
+      "cvss": 5.3,
+      "epss": 0.0039,
+      "kev": false,
+      "fix_version": "1.25.10",
+      "evidence": "binary-symbol",
+      "reachable_from": [
+        "stdlib"
+      ],
+      "top_call": "",
+      "priority": 37
+    },
+    {
+      "id": "CVE-2026-39826",
+      "severity": "MEDIUM",
+      "cvss": 6.1,
+      "epss": 0.00371,
+      "kev": false,
+      "fix_version": "1.25.10",
       "evidence": "binary-symbol",
       "reachable_from": [
         "stdlib"
@@ -316,80 +372,10 @@
       "priority": 37
     },
     {
-      "id": "CVE-2026-39826",
-      "severity": "MEDIUM",
-      "cvss": 6.1,
-      "epss": 0.00371,
-      "kev": false,
-      "fix_version": "1.25.10",
-      "evidence": "binary-symbol",
-      "reachable_from": [
-        "stdlib"
-      ],
-      "top_call": "",
-      "priority": 37
-    },
-    {
-      "id": "CVE-2026-42507",
-      "severity": "MEDIUM",
-      "cvss": 5.3,
-      "epss": 0.0037,
-      "kev": false,
-      "fix_version": "1.25.11",
-      "evidence": "binary-symbol",
-      "reachable_from": [
-        "stdlib"
-      ],
-      "top_call": "",
-      "priority": 37
-    },
-    {
-      "id": "CVE-2026-32289",
-      "severity": "MEDIUM",
-      "cvss": 6.1,
-      "epss": 0.0029,
-      "kev": false,
-      "fix_version": "1.25.9",
-      "evidence": "binary-symbol",
-      "reachable_from": [
-        "stdlib"
-      ],
-      "top_call": "",
-      "priority": 37
-    },
-    {
-      "id": "CVE-2026-39825",
-      "severity": "MEDIUM",
-      "cvss": 5.3,
-      "epss": 0.0039,
-      "kev": false,
-      "fix_version": "1.25.10",
-      "evidence": "binary-symbol",
-      "reachable_from": [
-        "stdlib"
-      ],
-      "top_call": "",
-      "priority": 37
-    },
-    {
       "id": "CVE-2026-27142",
       "severity": "MEDIUM",
       "cvss": 6.1,
       "epss": 0.00328,
-      "kev": false,
-      "fix_version": "1.25.8",
-      "evidence": "binary-symbol",
-      "reachable_from": [
-        "stdlib"
-      ],
-      "top_call": "",
-      "priority": 37
-    },
-    {
-      "id": "CVE-2026-27139",
-      "severity": "LOW",
-      "cvss": 2.5,
-      "epss": 0.00201,
       "kev": false,
       "fix_version": "1.25.8",
       "evidence": "binary-symbol",
@@ -405,12 +391,12 @@
     "tripped": false,
     "reason": ""
   },
-  "deph_exit": 0,
+  "deph_exit": 1,
   "artifacts": {
-    "report_json": "examples/gallery/grafana/deph-report.json",
-    "report_html": "report.html",
+    "report_json": "/home/runner/work/deph-action/deph-action/deph-report/deph-report.json",
+    "report_html": "/home/runner/work/deph-action/deph-action/deph-report/report.html",
     "sarif": "",
     "sbom_cyclonedx": "",
-    "summary_md": "examples/gallery/grafana/summary.md"
+    "summary_md": "/home/runner/work/deph-action/deph-action/deph-report/summary.md"
   }
 }
