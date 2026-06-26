@@ -23,8 +23,46 @@ def _epss(c):
     return float(e) if isinstance(e, (int, float)) else 0.0
 
 
+def _cvss(vec):
+    """Parse a CVSS vector string into its metric map (AV, AC, PR, UI, S, C, I, A)."""
+    m = {}
+    for part in (vec or "").split("/"):
+        if ":" in part:
+            k, v = part.split(":", 1)
+            m[k] = v
+    return m
+
+
+def _exposure(m):
+    """(kind, fragment) from the CVSS attack-vector metrics, or None if no vector.
+    This is the cross-ecosystem 'how can it be reached' signal."""
+    av = m.get("AV")
+    if not av:
+        return None
+    pr, ui = m.get("PR"), m.get("UI")
+    if av == "N" and pr == "N" and ui == "N":
+        return "net-unauth", "remotely exploitable, no auth/interaction (AV:N/PR:N/UI:N)"
+    if av == "N":
+        return "net", "network attack vector (AV:N)"
+    if av == "A":
+        return "adjacent", "adjacent-network only (AV:A)"
+    if av in ("L", "P"):
+        return "local", f"local access required (AV:{av})"
+    return None
+
+
+def _impactful(m):
+    return m.get("C") == "H" or m.get("I") == "H"   # data/RCE, vs availability-only
+
+
+def _dos_only(m):
+    return m.get("A") == "H" and m.get("C") in (None, "N") and m.get("I") in (None, "N")
+
+
 def classify(c):
-    """(bucket, reason) for one CVE annotation, anchored to present fields only."""
+    """(bucket, reason) for one CVE, fusing every signal deph actually emits:
+    tier, runtime, controllability/class, the CVSS vector (exposure + impact), EPSS,
+    severity. IGNORE only ever rests on the hard fact 'no execution path'."""
     tier = c.get("tier")
     sev = (c.get("severity") or "").upper()
     epss = _epss(c)
@@ -34,20 +72,42 @@ def classify(c):
     if tier == "linked":
         return WATCH, "linked/present, but no traced call path"
 
-    # tier == reachable: rank by the strongest signal deph actually recorded.
+    # tier == reachable.
+    m = _cvss(c.get("cvss_vector"))
+    exp = _exposure(m)
+    rclass = c.get("reachability_class")
+    traced = c.get("evidence") == "traced"
+
+    # Definite ACT signals — these override the path class.
     if c.get("runtime_observed"):
         return ACT, "runtime-confirmed — observed executing"
-    if c.get("controllability") == "external-input":
-        cls = c.get("reachability_class") or "request"
-        return ACT, f"reachable on an externally-controlled path ({cls})"
-    if c.get("reachability_class") == "request":
-        return ACT, "reachable on the request path"
-    if c.get("evidence") == "traced":
-        return ACT, "full call path traced from app code"
+    if c.get("controllability") == "external-input" or rclass == "request":
+        return ACT, f"reachable on an externally-controlled path ({rclass or 'request'})"
     if epss >= 0.10:
         return ACT, f"reachable; high exploit likelihood (EPSS {epss:.0%})"
     if sev == "CRITICAL":
-        return ACT, f"reachable + CRITICAL severity (EPSS {epss:.0%})"
+        return ACT, f"reachable + CRITICAL severity{(f', {exp[1]}' if exp else '')}"
+
+    # When deph classified the path as NON-external (Go binary/startup/background),
+    # trust it — a generic AV:N must not promote it. Only when deph gives no class
+    # (Python/Node/PHP) do we use the CVSS vector as the exposure proxy.
+    if rclass not in ("binary", "startup", "background"):
+        if exp and exp[0] == "net-unauth":
+            return ACT, f"reachable + {exp[1]}"
+        if traced and (exp is None or exp[0] in ("net", "adjacent")):
+            return ACT, f"called — full path traced from app code{(f'; {exp[1]}' if exp else '')}"
+        if exp and exp[0] in ("net", "adjacent") and _impactful(m):
+            return ACT, f"reachable; network-exploitable, high impact ({exp[1]})"
+
+    # WATCH — say exactly why it was de-prioritized.
+    if rclass in ("startup", "background"):
+        return WATCH, f"reachable on an internal {rclass} path, not externally controlled"
+    if rclass == "binary":
+        return WATCH, "present in the binary, not on an exercised external path"
+    if exp and exp[0] == "local":
+        return WATCH, ("called, but " if traced else "reachable, but ") + exp[1]
+    if _dos_only(m):
+        return WATCH, "reachable, availability-only impact (DoS)"
     return WATCH, f"reachable, low exploit signal (EPSS {epss:.0%})"
 
 

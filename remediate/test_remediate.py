@@ -20,9 +20,13 @@ def _node(name, ntype, version, cves, layer="application"):
             "version": version, "layer_origin": layer, "cves": cves}
 
 
-def _cve(cid, fix=None, reachable=False, tier="installed", sev="HIGH"):
-    return {"id": cid, "fix_version": fix, "reachable": reachable,
-            "tier": tier, "severity": sev}
+def _cve(cid, fix=None, reachable=False, tier="installed", sev="HIGH", cvss=None, epss=None):
+    c = {"id": cid, "fix_version": fix, "reachable": reachable, "tier": tier, "severity": sev}
+    if cvss:
+        c["cvss_vector"] = cvss
+    if epss is not None:
+        c["epss_score"] = epss
+    return c
 
 
 class VersionCompare(unittest.TestCase):
@@ -116,6 +120,29 @@ class Triage(unittest.TestCase):
     def test_reachable_low_signal_watches(self):
         c = _cve("X", tier="reachable", sev="MEDIUM")  # no path/exploit signal
         self.assertEqual(triage.classify(c)[0], triage.WATCH)
+
+    def test_cvss_network_unauth_acts(self):
+        c = _cve("X", tier="reachable", sev="MEDIUM",
+                 cvss="CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N")
+        b, r = triage.classify(c)
+        self.assertEqual(b, triage.ACT)
+        self.assertIn("AV:N/PR:N/UI:N", r)
+
+    def test_cvss_local_only_demotes_to_watch(self):
+        # Reachable but local-only and not critical/high-EPSS -> watch, with the reason.
+        c = _cve("X", tier="reachable", sev="MEDIUM",
+                 cvss="CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H")
+        b, r = triage.classify(c)
+        self.assertEqual(b, triage.WATCH)
+        self.assertIn("local access", r)
+
+    def test_cvss_dos_only_watches(self):
+        # Network but needs privileges, availability-only impact -> DoS, watch.
+        c = _cve("X", tier="reachable", sev="HIGH", epss=0.0,
+                 cvss="CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H")
+        b, r = triage.classify(c)
+        self.assertEqual(b, triage.WATCH)
+        self.assertIn("DoS", r)
 
     def test_strongest_bucket_wins_across_packages(self):
         rep = _report({
