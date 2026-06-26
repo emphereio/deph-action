@@ -103,8 +103,10 @@ inputs:
     default: "off"
   mode:
     description: >-
-      scan | investigate. 'investigate' skips scanning and answers `question`
-      against an existing `report` JSON — this is what the @deph PR bot calls.
+      scan | investigate | context. 'investigate' answers `question` against an
+      existing `report` JSON; 'context' runs the AI analyst triage (exploitable-here
+      / verify / unlikely-here) over the reachable set. Both skip scanning — the
+      @deph PR bot calls these.
     required: false
     default: scan
   question:
@@ -185,7 +187,7 @@ runs:
     # while restore-keys restores the most recent prior DB at job start — so the
     # ~50MB grype DB is reused but still refreshes as deph updates it.
     - name: Cache deph vulnerability database
-      if: ${{ inputs.mode != 'investigate' }}
+      if: ${{ inputs.mode == 'scan' }}
       uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
       with:
         path: ~/.cache/deph/grype
@@ -195,7 +197,7 @@ runs:
 
     - name: Run deph
       id: run
-      if: ${{ inputs.mode != 'investigate' }}
+      if: ${{ inputs.mode == 'scan' }}
       shell: bash
       env:
         DEPH_ACTION_PATH: ${{ github.action_path }}
@@ -227,7 +229,7 @@ runs:
     # Posts its own sticky PR comment; degrades to the deterministic plan with no model.
     - name: Remediation plan
       id: remediate
-      if: ${{ inputs.mode != 'investigate' && inputs.remediate == 'plan' }}
+      if: ${{ inputs.mode == 'scan' && inputs.remediate == 'plan' }}
       shell: bash
       env:
         DEPH_REMEDIATE_MODE: plan
@@ -246,12 +248,12 @@ runs:
       run: "${{ github.action_path }}/scripts/remediate.sh"
 
     # Investigate mode (the @deph bot): answer a question against an existing report.
-    - name: Investigate
+    - name: Investigate or triage
       id: investigate
-      if: ${{ inputs.mode == 'investigate' }}
+      if: ${{ inputs.mode != 'scan' }}
       shell: bash
       env:
-        DEPH_REMEDIATE_MODE: investigate
+        DEPH_REMEDIATE_MODE: ${{ inputs.mode }}
         DEPH_REMEDIATE_REPORT: ${{ inputs.report }}
         DEPH_REMEDIATE_QUESTION: ${{ inputs.question }}
         DEPH_OUTPUT_DIRECTORY: ${{ inputs.output-directory }}
@@ -263,7 +265,7 @@ runs:
     # Capture artifacts BEFORE the SARIF upload and the gate, so a missing
     # security-events permission or a tripped gate never costs you the report.
     - name: Upload report artifact
-      if: ${{ inputs.mode != 'investigate' && inputs.upload-artifact == 'true' }}
+      if: ${{ inputs.mode == 'scan' && inputs.upload-artifact == 'true' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: ${{ inputs.artifact-name }}
@@ -272,14 +274,14 @@ runs:
         retention-days: ${{ inputs.retention-days }}
 
     - name: Upload SARIF to code scanning
-      if: ${{ inputs.mode != 'investigate' && inputs.upload-sarif == 'true' && steps.run.outputs.sarif != '' }}
+      if: ${{ inputs.mode == 'scan' && inputs.upload-sarif == 'true' && steps.run.outputs.sarif != '' }}
       uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
       with:
         sarif_file: ${{ steps.run.outputs.sarif }}
         category: deph
 
     - name: Gate
-      if: ${{ inputs.mode != 'investigate' && steps.run.outputs.gate-tripped == 'true' }}
+      if: ${{ inputs.mode == 'scan' && steps.run.outputs.gate-tripped == 'true' }}
       shell: bash
       env:
         DEPH_GATE_POLICY: ${{ inputs.fail-on }}

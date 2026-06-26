@@ -54,6 +54,15 @@ case "${DEPH_REMEDIATE_MODE:-plan}" in
     fi
     log "investigation answer -> $ans"
     ;;
+  context)
+    ans="$outdir/answer.md"
+    python3 "$agent" "$report" --mode context >"$ans"
+    out_set "remediation-markdown" "$ans"
+    if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
+      { echo "answer<<__DEPH_EOF__"; cat "$ans"; echo "__DEPH_EOF__"; } >>"$GITHUB_OUTPUT"
+    fi
+    log "context triage -> $ans"
+    ;;
   *)
     log "unknown DEPH_REMEDIATE_MODE='${DEPH_REMEDIATE_MODE:-}'"; exit 1 ;;
 esac
