@@ -124,6 +124,18 @@ inputs:
       the agent re-sanitizes (role/length/count caps) and treats it as data, not commands.
     required: false
     default: ""
+  actor:
+    description: "mode=authorize: the username invoking deph (e.g. the PR comment author)."
+    required: false
+    default: ""
+  actor-association:
+    description: "mode=authorize: the actor's author_association (OWNER/MEMBER/COLLABORATOR/...)."
+    required: false
+    default: ""
+  policy-file:
+    description: "Path to the access policy (default .deph.yml then .github/deph.yml)."
+    required: false
+    default: ""
   llm-base-url:
     description: >-
       OpenAI-compatible base URL for the remediation model. Works with OpenAI,
@@ -200,6 +212,12 @@ outputs:
   answer:
     description: The investigation answer text (mode=investigate).
     value: ${{ steps.investigate.outputs.answer }}
+  allowed:
+    description: "mode=authorize: 'true' if the actor may invoke deph, per the access policy."
+    value: ${{ steps.authz.outputs.allowed }}
+  authz-reason:
+    description: "mode=authorize: why the access decision was made."
+    value: ${{ steps.authz.outputs.reason }}
 
 runs:
   using: composite
@@ -268,10 +286,21 @@ runs:
         GITHUB_RUN_ID: ${{ github.run_id }}
       run: "${{ github.action_path }}/scripts/remediate.sh"
 
-    # Investigate mode (the @deph bot): answer a question against an existing report.
+    # Owner-controlled access check (the @deph bot calls this first and gates on `allowed`).
+    - name: Authorize
+      id: authz
+      if: ${{ inputs.mode == 'authorize' }}
+      shell: bash
+      env:
+        DEPH_ACTOR: ${{ inputs.actor }}
+        DEPH_ASSOCIATION: ${{ inputs.actor-association }}
+        DEPH_POLICY_FILE: ${{ inputs.policy-file }}
+      run: "${{ github.action_path }}/scripts/authorize.py"
+
+    # Investigate / triage / threat (the @deph bot): answer against an existing report.
     - name: Investigate or triage
       id: investigate
-      if: ${{ inputs.mode != 'scan' }}
+      if: ${{ contains(fromJSON('["investigate","context","threat"]'), inputs.mode) }}
       shell: bash
       env:
         DEPH_REMEDIATE_MODE: ${{ inputs.mode }}

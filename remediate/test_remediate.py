@@ -5,6 +5,7 @@ Run:  python3 -m unittest -q     (from this directory)
 """
 import json
 import os
+import sys
 import unittest
 from unittest import mock
 
@@ -12,6 +13,9 @@ import plan
 import tools
 import triage
 import ssvc
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
+import authorize  # noqa: E402
 
 
 def _report(nodes):
@@ -185,6 +189,31 @@ class SSVC(unittest.TestCase):
         c = _cve("X", tier="reachable", cvss=self.NET)
         c["reachability_class"] = "binary"
         self.assertEqual(ssvc.ssvc_one(c, net_exposed=True)["exposure"], "controlled")
+
+
+class Authorize(unittest.TestCase):
+    def test_default_when_no_policy(self):
+        self.assertTrue(authorize.decide(None, "x", "OWNER")[0])
+        self.assertTrue(authorize.decide(None, "x", "COLLABORATOR")[0])
+        self.assertFalse(authorize.decide(None, "x", "NONE")[0])
+        self.assertFalse(authorize.decide(None, "x", "")[0])
+
+    def test_no_access_block_is_none(self):
+        self.assertIsNone(authorize.parse_access("other:\n  x: 1\n"))
+
+    def test_user_allowlist_case_insensitive(self):
+        acc = authorize.parse_access("access:\n  associations: []\n  users:\n    - alice\n")
+        self.assertTrue(authorize.decide(acc, "Alice", "NONE")[0])   # allowed via users
+        self.assertFalse(authorize.decide(acc, "bob", "OWNER")[0])   # associations [] excludes OWNER
+
+    def test_deny_overrides(self):
+        acc = authorize.parse_access("access:\n  users: [bob]\n  deny: [bob]\n")
+        self.assertFalse(authorize.decide(acc, "bob", "OWNER")[0])
+
+    def test_inline_associations(self):
+        acc = authorize.parse_access("access:\n  associations: [MEMBER]\n")
+        self.assertTrue(authorize.decide(acc, "x", "MEMBER")[0])
+        self.assertFalse(authorize.decide(acc, "x", "COLLABORATOR")[0])
 
 
 class AgentGuards(unittest.TestCase):
