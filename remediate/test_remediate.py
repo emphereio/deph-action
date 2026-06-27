@@ -184,6 +184,31 @@ class SSVC(unittest.TestCase):
         self.assertEqual(ssvc.ssvc_one(c, net_exposed=True)["exposure"], "controlled")
 
 
+class History(unittest.TestCase):
+    def test_valid_turns_kept(self):
+        import agent
+        raw = json.dumps([{"role": "user", "content": "q1"}, {"role": "assistant", "content": "a1"}])
+        h = agent.parse_history(raw)
+        self.assertEqual([t["role"] for t in h], ["user", "assistant"])
+
+    def test_garbage_is_dropped_never_raised(self):
+        import agent
+        self.assertEqual(agent.parse_history(None), [])
+        self.assertEqual(agent.parse_history("not json"), [])
+        self.assertEqual(agent.parse_history(json.dumps({"role": "user"})), [])  # not a list
+        # bad roles / non-string content dropped
+        raw = json.dumps([{"role": "system", "content": "x"}, {"role": "user", "content": 5},
+                          {"role": "tool", "content": "y"}, {"role": "user", "content": "ok"}])
+        self.assertEqual(agent.parse_history(raw), [{"role": "user", "content": "ok"}])
+
+    def test_caps_count_and_length(self):
+        import agent
+        raw = json.dumps([{"role": "user", "content": "x"} for _ in range(50)])
+        self.assertEqual(len(agent.parse_history(raw, max_turns=8)), 8)
+        long = json.dumps([{"role": "user", "content": "a" * 9000}])
+        self.assertEqual(len(agent.parse_history(long, max_chars=4000)[0]["content"]), 4000)
+
+
 class Security(unittest.TestCase):
     def test_safe_token_accepts_real_names(self):
         for ok in ["flask", "good-pkg_1.2", "@scope/name", "2.36-9+deb12u14"]:

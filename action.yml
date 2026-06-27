@@ -117,6 +117,13 @@ inputs:
     description: "Path to an existing deph report JSON for mode=investigate."
     required: false
     default: ""
+  history:
+    description: >-
+      Prior conversation as a JSON array of {role: user|assistant, content} turns, for
+      follow-up questions. Must be pre-filtered to trusted authors + the bot's own replies;
+      the agent re-sanitizes (role/length/count caps) and treats it as data, not commands.
+    required: false
+    default: ""
   llm-base-url:
     description: >-
       OpenAI-compatible base URL for the remediation model. Works with OpenAI,
@@ -256,6 +263,7 @@ runs:
         DEPH_REMEDIATE_MODE: ${{ inputs.mode }}
         DEPH_REMEDIATE_REPORT: ${{ inputs.report }}
         DEPH_REMEDIATE_QUESTION: ${{ inputs.question }}
+        DEPH_REMEDIATE_HISTORY: ${{ inputs.history }}
         DEPH_OUTPUT_DIRECTORY: ${{ inputs.output-directory }}
         DEPH_LLM_BASE_URL: ${{ inputs.llm-base-url }}
         DEPH_LLM_MODEL: ${{ inputs.llm-model }}
