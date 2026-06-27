@@ -139,6 +139,20 @@ inputs:
     description: "API key for the LLM endpoint. Omit for keyless local servers."
     required: false
     default: ""
+  token-budget:
+    description: >-
+      Hard ceiling on total LLM tokens per AI invocation (prompt+completion). The agent
+      stops and returns a partial answer once exceeded. "0" = unlimited. Cost guardrail.
+    required: false
+    default: "0"
+  max-tool-calls:
+    description: "Max tool calls per AI invocation before the agent must answer. Bounds cost/loops."
+    required: false
+    default: "32"
+  max-output-tokens:
+    description: "Max tokens the model may emit per turn."
+    required: false
+    default: "8000"
 
 outputs:
   report-json:
@@ -268,6 +282,9 @@ runs:
         DEPH_LLM_BASE_URL: ${{ inputs.llm-base-url }}
         DEPH_LLM_MODEL: ${{ inputs.llm-model }}
         DEPH_LLM_API_KEY: ${{ inputs.llm-api-key }}
+        DEPH_TOKEN_BUDGET: ${{ inputs.token-budget }}
+        DEPH_MAX_TOOL_CALLS: ${{ inputs.max-tool-calls }}
+        DEPH_MAX_TOKENS: ${{ inputs.max-output-tokens }}
       run: "${{ github.action_path }}/scripts/remediate.sh"
 
     # Capture artifacts BEFORE the SARIF upload and the gate, so a missing

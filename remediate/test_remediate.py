@@ -4,7 +4,9 @@
 Run:  python3 -m unittest -q     (from this directory)
 """
 import json
+import os
 import unittest
+from unittest import mock
 
 import plan
 import tools
@@ -183,6 +185,50 @@ class SSVC(unittest.TestCase):
         c = _cve("X", tier="reachable", cvss=self.NET)
         c["reachability_class"] = "binary"
         self.assertEqual(ssvc.ssvc_one(c, net_exposed=True)["exposure"], "controlled")
+
+
+class AgentGuards(unittest.TestCase):
+    def test_harden_strips_images_and_defangs_offsite_links(self):
+        import agent
+        t = ("img ![x](http://evil.test/leak.png) · phish [click](http://evil.test/p) · "
+             "ref [nvd](https://nvd.nist.gov/vuln/detail/CVE-1)")
+        h = agent.harden_output(t)
+        self.assertNotIn("evil.test/leak.png", h)            # image gone
+        self.assertIn("`[link removed]`", h)                 # offsite link defanged
+        self.assertIn("https://nvd.nist.gov/vuln/detail/CVE-1", h)  # allowlisted kept
+
+    def test_harden_caps_length(self):
+        import agent
+        self.assertLessEqual(len(agent.harden_output("a" * 50000, max_chars=100)), 100)
+
+    def test_run_agent_terminates_within_turn_bound(self):
+        import agent
+        seen = {"n": 0}
+
+        def fake(cfg, messages, spec, max_tokens):  # always asks for a tool -> would loop forever
+            seen["n"] += 1
+            return {"choices": [{"message": {"tool_calls": [
+                {"id": str(seen["n"]), "function": {"name": "posture", "arguments": "{}"}}]}}],
+                "usage": {"total_tokens": 10}}
+
+        rep = {"graph": {"nodes": {}, "findings": []}}
+        with mock.patch.dict(os.environ, {"DEPH_LLM_MODEL": "x", "DEPH_MAX_TURNS": "3", "DEPH_MAX_TOOL_CALLS": "2"}):
+            out = agent.run_agent(rep, "t", _call=fake)
+        self.assertIsInstance(out, str)        # terminates, no infinite loop
+        self.assertLessEqual(seen["n"], 3)     # bounded by DEPH_MAX_TURNS
+
+    def test_run_agent_stops_on_token_budget(self):
+        import agent
+
+        def fake(cfg, messages, spec, max_tokens):
+            return {"choices": [{"message": {"tool_calls": [
+                {"id": "1", "function": {"name": "posture", "arguments": "{}"}}]}}],
+                "usage": {"total_tokens": 100}}
+
+        rep = {"graph": {"nodes": {}, "findings": []}}
+        with mock.patch.dict(os.environ, {"DEPH_LLM_MODEL": "x", "DEPH_TOKEN_BUDGET": "50"}):
+            out = agent.run_agent(rep, "t", _call=fake)
+        self.assertIn("budget", out.lower())
 
 
 class History(unittest.TestCase):

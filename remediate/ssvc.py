@@ -21,6 +21,7 @@ import sys
 from collections import Counter
 
 from triage import _cvss, _epss
+from plan import md_escape
 
 
 def _image_label(report):
@@ -138,7 +139,7 @@ def render_markdown(report, net_exposed=True):
         out.append("| CVE | package | SSVC [expl/auto/impact/expo] |")
         out.append("|---|---|---|")
         for r in act:
-            out.append(f"| {r['id']} | {r['package']} | "
+            out.append(f"| {md_escape(r['id'])} | {md_escape(r['package'])} | "
                        f"{r['exploitation']}/{r['automatable']}/{r['impact']}/{r['exposure']} |")
     else:
         out.append("No CVE reaches **Act** under SSVC.")
