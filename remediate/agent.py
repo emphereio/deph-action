@@ -46,13 +46,20 @@ _ALLOWED_LINK_HOSTS = (
     "openssl.org", "debian.org", "ubuntu.com", "redhat.com", "alpinelinux.org",
 )
 _MD_IMAGE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
-_MD_LINK = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
+_MD_LINK = re.compile(r"(?<!!)\[([^\]]+)\]\(([^)]+)\)")
+_REF_DEF = re.compile(r"(?m)^[ \t]*\[[^\]]+\]:[ \t]*(\S+).*$")
+_AUTOLINK = re.compile(r"<((?:[a-zA-Z][\w+.-]*):[^>\s]+)>")
+_BARE_URL = re.compile(r"(?<![(\[<\"'])\bhttps?://[^\s)>\]\"']+", re.I)
+_HTML_RISKY = re.compile(
+    r"<\s*/?\s*(img|iframe|svg|object|embed|video|audio|source|link|base|form|input|script|style|a)\b[^>]*>",
+    re.I,
+)
 
 
 def _link_host_ok(url):
     try:
         p = urllib.parse.urlparse(url.strip())
-        if p.scheme not in ("http", "https"):
+        if p.scheme not in ("http", "https"):   # rejects data:, javascript:, ftp:, mailto:, …
             return False
         host = (p.hostname or "").lower()
         return any(host == h or host.endswith("." + h) for h in _ALLOWED_LINK_HOSTS)
@@ -61,16 +68,23 @@ def _link_host_ok(url):
 
 
 def harden_output(text, max_chars=24000):
-    """Defang the agent's markdown before it's posted: no images, only allowlisted
-    links survive (label kept, URL stripped otherwise), hard length cap."""
+    """Defang the agent's markdown before it's posted — defense-in-depth over GitHub's
+    own sanitizer. Removes images (markdown + HTML), strips risky HTML tags, and defangs
+    every link form (inline, reference, autolink, bare) whose host isn't allowlisted.
+    Not a full markdown parser — a deliberately conservative filter on a security comment."""
     if not isinstance(text, str):
         return ""
     text = text[:max_chars]
+    text = _HTML_RISKY.sub("`[removed]`", text)
     text = _MD_IMAGE.sub("`[image removed]`", text)
+    text = _AUTOLINK.sub(
+        lambda m: m.group(0) if _link_host_ok(m.group(1)) else "`[link removed]`", text)
     text = _MD_LINK.sub(
-        lambda m: m.group(0) if _link_host_ok(m.group(2)) else f"{m.group(1)} `[link removed]`",
-        text,
-    )
+        lambda m: m.group(0) if _link_host_ok(m.group(2)) else f"{m.group(1)} `[link removed]`", text)
+    text = _REF_DEF.sub(
+        lambda m: m.group(0) if _link_host_ok(m.group(1)) else "`[reference link removed]`", text)
+    text = _BARE_URL.sub(
+        lambda m: m.group(0) if _link_host_ok(m.group(0)) else "`[link removed]`", text)
     return text
 
 DEFAULT_BASE_URL = os.environ.get("DEPH_LLM_BASE_URL", "https://api.openai.com/v1")
