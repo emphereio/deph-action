@@ -8,6 +8,7 @@ import unittest
 import plan
 import tools
 import triage
+import ssvc
 
 
 def _report(nodes):
@@ -157,6 +158,30 @@ class Triage(unittest.TestCase):
 
 def build_triage_local(rep):
     return triage.build_triage(rep)
+
+
+class SSVC(unittest.TestCase):
+    NET = "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"   # network, unauth, total
+    LOCAL = "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"  # local
+
+    def test_act_requires_open_automatable_total(self):
+        c = _cve("X", tier="reachable", cvss=self.NET)
+        self.assertEqual(ssvc.ssvc_one(c, net_exposed=True)["decision"], "Act")
+
+    def test_local_vector_is_controlled_not_act(self):
+        c = _cve("X", tier="reachable", cvss=self.LOCAL)
+        s = ssvc.ssvc_one(c, net_exposed=True)
+        self.assertEqual(s["exposure"], "controlled")
+        self.assertNotEqual(s["decision"], "Act")
+
+    def test_not_exposed_demotes_out_of_act(self):
+        c = _cve("X", tier="reachable", cvss=self.NET)
+        self.assertNotEqual(ssvc.ssvc_one(c, net_exposed=False)["decision"], "Act")
+
+    def test_binary_class_not_act(self):
+        c = _cve("X", tier="reachable", cvss=self.NET)
+        c["reachability_class"] = "binary"
+        self.assertEqual(ssvc.ssvc_one(c, net_exposed=True)["exposure"], "controlled")
 
 
 class Security(unittest.TestCase):

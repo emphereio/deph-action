@@ -21,6 +21,7 @@ import urllib.error
 
 from plan import build_plan, max_version, _loose, eco_label
 from triage import build_triage
+from ssvc import build_ssvc
 
 # Package names that reach a registry URL. Conservative on purpose: covers pip,
 # npm (incl. @scope/name), deb, etc.; rejects anything that could escape the path.
@@ -266,6 +267,7 @@ REGISTRY = {
     "plan_remediation": (plan_remediation, True, {"type": "object", "properties": {}}),
     "triage": (build_triage, True, {"type": "object", "properties": {}}),
     "posture": (posture, True, {"type": "object", "properties": {}}),
+    "ssvc": (build_ssvc, True, {"type": "object", "properties": {}}),
     "explain_reachability": (explain_reachability, True, {
         "type": "object", "properties": {"cve_id": {"type": "string"}}, "required": ["cve_id"],
     }),
@@ -286,6 +288,7 @@ TOOL_DESCRIPTIONS = {
     "plan_remediation": "The whole-image deterministic remediation plan (ranked upgrades + stats).",
     "triage": "Deterministic triage: every CVE bucketed act/watch/ignore with an anchored reason. The buckets are authoritative — never soften them.",
     "posture": "The image's deployment posture: what runs (entrypoints/invocations), how it's configured (runs-as-root, exposed ports), secrets in the image, and supply-chain findings. The context for threat modeling.",
+    "ssvc": "Deterministic SSVC (CISA deployer) decision per reachable CVE: Act/Attend/Track plus the four decision points. Authoritative — use the Act set; never re-score.",
     "explain_reachability": "Reachability evidence for one CVE: tier, evidence, call path, runtime. Deterministic.",
     "cve_context": "Everything an analyst reads about one CVE: description, CVSS vector, EPSS, the reachable-from path, package/version, and the image + platform. Use it to judge real-world exploitability in THIS image.",
     "latest_releases": "LIVE registry lookup for versions newer than the scan DB. Advisory, point-in-time.",

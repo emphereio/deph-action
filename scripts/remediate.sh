@@ -54,14 +54,26 @@ case "${DEPH_REMEDIATE_MODE:-plan}" in
     fi
     log "investigation answer -> $ans"
     ;;
-  context | threat)
+  context)
     ans="$outdir/answer.md"
-    python3 "$agent" "$report" --mode "$DEPH_REMEDIATE_MODE" >"$ans"
+    python3 "$agent" "$report" --mode context >"$ans"
     out_set "remediation-markdown" "$ans"
     if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
       { echo "answer<<__DEPH_EOF__"; cat "$ans"; echo "__DEPH_EOF__"; } >>"$GITHUB_OUTPUT"
     fi
-    log "$DEPH_REMEDIATE_MODE -> $ans"
+    log "context triage -> $ans"
+    ;;
+  threat)
+    ans="$outdir/answer.md"
+    # Deterministic SSVC table first (verifiable, compact), then the AI scenarios.
+    python3 "$root/remediate/ssvc.py" "$report" >"$ans"
+    { echo; echo "### Attack scenarios"; echo; } >>"$ans"
+    python3 "$agent" "$report" --mode threat >>"$ans"
+    out_set "remediation-markdown" "$ans"
+    if [[ -n "${GITHUB_OUTPUT:-}" ]]; then
+      { echo "answer<<__DEPH_EOF__"; cat "$ans"; echo "__DEPH_EOF__"; } >>"$GITHUB_OUTPUT"
+    fi
+    log "threat model -> $ans"
     ;;
   *)
     log "unknown DEPH_REMEDIATE_MODE='${DEPH_REMEDIATE_MODE:-}'"; exit 1 ;;

@@ -53,27 +53,22 @@ what is specific to THIS image — its reachability and the verified upgrade mat
 generic security advice, never an explanation of what a CVE is, never a restatement of the \
 scan's CVE table. If a line could have been written without the scan, cut it."""
 
-THREAT_TASK = """Threat-model the REACHABLE CVEs using SSVC (Stakeholder-Specific
-Vulnerability Categorization — the CISA/CMU deployer decision tree). deph has PROVEN
-reachability; that is the gate, never dispute it.
+THREAT_TASK = """Write ONLY the attack-scenario narrative of a threat model. The SSVC
+decision table is produced deterministically and shown above you — do NOT repeat it, restate
+decisions, or re-score any CVE.
 
-First call `posture` (this image's deployment context) and `triage` (the reachable set).
-For each `act` CVE, call `cve_context`, then fill the SSVC decision points FROM FACTS and
-CITE the deph signal for each:
- - Exploitation: none | poc | active        ← EPSS / KEV
- - Automatable: yes | no                     ← CVSS vector (AV:N + AC:L + PR:N + UI:N ⇒ yes)
- - Technical Impact: partial | total         ← CVSS C/I/A (high C or I ⇒ total)
- - Exposure: open | controlled | small       ← reachability + posture (reachable AND
-   network-facing / exposed port / runs-as-root ⇒ open; reachable but internal ⇒ controlled)
-Apply the SSVC tree to a decision: **Act | Attend | Track**. Then state, explicitly:
- - the ONE assumption you must make (mission/well-being impact — deployment-specific, not
-   observable from the image), and
- - the single posture fact that would FLIP the decision (e.g. "not exposed ⇒ Track").
+Call `ssvc` and take its `Act` items; call `posture`. CLUSTER the Act CVEs by shared attack
+surface / ingress (e.g. media-upload parsing, request XML parsing, outbound HTTP, local-only),
+and call `cve_context` only as needed to ground a cluster. For each cluster (MAX 4) write ONE
+short paragraph:
+ - the realistic attack scenario in THIS image, grounded in posture (what runs, root?, exposed?,
+   secrets?), and
+ - the single posture fact that would neutralize the cluster.
+If there are no Act items, say that in one line (the reachable risk is bounded — Attend/Track only).
 
-Per-CVE line: `CVE` · pkg · **DECISION** · SSVC[expl/autom/impact/exposure] · one-sentence
-scenario grounded in posture · what would flip it. Lead with Act. Open with a 2-line image
-posture summary (what runs, root?, exposed?, secrets?) since it drives everything. Be concise,
-cite signals, never claim anything is unreachable."""
+No per-CVE essays. No tables. No SSVC restatement. Do NOT add a top-level heading — a
+section header is already placed above you; start directly with the first scenario
+(e.g. "**1 — <name>**"). 3-4 tight scenarios, nothing else."""
 
 CONTEXT_TASK = """Triage the REACHABLE CVEs the way a senior security analyst would.
 
