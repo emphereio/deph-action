@@ -127,9 +127,11 @@ def render_markdown(report, net_exposed=True):
     out.append("")
     out.append(f"**SSVC (deployer): {c['Act']} Act · {c['Attend']} Attend · {c['Track']} Track** "
                f"over {s['total']} reachable CVEs.")
-    if net_exposed:
-        out.append("> Assumes the service is network-exposed (not observable from the image). "
-                   "If it isn't, `open` exposures drop and most Act → Attend.")
+    out.append("> ⚠ **Deployment posture is not observable from an image.** These verdicts take the "
+               "worst case — reachable from an untrusted network, default (root) user, no seccomp/userns "
+               "confinement. Compensating controls you may already run — network policy/firewall, seccomp/"
+               "AppArmor, non-root runtime, read-only fs — lower them (most **Act → Attend**). Treat this "
+               "as *what to verify against your deployment*, not an assertion about it.")
     out.append("")
     act = [r for r in s["items"] if r["decision"] == "Act"]
     if act:
