@@ -16,10 +16,19 @@ Stdlib only.
 """
 import argparse
 import json
+import os
 import sys
 from collections import Counter
 
 from triage import _cvss, _epss
+
+
+def _image_label(report):
+    """Local images scan from a tarball, so image_ref is a temp path — clean it."""
+    ref = os.environ.get("DEPH_REMEDIATE_IMAGE") or report["graph"].get("image_ref") or "image"
+    if ref.endswith(".tar") or ref.startswith("/tmp") or "/tmp." in ref:
+        return "the scanned image"
+    return ref
 
 _RANK = {"Act": 0, "Attend": 1, "Track": 2}
 
@@ -113,7 +122,7 @@ def _posture_line(report):
 def render_markdown(report, net_exposed=True):
     s = build_ssvc(report, net_exposed)
     c = s["counts"]
-    out = [f"## deph threat model — {report['graph'].get('image_ref') or 'image'}"]
+    out = [f"## deph threat model — {_image_label(report)}"]
     out.append(_posture_line(report))
     out.append("")
     out.append(f"**SSVC (deployer): {c['Act']} Act · {c['Attend']} Attend · {c['Track']} Track** "
