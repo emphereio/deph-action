@@ -3,6 +3,7 @@
 
 Run:  python3 -m unittest -q     (from this directory)
 """
+import json
 import unittest
 
 import plan
