@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - name: ShellCheck
-        run: shellcheck scripts/remediate.sh scripts/authorize.py 2>/dev/null || shellcheck scripts/remediate.sh
+        run: shellcheck scripts/remediate.sh
       - name: Byte-compile
         run: python3 -m py_compile remediate/*.py scripts/*.py
       - name: Install packaging (exercises the PEP 440 comparison path)

@@ -25,8 +25,9 @@ mkdir -p "$outdir"
 # Build conversation history from a comments file via the tested, IRONCLAD filter
 # (trusted authors + the bot's marked replies only). The agent re-sanitizes on top.
 if [[ -z "${DEPH_REMEDIATE_HISTORY:-}" && -n "${DEPH_COMMENTS_FILE:-}" && -f "${DEPH_COMMENTS_FILE}" ]]; then
-  export DEPH_REMEDIATE_HISTORY="$(DEPH_CURRENT_COMMENT_ID="${DEPH_CURRENT_COMMENT_ID:-}" \
-    DEPH_TRUSTED="${DEPH_TRUSTED:-}" python3 "$here/build_history.py" <"${DEPH_COMMENTS_FILE}" 2>/dev/null || echo '[]')"
+  _hist="$(DEPH_CURRENT_COMMENT_ID="${DEPH_CURRENT_COMMENT_ID:-}" \
+    DEPH_TRUSTED="${DEPH_TRUSTED:-}" python3 "$here/build_history.py" <"${DEPH_COMMENTS_FILE}" 2>/dev/null)" || _hist="[]"
+  export DEPH_REMEDIATE_HISTORY="${_hist:-[]}"
 fi
 
 case "${DEPH_REMEDIATE_MODE:-plan}" in
@@ -36,6 +37,7 @@ case "${DEPH_REMEDIATE_MODE:-plan}" in
     # reproducible, no key, no tokens). The AI is opt-in via the @deph bot.
     DEPH_REMEDIATE_IMAGE="${DEPH_IMAGE:-}" python3 "$root/remediate/plan.py" "$report" >"$md"
     # Point at the full report instead of restating it; invite the opt-in bot.
+    # shellcheck disable=SC2016  # backticks here are literal markdown, not command substitution
     {
       printf '\n---\n'
       if [[ -n "${GITHUB_RUN_ID:-}" && -n "${GITHUB_REPOSITORY:-}" ]]; then
