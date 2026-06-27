@@ -249,9 +249,18 @@ def run_agent(report, task, max_turns=None, trace=None, history=None, _call=None
     for _ in range(max_turns):
         if budget and used >= budget:
             return harden_output("_(stopped: token budget reached — partial analysis above.)_")
-        resp = call(cfg, messages, spec, max_tokens=out_cap)
-        used += int((resp.get("usage") or {}).get("total_tokens") or 0)
-        msg = resp["choices"][0]["message"]
+        # A failing model endpoint (HTTP error, network, malformed body) must never
+        # crash the job — degrade to a clear message the bot can post.
+        try:
+            resp = call(cfg, messages, spec, max_tokens=out_cap)
+            used += int((resp.get("usage") or {}).get("total_tokens") or 0)
+            msg = resp["choices"][0]["message"]
+        except (urllib.error.HTTPError, urllib.error.URLError) as e:
+            sys.stderr.write(f"deph agent: LLM call failed: {e}\n")
+            return harden_output("_(deph could not reach the model endpoint — try again later.)_")
+        except (KeyError, IndexError, TypeError, ValueError, json.JSONDecodeError) as e:
+            sys.stderr.write(f"deph agent: malformed model response: {e}\n")
+            return harden_output("_(deph received an unexpected response from the model endpoint.)_")
         messages.append(msg)
         tool_calls = msg.get("tool_calls") or []
         if not tool_calls:

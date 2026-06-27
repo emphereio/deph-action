@@ -19,7 +19,7 @@ import urllib.parse
 import urllib.request
 import urllib.error
 
-from plan import build_plan, max_version, _loose, eco_label
+from plan import build_plan, max_version, _loose, eco_label, graph_of, nodes_of, cves_of
 from triage import build_triage
 from ssvc import build_ssvc
 
@@ -50,10 +50,11 @@ def version_le(a, b):
 # ── deterministic tools over the report ───────────────────────────────────────
 
 def _iter_cves(report):
-    g = report["graph"]
-    prio = g.get("cve_priority", {})
-    for n in g["nodes"].values():
-        for c in n.get("cves") or []:
+    prio = graph_of(report).get("cve_priority", {})
+    for n in nodes_of(report).values():
+        for c in cves_of(n):
+            if not c.get("id"):
+                continue
             yield n, c, prio.get(c["id"], {}).get("priority")
 
 
@@ -127,13 +128,14 @@ def posture(report):
     """The image's deployment posture — the threat-model context that sits beside
     reachability: what runs, how it's configured, and what's dangerous in the image.
     These are the facts that turn 'reachable' into 'realistically exploitable here'."""
-    g = report["graph"]
+    g = graph_of(report)
     by_cat = {}
     for x in g.get("findings") or []:
         by_cat.setdefault(x.get("category", "?"), []).append(
             {"severity": x.get("severity"), "title": x.get("title")})
-    eps = [n.get("name") for n in g["nodes"].values() if n.get("type") == "app-entrypoint"]
-    inv = [n.get("name") for n in g["nodes"].values() if n.get("type") == "binary-invocation"]
+    nodes = list(nodes_of(report).values())
+    eps = [n.get("name") for n in nodes if n.get("type") == "app-entrypoint"]
+    inv = [n.get("name") for n in nodes if n.get("type") == "binary-invocation"]
     return {
         "image": g.get("image_ref"), "platform": g.get("os_family"),
         "entrypoints": eps, "invocations": sorted(set(inv))[:20],
@@ -151,11 +153,11 @@ def cve_context(report, cve_id):
     CVSS vector, EPSS, the reachable-from path, the affected package/version, and
     the image + platform. The deterministic reachability is the gate; this is the
     material the AI reasons over WITHIN that gate."""
-    g = report["graph"]
+    g = graph_of(report)
     instances, src = [], None
-    for n in g["nodes"].values():
-        for c in n.get("cves") or []:
-            if c["id"] != cve_id:
+    for n in nodes_of(report).values():
+        for c in cves_of(n):
+            if c.get("id") != cve_id:
                 continue
             src = c
             instances.append({

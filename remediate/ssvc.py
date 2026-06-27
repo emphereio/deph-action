@@ -21,12 +21,13 @@ import sys
 from collections import Counter
 
 from triage import _cvss, _epss
-from plan import md_escape
+from plan import md_escape, graph_of, nodes_of, cves_of
 
 
 def _image_label(report):
     """Local images scan from a tarball, so image_ref is a temp path — clean it."""
-    ref = os.environ.get("DEPH_REMEDIATE_IMAGE") or report["graph"].get("image_ref") or "image"
+    ref = (os.environ.get("DEPH_REMEDIATE_IMAGE")
+           or graph_of(report).get("image_ref") or "image")
     if ref.endswith(".tar") or ref.startswith("/tmp") or "/tmp." in ref:
         return "the scanned image"
     return ref
@@ -82,13 +83,13 @@ def ssvc_one(c, net_exposed):
 
 def build_ssvc(report, net_exposed=True):
     """Per-CVE SSVC decision over the reachable set, deduped by id (highest decision kept)."""
-    g = report["graph"]
+    g = graph_of(report)
     prio = g.get("cve_priority", {})
     best = {}
-    for n in g["nodes"].values():
+    for n in nodes_of(report).values():
         pkg = n.get("name")
-        for c in n.get("cves") or []:
-            if c.get("tier") != "reachable":
+        for c in cves_of(n):
+            if c.get("tier") != "reachable" or not c.get("id"):
                 continue
             s = ssvc_one(c, net_exposed)
             cid = c["id"]
@@ -104,10 +105,10 @@ def build_ssvc(report, net_exposed=True):
 
 
 def _posture_line(report):
-    g = report["graph"]
+    g = graph_of(report)
     cfg = [x.get("title") for x in (g.get("findings") or []) if x.get("category") == "config"]
     secrets = sum(1 for x in (g.get("findings") or []) if x.get("category") == "secret")
-    eps = sorted({n.get("name") for n in g["nodes"].values() if n.get("type") == "app-entrypoint"})
+    eps = sorted({n.get("name") for n in nodes_of(report).values() if n.get("type") == "app-entrypoint"})
     bits = []
     if any("root" in (c or "").lower() for c in cfg):
         bits.append("runs as **root**")

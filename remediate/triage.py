@@ -113,12 +113,15 @@ def classify(c):
 
 def build_triage(report):
     """Dedup CVEs by id, keep the strongest bucket across instances, collect packages."""
-    g = report["graph"]
+    from plan import graph_of, nodes_of, cves_of
+    g = graph_of(report)
     prio = g.get("cve_priority", {})
     best = {}
-    for n in g["nodes"].values():
+    for n in nodes_of(report).values():
         pkg = n.get("name")
-        for c in n.get("cves") or []:
+        for c in cves_of(n):
+            if not c.get("id"):
+                continue
             bucket, reason = classify(c)
             cid = c["id"]
             cur = best.get(cid)

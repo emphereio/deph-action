@@ -22,6 +22,34 @@ jobs:
       - name: Self-test
         run: ./scripts/validate.sh
 
+  # The remediation/triage/threat layer: stdlib-only unit + robustness + golden +
+  # security tests, plus a deterministic CLI smoke against a fixture. Fully offline.
+  remediate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: ShellCheck
+        run: shellcheck scripts/remediate.sh scripts/authorize.py 2>/dev/null || shellcheck scripts/remediate.sh
+      - name: Byte-compile
+        run: python3 -m py_compile remediate/*.py scripts/authorize.py
+      - name: Unit + robustness + golden + security tests
+        working-directory: remediate
+        run: python3 -m unittest discover -p 'test_*.py' -v
+      - name: Deterministic CLI smoke (no model, no network)
+        working-directory: remediate
+        run: |
+          python3 - <<'PY' > /tmp/fix.json
+          import json
+          json.dump({"graph":{"image_ref":"smoke:img","os_family":"debian","nodes":{
+            "pip:flask":{"type":"pip-package","name":"flask","version":"2.0.0","layer_origin":"application",
+              "cves":[{"id":"CVE-X","tier":"reachable","reachable":True,"severity":"HIGH","fix_version":"3.0.0",
+              "cvss_vector":"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"}]}}}}, open("/tmp/fix.json","w"))
+          PY
+          python3 plan.py /tmp/fix.json   | grep -q "flask" || { echo "plan smoke failed"; exit 1; }
+          python3 triage.py /tmp/fix.json | grep -qi "act"   || { echo "triage smoke failed"; exit 1; }
+          python3 ssvc.py /tmp/fix.json   | grep -qi "ssvc"  || { echo "ssvc smoke failed"; exit 1; }
+          echo "CLI smoke OK"
+
   # Live end-to-end: downloads a released deph binary and runs the action.
   # Gated on the repo variable DEPH_RELEASE_READY so PR CI stays green until the
   # first emphereio/deph-dist release exists. Flip the variable to "true" (and set

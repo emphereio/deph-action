@@ -25,6 +25,26 @@ def safe_token(s):
     return isinstance(s, str) and bool(_SAFE_TOKEN.match(s)) and ".." not in s
 
 
+def graph_of(report):
+    """Always return a dict for report['graph'], whatever the input shape."""
+    g = report.get("graph") if isinstance(report, dict) else None
+    return g if isinstance(g, dict) else {}
+
+
+def nodes_of(report):
+    """Always return a dict of report['graph']['nodes'], keeping only dict-shaped nodes."""
+    n = graph_of(report).get("nodes")
+    if not isinstance(n, dict):
+        return {}
+    return {k: v for k, v in n.items() if isinstance(v, dict)}
+
+
+def cves_of(node):
+    """A node's CVE list, guaranteed to be a list of dicts (drops malformed entries)."""
+    c = node.get("cves") if isinstance(node, dict) else None
+    return [x for x in c if isinstance(x, dict)] if isinstance(c, list) else []
+
+
 def md_escape(s):
     return _MD_SPECIAL.sub(lambda m: "\\" + m.group(), str(s))
 
@@ -96,8 +116,8 @@ def eco_label(node_type):
 
 
 def build_plan(report):
-    g = report["graph"]
-    nodes = g["nodes"]
+    g = graph_of(report)
+    nodes = nodes_of(report)
     prio = g.get("cve_priority", {})
 
     def pscore(cid):
@@ -107,12 +127,14 @@ def build_plan(report):
     unfixable = []
 
     for n in nodes.values():
-        cves = n.get("cves") or []
+        cves = cves_of(n)
         if not cves:
             continue
         node_type = n.get("type", "")
         fixable, nofix = [], []
         for c in cves:
+            if not c.get("id"):
+                continue
             entry = {
                 "id": c["id"],
                 "severity": c.get("severity"),
@@ -153,7 +175,7 @@ def build_plan(report):
             unfixable.append({
                 "package": n.get("name"),
                 "layer_origin": n.get("layer_origin"),
-                "fix_state": next((c.get("fix_state") for c in cves if c["id"] == e["id"]), None),
+                "fix_state": next((c.get("fix_state") for c in cves if c.get("id") == e["id"]), None),
                 **e,
             })
 
@@ -166,7 +188,9 @@ def build_plan(report):
     # image-wide stats over UNIQUE cve ids.
     uniq = {}
     for n in nodes.values():
-        for c in n.get("cves") or []:
+        for c in cves_of(n):
+            if not c.get("id"):
+                continue
             cur = uniq.get(c["id"], {"reachable": False, "fixable": False, "base": False, "app": False})
             cur["reachable"] |= bool(c.get("reachable"))
             cur["fixable"] |= bool(c.get("fix_version"))
@@ -185,7 +209,7 @@ def build_plan(report):
     }
 
     return {
-        "image": g.get("image_ref") or report.get("image"),
+        "image": g.get("image_ref") or (report.get("image") if isinstance(report, dict) else None),
         "stats": stats,
         "packages": packages,
         "unfixable": unfixable,
