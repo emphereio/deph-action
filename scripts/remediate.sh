@@ -22,6 +22,13 @@ agent="$root/remediate/agent.py"
 [[ -n "$report" && -f "$report" ]] || { log "no report at '$report'; skipping remediation"; exit 0; }
 mkdir -p "$outdir"
 
+# Build conversation history from a comments file via the tested, IRONCLAD filter
+# (trusted authors + the bot's marked replies only). The agent re-sanitizes on top.
+if [[ -z "${DEPH_REMEDIATE_HISTORY:-}" && -n "${DEPH_COMMENTS_FILE:-}" && -f "${DEPH_COMMENTS_FILE}" ]]; then
+  export DEPH_REMEDIATE_HISTORY="$(DEPH_CURRENT_COMMENT_ID="${DEPH_CURRENT_COMMENT_ID:-}" \
+    DEPH_TRUSTED="${DEPH_TRUSTED:-}" python3 "$here/build_history.py" <"${DEPH_COMMENTS_FILE}" 2>/dev/null || echo '[]')"
+fi
+
 case "${DEPH_REMEDIATE_MODE:-plan}" in
   plan)
     md="$outdir/remediation.md"

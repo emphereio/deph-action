@@ -136,6 +136,17 @@ inputs:
     description: "Path to the access policy (default .deph.yml then .github/deph.yml)."
     required: false
     default: ""
+  comments-file:
+    description: >-
+      Path to the PR's issue-comments JSON (from `gh api`). The action builds the
+      conversation history from it with the tested trusted-author/marked-reply filter,
+      so the consumer doesn't hand-roll it. Alternative to passing `history` directly.
+    required: false
+    default: ""
+  current-comment-id:
+    description: "The triggering comment id, excluded from history (used with comments-file)."
+    required: false
+    default: ""
   llm-base-url:
     description: >-
       OpenAI-compatible base URL for the remediation model. Works with OpenAI,
@@ -307,6 +318,8 @@ runs:
         DEPH_REMEDIATE_REPORT: ${{ inputs.report }}
         DEPH_REMEDIATE_QUESTION: ${{ inputs.question }}
         DEPH_REMEDIATE_HISTORY: ${{ inputs.history }}
+        DEPH_COMMENTS_FILE: ${{ inputs.comments-file }}
+        DEPH_CURRENT_COMMENT_ID: ${{ inputs.current-comment-id }}
         DEPH_OUTPUT_DIRECTORY: ${{ inputs.output-directory }}
         DEPH_LLM_BASE_URL: ${{ inputs.llm-base-url }}
         DEPH_LLM_MODEL: ${{ inputs.llm-model }}
