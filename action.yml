@@ -142,7 +142,7 @@ runs:
     # while restore-keys restores the most recent prior DB at job start — so the
     # ~50MB grype DB is reused but still refreshes as deph updates it.
     - name: Cache deph vulnerability database
-      uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: ~/.cache/deph/grype
         key: deph-grype-db-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
