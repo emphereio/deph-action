@@ -223,27 +223,34 @@ def _major_bump(cur, target):
     return bool(a and b and a.group(1) != b.group(1))
 
 
-def _rows(items, limit, flag_major):
+def _rows(items, limit, flag_major, latest=None):
     lines = []
     ranked = sorted(items, key=lambda p: (p["reachable_cleared"], p["priority_cleared"]), reverse=True)
     for p in ranked[:limit]:
         cav = " · major bump" if (flag_major and _major_bump(p["current_version"], p["target_version"])) else ""
+        lat = ""
+        if latest:
+            lv = latest.get(p["package"])
+            if lv and str(lv) != str(p["target_version"]):
+                lat = f" · latest {md_escape(lv)}"
         if p.get("command"):
             tail = f" · `{p['command']}`"
         else:
             tail = " · ⚠ unusual name, verify manually"
         lines.append(
             f"- `{md_escape(p['package'])}` {md_escape(p['current_version'])} → "
-            f"{md_escape(p['target_version'])} — {p['reachable_cleared']} reachable{cav}{tail}"
+            f"{md_escape(p['target_version'])} — {p['reachable_cleared']} reachable{cav}{lat}{tail}"
         )
     if len(ranked) > limit:
         lines.append(f"- …and {len(ranked) - limit} more")
     return lines
 
 
-def render_markdown(plan, top=6):
+def render_markdown(plan, top=6, latest=None):
     """Terse fix-path. Split by who fixes it (app deps vs OS packages), since those
-    are usually different people, with the command honest to each."""
+    are usually different people, with the command honest to each. `latest` (optional
+    {package: latest_version}) annotates each row so the minimum-to-clear target is
+    never mistaken for "the latest release"."""
     s = plan["stats"]
     pkgs = plan["packages"]
     # Focus on reachable risk, and split by who owns the fix (app deps vs OS packages
@@ -261,17 +268,21 @@ def render_markdown(plan, top=6):
         return "\n".join(out)
 
     out.append(f"**{len(app) + len(osp)} upgrade(s) clear {cleared} of {s['reachable']} reachable CVEs.**")
+    out.append("> Targets are the **minimum version that clears these CVEs** (from the scan "
+               "database), not necessarily the latest release" +
+               (" — `latest` shown where it differs." if latest else ".") +
+               " Re-scan after upgrading to confirm.")
     out.append("")
 
     if app:
         out.append("**App dependencies** — you own these: pin in your manifest "
                    "(requirements.txt / package.json …) and rebuild.")
-        out += _rows(app, top, flag_major=True)
+        out += _rows(app, top, flag_major=True, latest=latest)
         out.append("")
     if osp:
         out.append("**OS / base image** — usually your platform/base-image team: bump the base "
                    "image, or patch in the Dockerfile (`RUN` the command below).")
-        out += _rows(osp, 4, flag_major=False)
+        out += _rows(osp, 4, flag_major=False, latest=latest)
         out.append("")
 
     notes = []
@@ -288,6 +299,8 @@ def main():
     ap.add_argument("report", help="deph report JSON (the full --format json output)")
     ap.add_argument("--format", choices=["markdown", "json"], default="markdown")
     ap.add_argument("--top", type=int, default=8)
+    ap.add_argument("--with-latest", action="store_true",
+                    help="annotate each target with the latest available version (live registry lookup)")
     args = ap.parse_args()
 
     with open(args.report) as f:
@@ -297,11 +310,22 @@ def main():
     # let the caller supply the friendly name for the title.
     plan["image"] = os.environ.get("DEPH_REMEDIATE_IMAGE") or plan["image"]
 
+    latest = None
+    if args.with_latest:
+        from tools import latest_releases  # late import: tools imports plan, so avoid a load cycle
+        latest = {}
+        for p in plan["packages"]:
+            if p["reachable_cleared"] <= 0:
+                continue
+            lv = latest_releases(p.get("ecosystem"), p.get("package")).get("latest_stable")
+            if lv:
+                latest[p["package"]] = lv
+
     if args.format == "json":
         json.dump(plan, sys.stdout, indent=2)
         print()
     else:
-        print(render_markdown(plan, top=args.top))
+        print(render_markdown(plan, top=args.top, latest=latest))
 
 
 if __name__ == "__main__":

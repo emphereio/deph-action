@@ -98,6 +98,15 @@ class Golden(unittest.TestCase):
         self.assertEqual({c["id"] for c in v["cleared"]}, {"CVE-A"})   # CVE-B fix 3.1 > 2.5
         self.assertEqual({c["id"] for c in v["not_cleared"]}, {"CVE-B"})
 
+    def test_render_labels_basis_and_shows_latest(self):
+        md = plan.render_markdown(plan.build_plan(GOLDEN), latest={"flask": "9.9.9"})
+        self.assertIn("minimum version that clears", md)   # the target is not "latest"
+        self.assertIn("latest 9.9.9", md)                  # the newer release is surfaced
+
+    def test_render_omits_latest_when_equal_to_target(self):
+        md = plan.render_markdown(plan.build_plan(GOLDEN), latest={"flask": "3.1.0"})
+        self.assertNotIn("latest 3.1.0", md)               # no noise when target == latest
+
 
 if __name__ == "__main__":
     unittest.main()
