@@ -6,7 +6,9 @@ set -Eeuo pipefail
 
 log() { printf 'deph-action: %s\n' "$*" >&2; }
 
-marker="<!-- deph-action -->"
+# Marker is overridable so multiple sticky comments can coexist (e.g. the verdict
+# and the remediation plan), each upserting independently.
+marker="${DEPH_COMMENT_MARKER:-<!-- deph-action -->}"
 body_file="${DEPH_SUMMARY_MD:-}"
 repo="${GITHUB_REPOSITORY:-}"
 
@@ -14,6 +16,13 @@ repo="${GITHUB_REPOSITORY:-}"
 [[ -n "$repo" ]] || { log "no repository in context; skipping PR comment"; exit 0; }
 command -v gh >/dev/null 2>&1 || { log "gh not available; skipping PR comment"; exit 0; }
 [[ -n "${GH_TOKEN:-}${GITHUB_TOKEN:-}" ]] || { log "no token; skipping PR comment"; exit 0; }
+
+# Guarantee the body carries the marker so future upserts can find this comment.
+if ! grep -qF "$marker" "$body_file"; then
+  work="$(mktemp)"
+  { cat "$body_file"; printf '\n%s\n' "$marker"; } >"$work"
+  body_file="$work"
+fi
 
 # Resolve the PR number from the event payload, falling back to refs/pull/N/merge.
 pr=""
