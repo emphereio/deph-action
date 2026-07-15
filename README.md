@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.png" alt="deph — trace which container CVEs are in your execution path" width="100%">
+</p>
+
 <h1>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/deph-icon-light.svg">

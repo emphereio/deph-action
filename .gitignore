@@ -2,3 +2,6 @@
 deph-report/
 *.log
 .claude/
+.idea/
+__pycache__/
+*.pyc
