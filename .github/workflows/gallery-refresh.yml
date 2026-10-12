@@ -65,7 +65,7 @@ jobs:
           cp "${{ steps.deph.outputs.verdict-json }}"     "$d/verdict.json"
           cp "${{ steps.deph.outputs.summary-markdown }}" "$d/summary.md"
           cp "${{ steps.deph.outputs.report-json }}"      "$d/deph-report.json"
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: gallery-${{ matrix.image.name }}
           path: stage/${{ matrix.image.name }}
@@ -93,7 +93,7 @@ jobs:
           cp "${{ steps.deph.outputs.verdict-json }}"     stage-demo/verdict.json
           cp "${{ steps.deph.outputs.summary-markdown }}" stage-demo/summary.md
           cp "${{ steps.deph.outputs.report-json }}"      stage-demo/deph-report.json
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: demo-report
           path: stage-demo
